@@ -12,9 +12,28 @@ namespace Project2
     {
         public BasicEffect basicEffect;
         public VertexInputLayout inputLayout;
-        public Game game;
+        public Project2Game game;
 
-        public abstract void Update(GameTime gametime);
+        public GameObject(Project2Game game)
+        {
+            this.game = game;
+
+            // Setup rendering effect
+            basicEffect = new BasicEffect(game.GraphicsDevice)
+            {
+                VertexColorEnabled = true,
+                View = game.camera.view,
+                Projection = game.camera.projection,
+                World = Matrix.Identity
+            };
+        }
+
+        public virtual void Update(GameTime gametime)
+        {
+            // get matricies from camera
+            basicEffect.View = game.camera.view;
+            basicEffect.Projection = game.camera.projection;
+        }
         public abstract void Draw(GameTime gametime);
     }
 }

@@ -11,5 +11,11 @@ namespace Project2
     abstract public class ColoredGameObject : GameObject
     {
         public Buffer<VertexPositionNormalColor> vertices;
+
+        public ColoredGameObject(Project2Game game)
+            : base(game)
+        {
+
+        }
     }
 }

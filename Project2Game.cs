@@ -22,6 +22,7 @@ using System;
 
 using SharpDX;
 using SharpDX.Toolkit;
+using SharpDX.Toolkit.Input;
 
 namespace Project2
 {
@@ -34,6 +35,14 @@ namespace Project2
         private GraphicsDeviceManager graphicsDeviceManager;
         private GameObject model;
 
+        public Camera camera;
+
+        private MouseManager mouseManager;
+        public MouseState mouseState;
+
+        private KeyboardManager keyboardManager;
+        public KeyboardState keyboardState;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -45,13 +54,18 @@ namespace Project2
             // Setup the relative directory to the executable directory
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
+
+            // Setup the keyboard manager
+            keyboardManager = new KeyboardManager(this);
+
+            // Setup the mouse manager
+            mouseManager = new MouseManager(this);
         }
 
         protected override void LoadContent()
         {
-            model = new Landscape(this);
-
-            // Create an input layout from the vertices
+            // Load the basic cube
+            model = new Cube(this);
 
             base.LoadContent();
         }
@@ -60,12 +74,36 @@ namespace Project2
         {
             Window.Title = "Project 2";
 
+            // Create camera
+            camera = new Camera(
+                this,
+                new Vector3(0, 15, -15),
+                new Vector3(0, 0, 0)
+            );
+
             base.Initialize();
         }
 
         protected override void Update(GameTime gameTime)
         {
+            // Get new keyboard info
+            keyboardState = keyboardManager.GetState();
+
+            // Get new mouse info
+            mouseState = mouseManager.GetState();
+
+            // Update camera
+            camera.Update(gameTime);
+
+            // Update the basic model
             model.Update(gameTime);
+
+            // Quit on escape key
+            if (keyboardState.IsKeyDown(Keys.Escape))
+            {
+                this.Exit();
+                this.Dispose();
+            }
 
             // Handle base.Update
             base.Update(gameTime);
@@ -74,7 +112,7 @@ namespace Project2
         protected override void Draw(GameTime gameTime)
         {
             // Clears the screen with the Color.CornflowerBlue
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(new Color(0.1f));
 
             model.Draw(gameTime);
 

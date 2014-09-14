@@ -90,8 +90,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="Landscape.cs" />
+    <Compile Include="Cube.cs" />
     <Compile Include="ColoredGameObject.cs" />
     <Compile Include="Project2Game.cs" />
     <Compile Include="Program.cs" />

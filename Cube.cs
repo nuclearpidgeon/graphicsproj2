@@ -8,10 +8,13 @@ using SharpDX.Toolkit;
 namespace Project2
 {
     using SharpDX.Toolkit.Graphics;
-    class Landscape : ColoredGameObject
+    class Cube : ColoredGameObject
     {  
-        public Landscape(Game game)
+        public Cube(Project2Game game) 
+            : base(game)
         {
+            // predeclare points
+
             Vector3 frontBottomLeft = new Vector3(-1.0f, -1.0f, -1.0f);
             Vector3 frontTopLeft = new Vector3(-1.0f, 1.0f, -1.0f);
             Vector3 frontTopRight = new Vector3(1.0f, 1.0f, -1.0f);
@@ -72,16 +75,7 @@ namespace Project2
                     new VertexPositionNormalColor(backTopRight, backTopRightNormal, Color.DarkOrange),
                 });
 
-            basicEffect = new BasicEffect(game.GraphicsDevice)
-            {
-                VertexColorEnabled = true,
-                View = Matrix.LookAtLH(new Vector3(0, 0, -5), new Vector3(0, 0, 0), Vector3.UnitY),
-                Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f),
-                World = Matrix.Identity
-            };
-
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
-            this.game = game;
         }
 
         public override void Update(GameTime gameTime)
@@ -89,7 +83,9 @@ namespace Project2
             // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
             basicEffect.World = Matrix.RotationX(time) * Matrix.RotationY(time * 2.0f) * Matrix.RotationZ(time * .7f);
-            basicEffect.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
+
+            // handle superclass update
+            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
