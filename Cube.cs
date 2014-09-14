@@ -10,9 +10,11 @@ namespace Project2
     using SharpDX.Toolkit.Graphics;
     class Cube : ColoredGameObject
     {  
-        public Cube(Project2Game game) 
-            : base(game)
+        public InputComponent input;
+        public Cube(Project2Game game) : base(game)    
         {
+
+            this.input = new InputComponent(this.game, this);
             // predeclare points
 
             Vector3 frontBottomLeft = new Vector3(-1.0f, -1.0f, -1.0f);
@@ -82,10 +84,11 @@ namespace Project2
         {
             // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
-            basicEffect.World = Matrix.RotationX(time) * Matrix.RotationY(time * 2.0f) * Matrix.RotationZ(time * .7f);
+            basicEffect.World = Matrix.RotationX(time * input.get_input().X) * Matrix.RotationY(time * 2.0f) * Matrix.RotationZ(time * .7f);
 
             // handle superclass update
             base.Update(gameTime);
+            
         }
 
         public override void Draw(GameTime gameTime)

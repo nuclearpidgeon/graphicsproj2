@@ -91,9 +91,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Cube.cs" />
     <Compile Include="ColoredGameObject.cs" />
+    <Compile Include="InputComponent.cs" />
     <Compile Include="Project2Game.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

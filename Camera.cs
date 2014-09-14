@@ -16,6 +16,7 @@ namespace Project2
         public Matrix view { get; set; }
         public Matrix projection;
 
+        public InputComponent input;
         Vector3 position;
         Vector3 direction;
         Vector3 movement;
@@ -24,10 +25,13 @@ namespace Project2
 
         public Camera(Project2Game game, Vector3 position, Vector3 target)
         {
+            
             this.game = game;
             this.position = position;
             this.direction = target - position;
             this.movement = new Vector3(0.0f, 0.0f, 0.0f);
+
+            //this.input = new InputComponent(game, this);
 
             this.view = Matrix.LookAtLH(position, target, Vector3.Up);
             this.projection = Matrix.PerspectiveFovLH(
@@ -107,6 +111,7 @@ namespace Project2
                     )
                 );
                 this.lastMousePos += change;
+                
             }
 
             /////////////////////////
