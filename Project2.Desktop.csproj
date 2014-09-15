@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>d72f9c74</NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -50,39 +51,38 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharpDX, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SharpDX\SharpDX.dll</HintPath>
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct2D1">
-      <HintPath>SharpDX\SharpDX.Direct2D1.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D11, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.Direct3D11, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SharpDX\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Direct3D11.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.DXGI, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.DXGI, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SharpDX\SharpDX.DXGI.dll</HintPath>
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.DXGI.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Toolkit, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.Toolkit, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SharpDX\SharpDX.Toolkit.dll</HintPath>
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Toolkit.Game, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.Toolkit.Game, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SharpDX\SharpDX.Toolkit.Game.dll</HintPath>
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Toolkit.Game.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Toolkit.Graphics, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.Toolkit.Graphics, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SharpDX\SharpDX.Toolkit.Graphics.dll</HintPath>
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Toolkit.Graphics.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Toolkit.Input, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.Toolkit.Input, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>SharpDX\SharpDX.Toolkit.Input.dll</HintPath>
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Toolkit.Input.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -121,7 +121,27 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ToolkitFont Include="Content\CourierNew10.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitFont>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.2\build\SharpDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\SharpDX.2.6.2\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpDX.2.6.2\build\SharpDX.targets'))" />
+    <Error Condition="!Exists('packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets'))" />
+  </Target>
+  <Import Project="packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets" Condition="Exists('packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

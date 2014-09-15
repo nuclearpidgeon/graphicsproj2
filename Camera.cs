@@ -16,9 +16,9 @@ namespace Project2
         public Matrix view { get; set; }
         public Matrix projection;
 
-        Vector3 position;
-        Vector3 direction;
-        Vector3 movement;
+        public Vector3 position { get; private set; }
+        public Vector3 direction { get; private set; }
+        public Vector3 movement { get; private set; }
 
         Vector2 lastMousePos;
 

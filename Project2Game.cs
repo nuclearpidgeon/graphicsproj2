@@ -43,6 +43,9 @@ namespace Project2
         private KeyboardManager keyboardManager;
         public KeyboardState keyboardState;
 
+        private SpriteFont consoleFont;
+        private SpriteBatch spriteBatch;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -66,6 +69,13 @@ namespace Project2
         {
             // Load the basic cube
             model = new Cube(this);
+
+            // Load font for console
+            consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
+
+            // Setup spritebatch
+            spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
+
 
             base.LoadContent();
         }
@@ -115,6 +125,12 @@ namespace Project2
             GraphicsDevice.Clear(new Color(0.1f));
 
             model.Draw(gameTime);
+
+            spriteBatch.Begin();
+            spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.End();
 
             // Handle base.Draw
             base.Draw(gameTime);
