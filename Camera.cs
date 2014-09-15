@@ -16,7 +16,7 @@ namespace Project2
         public Matrix view { get; set; }
         public Matrix projection;
 
-        public InputComponent input;
+        public Components.IInputComponent input;
         Vector3 position;
         Vector3 direction;
         Vector3 movement;

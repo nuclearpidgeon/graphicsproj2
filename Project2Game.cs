@@ -103,6 +103,7 @@ namespace Project2
             {
                 this.Exit();
                 this.Dispose();
+                
             }
 
             // Handle base.Update

@@ -5,7 +5,7 @@ using System.Text;
 using SharpDX;
 using SharpDX.Toolkit;
 
-namespace Project2
+namespace Project2.Components
 {
     public class Component
     {
