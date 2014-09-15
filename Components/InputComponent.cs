@@ -9,10 +9,12 @@ using SharpDX.Toolkit.Input;
 namespace Project2.Components
 {
 
-    public interface IInputComponent : Component
+    public class InputComponent : SharpDX.Component
+        
     {
 
-        public IInputComponent(Project2Game game, GameObject owner) : base(game, owner){
+        public InputComponent(Project2Game game, GameObject owner) : base(){
+
         }
 
         virtual public void update() {

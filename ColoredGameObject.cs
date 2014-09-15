@@ -7,6 +7,7 @@ using SharpDX.Toolkit;
 
 namespace Project2
 {
+    
     using SharpDX.Toolkit.Graphics;
     abstract public class ColoredGameObject : GameObject
     {
