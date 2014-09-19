@@ -35,7 +35,7 @@ namespace Project2
         private GraphicsDeviceManager graphicsDeviceManager;
         private GameObject model;
 
-        public Camera camera;
+        public Camera camera { private set; get; }
 
         private MouseManager mouseManager;
         public MouseState mouseState;
@@ -45,6 +45,8 @@ namespace Project2
 
         private SpriteFont consoleFont;
         private SpriteBatch spriteBatch;
+
+        public PhysicsSystem physics { private set; get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
@@ -84,12 +86,18 @@ namespace Project2
         {
             Window.Title = "Project 2";
 
+            physics = new PhysicsSystem(this);
+            this.GameSystems.Add(physics);
+
             // Create camera
             camera = new Camera(
                 this,
                 new Vector3(0, 15, -15),
                 new Vector3(0, 0, 0)
             );
+
+
+
 
             base.Initialize();
         }
