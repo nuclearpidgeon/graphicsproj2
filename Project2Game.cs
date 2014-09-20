@@ -48,6 +48,7 @@ namespace Project2
         private SpriteBatch spriteBatch;
 
         public PhysicsSystem physics { private set; get; }
+        public DebugDrawer debugDrawer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
@@ -76,6 +77,9 @@ namespace Project2
             gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
             gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
             gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
+            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
+            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
+            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
             //Model model2 = Content.Load<Model>("torus.fbx");
 
             // Load font for console
@@ -92,15 +96,19 @@ namespace Project2
         {
             Window.Title = "Project 2";
 
-            physics = new PhysicsSystem(this);
-            this.GameSystems.Add(physics);
-
             // Create camera
             camera = new Camera(
                 this,
                 new Vector3(0, 15, -15),
                 new Vector3(0, 0, 0)
             );
+
+            physics = new PhysicsSystem(this);
+            debugDrawer = new DebugDrawer(this);
+            this.GameSystems.Add(debugDrawer);
+            this.GameSystems.Add(physics);
+
+
 
             base.Initialize();
         }
@@ -142,7 +150,7 @@ namespace Project2
             {
                 gameObjects[i].Draw(gameTime);
             }
-
+            debugDrawer.Draw(gameTime);
             spriteBatch.Begin();
             spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
             spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);

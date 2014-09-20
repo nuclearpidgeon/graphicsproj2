@@ -57,9 +57,9 @@ namespace Project2
                 game.GraphicsDevice,
                 new[]
                     {
-                    new VertexPositionNormalColor(frontBottomLeft, frontBottomLeftNormal, Color.Orange), // Front
-                    new VertexPositionNormalColor(frontTopLeft, frontTopLeftNormal, Color.Orange),
-                    new VertexPositionNormalColor(frontTopRight, frontTopRightNormal, Color.Orange),
+                    new VertexPositionNormalColor(frontBottomLeft, frontBottomLeftNormal, Color.Red), // Front
+                    new VertexPositionNormalColor(frontTopLeft, frontTopLeftNormal, Color.Green),
+                    new VertexPositionNormalColor(frontTopRight, frontTopRightNormal, Color.Blue),
                     new VertexPositionNormalColor(frontBottomLeft, frontBottomLeftNormal, Color.Orange),
                     new VertexPositionNormalColor(frontTopRight, frontTopRightNormal, Color.Orange),
                     new VertexPositionNormalColor(frontBottomRight, frontBottomRightNormal, Color.Orange),
@@ -123,8 +123,8 @@ namespace Project2
 
             // Apply the basic effect technique and draw the rotating cube
             basicEffect.CurrentTechnique.Passes[0].Apply();
-            game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
-            
+            //game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
+            body.DebugDraw(game.debugDrawer);
         }
     }
 }
