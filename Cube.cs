@@ -82,8 +82,13 @@ namespace Project2
         {
             // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
-            basicEffect.World = Matrix.RotationX(time) * Matrix.RotationY(time * 2.0f) * Matrix.RotationZ(time * .7f);
+            //basicEffect.World = Matrix.RotationX(time) * Matrix.RotationY(time * 2.0f) * Matrix.RotationZ(time * .7f);
 
+            // get the position from physics system
+            Vector3 pos = PhysicsSystem.toVector3(this.game.physics.World.RigidBodies.First().Position);
+            Matrix rotation = PhysicsSystem.toMatrix(this.game.physics.World.RigidBodies.First().Orientation);
+            
+            basicEffect.World =  Matrix.Translation(pos) * rotation;
             // handle superclass update
             base.Update(gameTime);
         }

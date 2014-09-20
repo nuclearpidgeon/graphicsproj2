@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>d72f9c74</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>9b9a586b</NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -54,6 +54,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssimpNet, Version=3.3.1.0, Culture=neutral, PublicKeyToken=0d51b391f59f42a6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\AssimpNet.3.3.1\lib\net45\AssimpNet.dll</HintPath>
+    </Reference>
     <Reference Include="Jitter">
       <HintPath>packages\Jitter.0.1.7.0\lib\NET40\Jitter.dll</HintPath>
     </Reference>
@@ -100,6 +104,7 @@
     <Compile Include="GameObject.cs" />
     <Compile Include="Cube.cs" />
     <Compile Include="ColoredGameObject.cs" />
+    <Compile Include="PhysicsObject.cs" />
     <Compile Include="PhysicsSystem.cs" />
     <Compile Include="Project2Game.cs" />
     <Compile Include="Program.cs" />
@@ -138,6 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Content\box.x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\torus.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -148,8 +159,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\SharpDX.2.6.2\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpDX.2.6.2\build\SharpDX.targets'))" />
     <Error Condition="!Exists('packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets'))" />
+    <Error Condition="!Exists('packages\AssimpNet.3.3.1\build\AssimpNet.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\AssimpNet.3.3.1\build\AssimpNet.targets'))" />
   </Target>
   <Import Project="packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets" Condition="Exists('packages\SharpDX.Toolkit.2.6.2\build\SharpDX.Toolkit.targets')" />
+  <Import Project="packages\AssimpNet.3.3.1\build\AssimpNet.targets" Condition="Exists('packages\AssimpNet.3.3.1\build\AssimpNet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

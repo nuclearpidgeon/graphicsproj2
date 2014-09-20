@@ -71,6 +71,8 @@ namespace Project2
         {
             // Load the basic cube
             model = new Cube(this);
+            //this.physics.addTestBox(new Vector3(0f, 0f, 0f), 1.0f);
+            //Model model2 = Content.Load<Model>("torus.fbx");
 
             // Load font for console
             consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
@@ -122,7 +124,7 @@ namespace Project2
                 this.Exit();
                 this.Dispose();
             }
-
+            this.physics.Update(gameTime);
             // Handle base.Update
             base.Update(gameTime);
         }
