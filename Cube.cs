@@ -5,14 +5,33 @@ using System.Text;
 using SharpDX;
 using SharpDX.Toolkit;
 
+using Jitter;
+using Jitter.Dynamics;
+using Jitter.Collision.Shapes;
+using Jitter.LinearMath;
+
 namespace Project2
 {
     using SharpDX.Toolkit.Graphics;
     class Cube : ColoredGameObject
-    {  
-        public Cube(Project2Game game) 
+    {
+        Vector3 size;
+        RigidBody body;
+        public Cube(Project2Game game, Vector3 size, Vector3 position, Bool dynamic) 
             : base(game)
         {
+
+            // physics system stuff
+            this.size = size;
+            Shape boxShape = new Jitter.Collision.Shapes.BoxShape(PhysicsSystem.toJVector(size));
+
+            body = new RigidBody(boxShape);
+            body.IsStatic = !dynamic;
+            body.AffectedByGravity = dynamic;
+            body.EnableDebugDraw = true;
+            body.Position = PhysicsSystem.toJVector(position);
+            game.physics.World.AddBody(body);
+
             // predeclare points
 
             Vector3 frontBottomLeft = new Vector3(-1.0f, -1.0f, -1.0f);
@@ -32,6 +51,7 @@ namespace Project2
             Vector3 backBottomRightNormal = new Vector3(0.333f, -0.333f, 0.333f);
             Vector3 backTopLeftNormal = new Vector3(-0.333f, 0.333f, 0.333f);
             Vector3 backTopRightNormal = new Vector3(0.333f, 0.333f, 0.333f);
+            
 
             vertices = Buffer.Vertex.New(
                 game.GraphicsDevice,
@@ -84,12 +104,13 @@ namespace Project2
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
             //basicEffect.World = Matrix.RotationX(time) * Matrix.RotationY(time * 2.0f) * Matrix.RotationZ(time * .7f);
 
-            // get the position from physics system
-            Vector3 translation = PhysicsSystem.toVector3(this.game.physics.World.RigidBodies.First().Position);
-            Matrix orientation = PhysicsSystem.toMatrix(this.game.physics.World.RigidBodies.First().Orientation);
+            // get the orientation from physics system
+            // TODO: Make this object owner of individual RigidBody
+            Vector3 translation = PhysicsSystem.toVector3(body.Position);
+            Matrix orientation = PhysicsSystem.toMatrix(body.Orientation);
             orientation.TranslationVector = translation;
-            
-            basicEffect.World =  orientation;
+
+            basicEffect.World = Matrix.Scaling(size) * orientation;
             // handle superclass update
             base.Update(gameTime);
         }
@@ -103,6 +124,7 @@ namespace Project2
             // Apply the basic effect technique and draw the rotating cube
             basicEffect.CurrentTechnique.Passes[0].Apply();
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
+            
         }
     }
 }

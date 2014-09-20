@@ -19,6 +19,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 
 using SharpDX;
 using SharpDX.Toolkit;
@@ -33,7 +34,7 @@ namespace Project2
     public class Project2Game : Game
     {
         private GraphicsDeviceManager graphicsDeviceManager;
-        private GameObject model;
+        private List<GameObject> gameObjects;
 
         public Camera camera { private set; get; }
 
@@ -65,13 +66,16 @@ namespace Project2
 
             // Setup the mouse manager
             mouseManager = new MouseManager(this);
+
+            gameObjects = new List<GameObject>();
         }
 
         protected override void LoadContent()
         {
-            // Load the basic cube
-            model = new Cube(this);
-            //this.physics.addTestBox(new Vector3(0f, 0f, 0f), 1.0f);
+
+            gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
+            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
+            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
             //Model model2 = Content.Load<Model>("torus.fbx");
 
             // Load font for console
@@ -98,9 +102,6 @@ namespace Project2
                 new Vector3(0, 0, 0)
             );
 
-
-
-
             base.Initialize();
         }
 
@@ -116,7 +117,10 @@ namespace Project2
             camera.Update(gameTime);
 
             // Update the basic model
-            model.Update(gameTime);
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                gameObjects[i].Update(gameTime);
+            }
 
             // Quit on escape key
             if (keyboardState.IsKeyDown(Keys.Escape))
@@ -134,7 +138,10 @@ namespace Project2
             // Clears the screen with the Color.CornflowerBlue
             GraphicsDevice.Clear(new Color(0.1f));
 
-            model.Draw(gameTime);
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                gameObjects[i].Draw(gameTime);
+            }
 
             spriteBatch.Begin();
             spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);

@@ -35,16 +35,22 @@ namespace Project2
             
             // caller should do this? 
             //game.GameSystems.Add(this);
-            buildScene();
+           // buildScene();
         }
 
-        override public void Update(GameTime time) {
-            World.Step((float)time.TotalGameTime.TotalSeconds, true, 1.0f/60.0f, 1);
+        /// <summary>
+        /// This method is automagically called as part of GameSystem to update the physics simulation.
+        /// Physics system interpolates current running time with at max 1 itteration of the system over
+        /// 1/60 seconds (by default).
+        /// </summary>
+        /// <param name="time"></param>
+        override public void Update(GameTime time) {  
+            World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds, 1);
         }
 
         private void buildScene() {
             addTestBox(new Vector3(0f, 10f, 0f), 1.0f);
-            addTestBox(new Vector3(0.5f, 1f, 0f), 1.0f);
+            addTestBox(new Vector3(0.5f, 1f, 0f), 1.0f); // hidden block to cause other block to fall over
 
             Shape groundShape = new BoxShape(new JVector(10, 0f, 10));
             RigidBody groundBody = new RigidBody(groundShape);
@@ -57,6 +63,9 @@ namespace Project2
         }
 
 
+        public static JVector toJVector(Vector3 vector) {
+            return new JVector(vector.X, vector.Y, vector.Z);
+        }
         public static Vector3 toVector3(JVector vector) {
             return new Vector3(vector.X, vector.Y, vector.Z);
         }
