@@ -111,6 +111,13 @@ namespace Project2
             orientation.TranslationVector = translation;
 
             basicEffect.World = Matrix.Scaling(size) * orientation;
+
+            if (game.keyboardState.IsKeyDown(SharpDX.Toolkit.Input.Keys.Space)) {
+                if (body.IsStatic == false) {
+                    body.ApplyImpulse(PhysicsSystem.toJVector(new Vector3(0f, 1f, 0f)), PhysicsSystem.toJVector(Vector3.Zero));   
+
+                }
+            }
             // handle superclass update
             base.Update(gameTime);
         }
