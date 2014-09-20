@@ -39,13 +39,14 @@ namespace Project2
         }
 
         override public void Update(GameTime time) {
-            World.Step((float)time.TotalGameTime.TotalSeconds, true);
+            World.Step((float)time.TotalGameTime.TotalSeconds, true, 1.0f/60.0f, 1);
         }
 
         private void buildScene() {
             addTestBox(new Vector3(0f, 10f, 0f), 1.0f);
+            addTestBox(new Vector3(0.5f, 1f, 0f), 1.0f);
 
-            Shape groundShape = new BoxShape(new JVector(10, 1, 10));
+            Shape groundShape = new BoxShape(new JVector(10, 0f, 10));
             RigidBody groundBody = new RigidBody(groundShape);
 
             groundBody.Tag = Color.LightGreen;
@@ -65,7 +66,7 @@ namespace Project2
                 matrix.M11, matrix.M12, matrix.M13, 0f,
                 matrix.M21, matrix.M22, matrix.M23, 0f,
                 matrix.M31, matrix.M32, matrix.M33, 0f,
-                        0f,         0f,         0f, 0f);
+                        0f,         0f,         0f, 1.0f);
         }
 
         public void addTestBox(Vector3 position, float mass)
