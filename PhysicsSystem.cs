@@ -23,6 +23,7 @@ namespace Project2
 
         public World World; // handles dynamics
 
+        public int accuracy { get; set; }
         // collision system used by world (or on its own)
         Jitter.Collision.CollisionSystem collisionSystem = new Jitter.Collision.CollisionSystemSAP(); // SAP = Scan and Prune (good for large scenes, bruteforce might be fine for small scenes too)
 
@@ -30,6 +31,7 @@ namespace Project2
 
             World = new World(collisionSystem); // whole_new_world.wav
             // gravity defaults to -9.8 m.s^-2
+            accuracy = 3;
         }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace Project2
         /// </summary>
         /// <param name="time"></param>
         override public void Update(GameTime time) {  
-            World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds, 1);
+            World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
         private void buildScene() {
