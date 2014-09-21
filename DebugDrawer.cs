@@ -36,7 +36,7 @@ namespace Project2
                 Projection = game.camera.projection,
                 World = Matrix.Identity
             };
-            basicEffect.VertexColorEnabled = true;
+            basicEffect.VertexColorEnabled = false;
         }
 
         public void DrawLine(JVector p0, JVector p1, Color color)
@@ -143,6 +143,14 @@ namespace Project2
                 basicEffect.Projection = game.camera.projection;
 
 
+                // enable wireframe mode here if you want
+                RasterizerState rs = SharpDX.Toolkit.Graphics.RasterizerState.New(game.GraphicsDevice,
+                    new SharpDX.Direct3D11.RasterizerStateDescription()
+                    {
+                        CullMode = SharpDX.Direct3D11.CullMode.None,
+                        FillMode = SharpDX.Direct3D11.FillMode.Wireframe,
+                    });
+                game.GraphicsDevice.SetRasterizerState(rs);
 
             Buffer<VertexPositionColor> vertices = Buffer.Vertex.New(game.GraphicsDevice, TriangleList);
             game.GraphicsDevice.SetVertexBuffer(vertices);

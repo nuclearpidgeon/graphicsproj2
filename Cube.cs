@@ -23,10 +23,16 @@ namespace Project2
 
             // physics system stuff
             this.size = size / 2.0f;
-            Shape boxShape = new Jitter.Collision.Shapes.BoxShape(PhysicsSystem.toJVector(size));
-            if (dynamic) {
+            Terrain t = new Terrain(this.game);
+            Shape boxShape;
+
+            if (dynamic)
+            {
                 boxShape = new Jitter.Collision.Shapes.SphereShape(PhysicsSystem.toJVector(size).Length());
 
+            }
+            else {
+                boxShape = new Jitter.Collision.Shapes.TerrainShape(t.terrainData, 1f, 1f);
             }
             var material = new Jitter.Dynamics.Material();
 
@@ -34,8 +40,8 @@ namespace Project2
             body.Mass = 1.0f;
             if (!dynamic) {
                 body.IsStatic = true;
-                material.KineticFriction = 0.0f; // for slow surfaces
-                material.StaticFriction = 0f; // for sticky-when-stopped surfaces
+                //material.KineticFriction = 0.0f; // for slow surfaces
+                //material.StaticFriction = 0f; // for sticky-when-stopped surfaces
                 //material.Restitution = 1.5f;  // for bouncy surfaces
                 body.Material = material;
                 
@@ -44,6 +50,9 @@ namespace Project2
             body.AffectedByGravity = dynamic;
             body.EnableDebugDraw = true;
             body.Position = PhysicsSystem.toJVector(position);
+            if (!dynamic) {
+                body.Position = new JVector(0f, -50f, 0);
+            }
             game.physics.World.AddBody(body);
 
             // predeclare points

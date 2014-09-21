@@ -107,6 +107,7 @@
     <Compile Include="Project2Game.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Terrain.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
   </ItemGroup>
   <ItemGroup>
