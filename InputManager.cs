@@ -13,7 +13,7 @@ namespace Project2
     /// <summary>
     /// This class handles all user input for the game, implemented as a system.
     /// </summary>
-    class InputManager : GameSystem
+    public class InputManager : GameSystem, IUpdateable
     {
         KeyboardManager keyboardManager;
         MouseManager mouseManager;
@@ -41,12 +41,9 @@ namespace Project2
             accelerometerEnabled = false;
         }
 
-        public override void Update(GameTime gameTime)
+        override public void Update(GameTime gameTime)
         {            
-            // accept input
-            keyboardManager.Update(gameTime);
-            mouseManager.Update(gameTime);
-            pointerManager.Update(gameTime);
+
 
             // update state
             keyboardState = keyboardManager.GetState();
@@ -54,6 +51,13 @@ namespace Project2
             pointerState = pointerManager.GetState();
 
  	        base.Update(gameTime);
+        }
+
+        public MouseState MouseState() {
+            return mouseState;
+        }
+        public Boolean IsKeyDown(Keys key) {
+            return keyboardState.IsKeyDown(key);
         }
 
         /// <summary>
@@ -97,11 +101,11 @@ namespace Project2
 
             if (keyboardState.IsKeyDown(keyMapping.up_Secondary_key))
             {
-                v.Y += 1;
+                v.Z += 1;
             }
             if (keyboardState.IsKeyDown(keyMapping.down_Secondary_key))
             {
-                v.Y -= 1;
+                v.Z -= 1;
             }
             if (keyboardState.IsKeyDown(keyMapping.right_Secondary_key))
             {
@@ -162,7 +166,7 @@ namespace Project2
     /// </summary>
     class KeyMapping {
 
-        public Keys up_Primary_key {public get; set; }
+        public Keys up_Primary_key { get; set; }
         public Keys down_Primary_key { get; set; }
         public Keys left_Primary_key { get; set; }
         public Keys right_Primary_key { get; set; }

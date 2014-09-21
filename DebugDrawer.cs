@@ -14,7 +14,7 @@ namespace Project2
     /// <summary>
     /// Draw axis aligned bounding boxes, points and lines.
     /// </summary>
-    public class DebugDrawer : GameSystem, Jitter.IDebugDrawer
+    public class DebugDrawer : GameSystem, Jitter.IDebugDrawer, IDrawable
     {
         
         BasicEffect basicEffect;
@@ -28,6 +28,7 @@ namespace Project2
         public override void Initialize()
         {
             base.Initialize();
+            this.Visible = true;
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
                 VertexColorEnabled = true,
@@ -135,7 +136,7 @@ namespace Project2
         private int lineIndex = 0;
         private int triangleIndex = 0;
 
-        public override void Draw(GameTime gameTime)
+        override public void Draw(GameTime gameTime)
         {
 
                 basicEffect.View = game.camera.view;
