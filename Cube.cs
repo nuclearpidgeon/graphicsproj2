@@ -28,7 +28,11 @@ namespace Project2
 
             if (dynamic)
             {
-                boxShape = new Jitter.Collision.Shapes.SphereShape(PhysicsSystem.toJVector(size).Length());
+                List<Shape> shapelist = new List<Shape>();
+                shapelist.Add(new Jitter.Collision.Shapes.SphereShape(2f));
+                //shapelist.Add(new Jitter.Collision.Shapes.CapsuleShape(1f, 0.1f));
+                shapelist.Add(new Jitter.Collision.Shapes.ConeShape(2f, 0.5f));
+                boxShape = new Jitter.Collision.Shapes.MinkowskiSumShape(shapelist);
 
             }
             else {
