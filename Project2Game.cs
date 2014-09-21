@@ -103,12 +103,12 @@ namespace Project2
                 new Vector3(0, 0, 0)
             );
 
+            // GameSystems have their Update() and Draw() methods called automagically
             physics = new PhysicsSystem(this);
             debugDrawer = new DebugDrawer(this);
+
             this.GameSystems.Add(debugDrawer);
             this.GameSystems.Add(physics);
-
-
 
             base.Initialize();
         }
@@ -152,6 +152,7 @@ namespace Project2
             }
             debugDrawer.Draw(gameTime);
             spriteBatch.Begin();
+            
             spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
             spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
             spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);

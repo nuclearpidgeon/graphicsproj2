@@ -1,4 +1,7 @@
-﻿
+﻿/*
+ * Adapted from sample debug drawer found on Jitter Physics demo
+ * http://jitter-physics.com/Tutorials.zip
+ */
 
 
 using SharpDX;

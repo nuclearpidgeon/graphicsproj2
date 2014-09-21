@@ -22,10 +22,11 @@ namespace Project2
         {
 
             // physics system stuff
-            this.size = size;
+            this.size = size / 2.0f;
             Shape boxShape = new Jitter.Collision.Shapes.BoxShape(PhysicsSystem.toJVector(size));
 
             body = new RigidBody(boxShape);
+            body.Mass = 1.0f;
             body.IsStatic = !dynamic;
             body.AffectedByGravity = dynamic;
             body.EnableDebugDraw = true;
@@ -96,6 +97,7 @@ namespace Project2
                 });
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
+            basicEffect.EnableDefaultLighting();
         }
 
         public override void Update(GameTime gameTime)
