@@ -41,15 +41,12 @@ namespace Project2
         private MouseManager mouseManager;
         public MouseState mouseState;
 
-        private KeyboardManager keyboardManager;
-        public KeyboardState keyboardState;
-
         private SpriteFont consoleFont;
         private SpriteBatch spriteBatch;
 
         public PhysicsSystem physics { private set; get; }
         public DebugDrawer debugDrawer;
-
+        public InputManager inputManager { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -62,8 +59,6 @@ namespace Project2
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
 
-
-
             gameObjects = new List<GameObject>();
         }
 
@@ -71,11 +66,11 @@ namespace Project2
         {
 
             gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
+            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
             gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
+            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
+            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
+            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
             //Model model2 = Content.Load<Model>("torus.fbx");
 
             // Load font for console
@@ -99,23 +94,33 @@ namespace Project2
                 new Vector3(0, 0, 0)
             );
 
-            // GameSystems have their Update() and Draw() methods called automagically
+            // Create some GameSystems
+            inputManager = new InputManager(this);
             physics = new PhysicsSystem(this);
             debugDrawer = new DebugDrawer(this);
 
+            // enable their Update() or Draw() routines to be automagically called by Game.Update() / Game.Draw() as they implement IUpdateable or IDrawable
+            inputManager.Enabled = true;
+            physics.Enabled = true;
+
+            debugDrawer.Enabled = true;
+            debugDrawer.Visible = true;
+
             this.GameSystems.Add(debugDrawer);
             this.GameSystems.Add(physics);
+            this.GameSystems.Add(inputManager);
+
 
             base.Initialize();
         }
 
+
         protected override void Update(GameTime gameTime)
         {
-            // Get new keyboard info
-            keyboardState = keyboardManager.GetState();
+
 
             // Get new mouse info
-            mouseState = mouseManager.GetState();
+            mouseState = inputManager.MouseState();
 
             // Update camera
             camera.Update(gameTime);
@@ -127,15 +132,29 @@ namespace Project2
             }
 
             // Quit on escape key
-            if (keyboardState.IsKeyDown(Keys.Escape))
+            if (inputManager.IsKeyDown(Keys.Escape))
             {
                 this.Exit();
-                this.Dispose();
             }
-            this.physics.Update(gameTime);
+
+            
             // Handle base.Update
             base.Update(gameTime);
         }
+
+        /// <summary>
+        /// Use this method body to do stuff while the game is exiting.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            Console.WriteLine("Shutting down...");
+            
+            // do cleanup?
+            base.OnExiting(sender, args);
+        }
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -146,16 +165,17 @@ namespace Project2
             {
                 gameObjects[i].Draw(gameTime);
             }
-            debugDrawer.Draw(gameTime);
-            spriteBatch.Begin();
+
+            // Handle base.Draw
+            base.Draw(gameTime);
             
+            // SpriteBatch must be the last thing drawn, not super sure why yet.
+            spriteBatch.Begin();
             spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
             spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
             spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
             spriteBatch.End();
 
-            // Handle base.Draw
-            base.Draw(gameTime);
         }
     }
 }

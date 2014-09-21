@@ -24,9 +24,22 @@ namespace Project2
             // physics system stuff
             this.size = size / 2.0f;
             Shape boxShape = new Jitter.Collision.Shapes.BoxShape(PhysicsSystem.toJVector(size));
+            if (dynamic) {
+                boxShape = new Jitter.Collision.Shapes.SphereShape(PhysicsSystem.toJVector(size).Length());
+
+            }
+            var material = new Jitter.Dynamics.Material();
 
             body = new RigidBody(boxShape);
             body.Mass = 1.0f;
+            if (!dynamic) {
+                body.IsStatic = true;
+                material.KineticFriction = 0.0f; // for slow surfaces
+                material.StaticFriction = 0f; // for sticky-when-stopped surfaces
+                //material.Restitution = 1.5f;  // for bouncy surfaces
+                body.Material = material;
+                
+            }
             body.IsStatic = !dynamic;
             body.AffectedByGravity = dynamic;
             body.EnableDebugDraw = true;
@@ -114,10 +127,15 @@ namespace Project2
 
             basicEffect.World = Matrix.Scaling(size) * orientation;
 
-            if (game.keyboardState.IsKeyDown(SharpDX.Toolkit.Input.Keys.Space)) {
+            if (game.inputManager.Jump()) {
                 if (body.IsStatic == false) {
                     body.ApplyImpulse(PhysicsSystem.toJVector(new Vector3(0f, 1f, 0f)), PhysicsSystem.toJVector(Vector3.Zero));   
 
+                }
+            }
+            if (game.inputManager.SecondaryDirection() != Vector3.Zero) {
+                if (body.IsStatic == false) { 
+                    body.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 0.1f), PhysicsSystem.toJVector(Vector3.Zero));
                 }
             }
             // handle superclass update

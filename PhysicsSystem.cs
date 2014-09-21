@@ -18,7 +18,7 @@ using  Vector4 = SharpDX.Vector4;
 
 namespace Project2
 {
-    public class PhysicsSystem : GameSystem
+    public class PhysicsSystem : GameSystem, IUpdateable
     {
 
         public World World; // handles dynamics
@@ -30,12 +30,6 @@ namespace Project2
 
             World = new World(collisionSystem); // whole_new_world.wav
             // gravity defaults to -9.8 m.s^-2
-            //World.Gravity = new JVector(0, -1, 0); // -10 m.s^-2
-
-            
-            // caller should do this? 
-            //game.GameSystems.Add(this);
-           // buildScene();
         }
 
         /// <summary>

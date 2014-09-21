@@ -55,38 +55,40 @@ namespace Project2
             // KEYBOARD LOGIC //
             ////////////////////
 
-            if (game.keyboardState.IsKeyDown(Keys.W))
-            {
-                // move forward
-                newPosition += (time * 0.001f * direction);
-            }
-            if (game.keyboardState.IsKeyDown(Keys.S))
-            {
-                // move backward
-                newPosition -= (time * 0.001f * direction);
-            }
-            if (game.keyboardState.IsKeyDown(Keys.A))
-            {
-                // strafe left
-                Vector3 left = Vector3.Normalize(Vector3.Cross(this.direction, Vector3.Up));
-                newPosition += (time * 0.025f * left);
-            }
-            if (game.keyboardState.IsKeyDown(Keys.D))
-            {
-                // strafe right
-                Vector3 right = Vector3.Normalize(Vector3.Cross(Vector3.Up, this.direction));
-                newPosition += (time * 0.025f * right);
-            }
-            if (game.keyboardState.IsKeyDown(Keys.Q))
-            {
-                // move up
-                newPosition.Y += (time * 0.025f);
-            }
-            if (game.keyboardState.IsKeyDown(Keys.E))
-            {
-                // move down
-                newPosition.Y -= (time * 0.025f);
-            }
+            newPosition += game.inputManager.PrimaryDirection() * new Vector3(0.001f, 0.025f, 0.025f) * time;
+
+            //if (game.inputManager.IsKeyDown(Keys.W))
+            //{
+            //    // move forward
+            //    newPosition += (time * 0.001f * direction);
+            //}
+            //if (game.inputManager.IsKeyDown(Keys.S))
+            //{
+            //    // move backward
+            //    newPosition -= (time * 0.001f * direction);
+            //}
+            //if (game.inputManager.IsKeyDown(Keys.A))
+            //{
+            //    // strafe left
+            //    Vector3 left = Vector3.Normalize(Vector3.Cross(this.direction, Vector3.Up));
+            //    newPosition += (time * 0.025f * left);
+            //}
+            //if (game.inputManager.IsKeyDown(Keys.D))
+            //{
+            //    // strafe right
+            //    Vector3 right = Vector3.Normalize(Vector3.Cross(Vector3.Up, this.direction));
+            //    newPosition += (time * 0.025f * right);
+            //}
+            //if (game.inputManager.IsKeyDown(Keys.Q))
+            //{
+            //    // move up
+            //    newPosition.Y += (time * 0.025f);
+            //}
+            //if (game.inputManager.IsKeyDown(Keys.E))
+            //{
+            //    // move down
+            //    newPosition.Y -= (time * 0.025f);
+            //}
 
             /////////////////
             // MOUSE LOGIC //
