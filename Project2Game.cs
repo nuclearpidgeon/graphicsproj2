@@ -62,11 +62,7 @@ namespace Project2
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
 
-            // Setup the keyboard manager
-            keyboardManager = new KeyboardManager(this);
 
-            // Setup the mouse manager
-            mouseManager = new MouseManager(this);
 
             gameObjects = new List<GameObject>();
         }

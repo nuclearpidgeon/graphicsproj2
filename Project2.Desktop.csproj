@@ -101,6 +101,7 @@
     <Compile Include="GameObject.cs" />
     <Compile Include="Cube.cs" />
     <Compile Include="ColoredGameObject.cs" />
+    <Compile Include="InputManager.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="PhysicsSystem.cs" />
     <Compile Include="Project2Game.cs" />
