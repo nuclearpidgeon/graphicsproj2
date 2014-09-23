@@ -20,8 +20,8 @@ namespace Project2
 {
     public class PhysicsSystem : GameSystem, IUpdateable
     {
-
-        public World World; // handles dynamics
+        
+        public JitterWorld World; // handles dynamics
 
         public int accuracy { get; set; }
         // collision system used by world (or on its own)
@@ -29,7 +29,7 @@ namespace Project2
 
         public PhysicsSystem(Game game) : base(game) {
 
-            World = new World(collisionSystem); // whole_new_world.wav
+            World = new JitterWorld(collisionSystem); // whole_new_world.wav
             // gravity defaults to -9.8 m.s^-2
             accuracy = 3;
         }

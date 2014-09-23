@@ -29,9 +29,9 @@ namespace Project2
             if (dynamic)
             {
                 List<Shape> shapelist = new List<Shape>();
-                shapelist.Add(new Jitter.Collision.Shapes.SphereShape(2f));
+                shapelist.Add(new Jitter.Collision.Shapes.SphereShape(1f));
                 //shapelist.Add(new Jitter.Collision.Shapes.CapsuleShape(1f, 0.1f));
-                shapelist.Add(new Jitter.Collision.Shapes.ConeShape(2f, 0.5f));
+                //shapelist.Add(new Jitter.Collision.Shapes.ConeShape(2f, 0.5f));
                 boxShape = new Jitter.Collision.Shapes.MinkowskiSumShape(shapelist);
 
             }
@@ -42,20 +42,25 @@ namespace Project2
 
             body = new RigidBody(boxShape);
             body.Mass = 1.0f;
-            if (!dynamic) {
+            if (!dynamic)
+            {
                 body.IsStatic = true;
                 //material.KineticFriction = 0.0f; // for slow surfaces
                 //material.StaticFriction = 0f; // for sticky-when-stopped surfaces
                 //material.Restitution = 1.5f;  // for bouncy surfaces
                 body.Material = material;
-                
+
+
+            }
+            else {
+                body.Mass = 50f;
             }
             body.IsStatic = !dynamic;
             body.AffectedByGravity = dynamic;
             body.EnableDebugDraw = true;
             body.Position = PhysicsSystem.toJVector(position);
             if (!dynamic) {
-                body.Position = new JVector(0f, -50f, 0);
+                body.Position = new JVector(-25f, -50f, -25f);
             }
             game.physics.World.AddBody(body);
 
@@ -148,7 +153,8 @@ namespace Project2
             }
             if (game.inputManager.SecondaryDirection() != Vector3.Zero) {
                 if (body.IsStatic == false) { 
-                    body.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 0.1f), PhysicsSystem.toJVector(Vector3.Zero));
+                    body.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection()*10), PhysicsSystem.toJVector(Vector3.Zero));
+
                 }
             }
             // handle superclass update
