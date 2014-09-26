@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\Project2\Libraries\JitterPortable\</OutputPath>
     <IntermediateOutputPath>obj\Debug</IntermediateOutputPath>
     <DocumentationFile>bin\Debug\Jitter.xml</DocumentationFile>
     <DefineConstants>DEBUG;PLATFORM_WINDOWS;</DefineConstants>
