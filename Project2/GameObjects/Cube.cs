@@ -57,7 +57,7 @@ namespace Project2
             if (!dynamic) {
                 body.Position = new JVector(0f, -50f, 0);
             }
-            game.physics.World.AddBody(body);
+            game._physics.World.AddBody(body);
 
             // predeclare points
 
@@ -140,15 +140,15 @@ namespace Project2
 
             basicEffect.World = Matrix.Scaling(size) * orientation;
 
-            if (game.inputManager.Jump()) {
+            if (game._inputManager.Jump()) {
                 if (body.IsStatic == false) {
                     body.ApplyImpulse(PhysicsSystem.toJVector(new Vector3(0f, 1f, 0f)), PhysicsSystem.toJVector(Vector3.Zero));   
 
                 }
             }
-            if (game.inputManager.SecondaryDirection() != Vector3.Zero) {
+            if (game._inputManager.SecondaryDirection() != Vector3.Zero) {
                 if (body.IsStatic == false) { 
-                    body.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 0.1f), PhysicsSystem.toJVector(Vector3.Zero));
+                    body.ApplyImpulse(PhysicsSystem.toJVector(game._inputManager.SecondaryDirection() * 0.1f), PhysicsSystem.toJVector(Vector3.Zero));
                 }
             }
             // handle superclass update
@@ -164,7 +164,7 @@ namespace Project2
             // Apply the basic effect technique and draw the rotating cube
             basicEffect.CurrentTechnique.Passes[0].Apply();
             //game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
-            body.DebugDraw(game.debugDrawer);
+            body.DebugDraw(game._debugDrawer);
         }
     }
 }

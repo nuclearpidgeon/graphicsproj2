@@ -24,8 +24,8 @@ namespace Project2
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
                 VertexColorEnabled = true,
-                View = game.camera.view,
-                Projection = game.camera.projection,
+                View = game._camera.view,
+                Projection = game._camera.projection,
                 World = Matrix.Identity
             };
         }
@@ -33,8 +33,8 @@ namespace Project2
         public virtual void Update(GameTime gametime)
         {
             // get matricies from camera
-            basicEffect.View = game.camera.view;
-            basicEffect.Projection = game.camera.projection;
+            basicEffect.View = game._camera.view;
+            basicEffect.Projection = game._camera.projection;
         }
         public abstract void Draw(GameTime gametime);
     }

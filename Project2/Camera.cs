@@ -55,8 +55,8 @@ namespace Project2
             // KEYBOARD LOGIC //
             ////////////////////
 
-            newPosition += game.inputManager.PrimaryDirection() * new Vector3(0.1f, 0.025f, 0.025f) * time;
-            newPosition += time * 0.001f * direction * game.inputManager.PrimaryDirection();
+            newPosition += game._inputManager.PrimaryDirection() * new Vector3(0.1f, 0.025f, 0.025f) * time;
+            newPosition += time * 0.001f * direction * game._inputManager.PrimaryDirection();
 
 
             /////////////////
