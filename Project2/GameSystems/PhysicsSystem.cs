@@ -54,7 +54,9 @@ namespace Project2
             World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
-
+        public void AddBody(RigidBody rigidBody) {
+            this.World.AddBody(rigidBody);
+        }
 
         /// <summary>
         /// Helper method to interface SharpDX vector class with Jitter vector class.

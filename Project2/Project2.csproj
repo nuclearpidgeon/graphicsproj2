@@ -15,7 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Project2_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <NuGetPackageImportStamp>762c6fe8</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>3ff7a2bd</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -107,9 +107,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameObjects\Ball.cs" />
+    <ToolkitModel Include="GameObjects\Torus.cs" />
     <Compile Include="Camera.cs" />
-    <Compile Include="GameObjects\ColoredGameObject.cs" />
+    <Compile Include="GameObjects\Abstract\ColoredGameObject.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
@@ -143,9 +143,9 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
-    <Content Include="Assets\CourierNew10.xml">
+    <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </ToolkitFont>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -200,6 +200,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\sphere.obj" />
+    <None Include="Content\torus.fbx" />
+    <ToolkitModel Include="Content\box.x" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
