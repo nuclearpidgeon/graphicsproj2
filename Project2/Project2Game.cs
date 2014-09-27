@@ -33,42 +33,42 @@ namespace Project2
 
     public class Project2Game : Game
     {
-        private GraphicsDeviceManager _graphicsDeviceManager;
-        private List<GameObject> _gameObjects;
+        private GraphicsDeviceManager graphicsDeviceManager;
+        private List<GameObject> gameObjects;
 
-        public Camera _camera { private set; get; }
+        public Camera camera { private set; get; }
 
-        private MouseManager _mouseManager;
+        private MouseManager mouseManager;
         public MouseState mouseState;
 
-        private SpriteFont _consoleFont;
-        private SpriteBatch _spriteBatch;
+        private SpriteFont consoleFont;
+        private SpriteBatch spriteBatch;
 
-        public PhysicsSystem _physics { private set; get; }
-        public DebugDrawer _debugDrawer;
-        public InputManager _inputManager { private set; get; }
+        public PhysicsSystem physics { private set; get; }
+        public DebugDrawer debugDrawer;
+        public InputManager inputManager { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
         public Project2Game()
         {
             // Creates a graphics manager. This is mandatory.
-            _graphicsDeviceManager = new GraphicsDeviceManager(this);
+            graphicsDeviceManager = new GraphicsDeviceManager(this);
 
             // Setup the relative directory to the executable directory
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
 
-            _gameObjects = new List<GameObject>();
+            gameObjects = new List<GameObject>();
         }
 
         protected override void LoadContent()
         {
 
-            _gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
+            gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
-            _gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
-            _gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
+            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
+            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
             //Model model2 = Content.Load<Model>("torus.fbx");
@@ -77,7 +77,7 @@ namespace Project2
             //consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
             // Setup spritebatch
-            _spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
+            spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
 
             base.LoadContent();
@@ -86,31 +86,31 @@ namespace Project2
         protected override void Initialize()
         {
             Window.Title = "Project 2";
-            _graphicsDeviceManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
-            _graphicsDeviceManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
-            _graphicsDeviceManager.ApplyChanges();
+            graphicsDeviceManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
+            graphicsDeviceManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
+            graphicsDeviceManager.ApplyChanges();
             // Create camera
-            _camera = new Camera(
+            camera = new Camera(
                 this,
                 new Vector3(0, 15, -15),
                 new Vector3(0, 0, 0)
             );
 
             // Create some GameSystems
-            _inputManager = new InputManager(this);
-            _physics = new PhysicsSystem(this);
-            _debugDrawer = new DebugDrawer(this);
+            inputManager = new InputManager(this);
+            physics = new PhysicsSystem(this);
+            debugDrawer = new DebugDrawer(this);
 
             // enable their Update() or Draw() routines to be automagically called by Game.Update() / Game.Draw() as they implement IUpdateable or IDrawable
-            _inputManager.Enabled = true;
-            _physics.Enabled = true;
+            inputManager.Enabled = true;
+            physics.Enabled = true;
 
-            _debugDrawer.Enabled = true;
-            _debugDrawer.Visible = true;
+            debugDrawer.Enabled = true;
+            debugDrawer.Visible = true;
 
-            this.GameSystems.Add(_debugDrawer);
-            this.GameSystems.Add(_physics);
-            this.GameSystems.Add(_inputManager);
+            this.GameSystems.Add(debugDrawer);
+            this.GameSystems.Add(physics);
+            this.GameSystems.Add(inputManager);
 
 
             base.Initialize();
@@ -122,19 +122,19 @@ namespace Project2
 
 
             // Get new mouse info
-            mouseState = _inputManager.MouseState();
+            mouseState = inputManager.MouseState();
 
             // Update camera
-            _camera.Update(gameTime);
+            camera.Update(gameTime);
 
             // Update the basic model
-            for (int i = 0; i < _gameObjects.Count; i++)
+            for (int i = 0; i < gameObjects.Count; i++)
             {
-                _gameObjects[i].Update(gameTime);
+                gameObjects[i].Update(gameTime);
             }
 
             // Quit on escape key
-            if (_inputManager.IsKeyDown(Keys.Escape))
+            if (inputManager.IsKeyDown(Keys.Escape))
             {
                 this.Exit();
             }
@@ -163,9 +163,9 @@ namespace Project2
             // Clears the screen with the Color.CornflowerBlue
             GraphicsDevice.Clear(new Color(0.1f));
 
-            for (int i = 0; i < _gameObjects.Count; i++)
+            for (int i = 0; i < gameObjects.Count; i++)
             {
-                _gameObjects[i].Draw(gameTime);
+                gameObjects[i].Draw(gameTime);
             }
 
             // Handle base.Draw

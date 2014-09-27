@@ -17,22 +17,22 @@ namespace Project2
     /// </summary>
     public class InputManager : GameSystem, IUpdateable
     {
-        KeyboardManager _keyboardManager;
-        MouseManager _mouseManager;
-        Vector2 _mouseDelta;
+        KeyboardManager keyboardManager;
+        MouseManager mouseManager;
+        Vector2 mouseDelta;
 
-        PointerManager _pointerManager;
-        PointerState _pointerState;
+        PointerManager pointerManager;
+        PointerState pointerState;
 
 
-        KeyboardState _keyboardState;
-        MouseState _mouseState;
+        KeyboardState keyboardState;
+        MouseState mouseState;
 
-        private Boolean _accelerometerEnabled;
-        private Boolean _useMouseDelta;
+        private Boolean accelerometerEnabled;
+        private Boolean useMouseDelta;
 
-        Accelerometer _accelerometer;
-        AccelerometerReading _accelerometerReading;
+        Accelerometer accelerometer;
+        AccelerometerReading accelerometerReading;
 
         
         
@@ -46,18 +46,18 @@ namespace Project2
         {
 
             // initialisation
-            _useMouseDelta = false;
-            _accelerometerEnabled = false;
-            _mouseDelta = new Vector2();
+            useMouseDelta = false;
+            accelerometerEnabled = false;
+            mouseDelta = new Vector2();
 
-            _keyboardManager = new KeyboardManager(game);
-            _mouseManager = new MouseManager(game);
-            _pointerManager = new PointerManager(game);
+            keyboardManager = new KeyboardManager(game);
+            mouseManager = new MouseManager(game);
+            pointerManager = new PointerManager(game);
             keyMapping = new KeyMapping();
 
            
             // get the accelerometer. Returns null if no accelerometer found
-            _accelerometer = Accelerometer.GetDefault();
+            accelerometer = Accelerometer.GetDefault();
             // automatically enable accelerometer if we have one
             this.AccelerometerEnabled(true);
             this.MouseDeltaEnabled(true);
@@ -70,10 +70,10 @@ namespace Project2
         /// </summary>
         /// <param name="t"></param>
         public void AccelerometerEnabled(Boolean t) {
-            if (_accelerometer != null) {
-                _accelerometerEnabled = t;
+            if (accelerometer != null) {
+                accelerometerEnabled = t;
             } else {
-                _accelerometerEnabled = false;
+                accelerometerEnabled = false;
             }  
         }
         
@@ -84,18 +84,18 @@ namespace Project2
         override public void Update(GameTime gameTime)
         {   
             // update state
-            _keyboardState = _keyboardManager.GetState();
-            _mouseState = _mouseManager.GetState();
-            _pointerState = _pointerManager.GetState();
+            keyboardState = keyboardManager.GetState();
+            mouseState = mouseManager.GetState();
+            pointerState = pointerManager.GetState();
 
-            if (_accelerometer != null) {
-                _accelerometerReading = _accelerometer.GetCurrentReading();
+            if (accelerometer != null) {
+                accelerometerReading = accelerometer.GetCurrentReading();
             }
 
             // get mouse delta and reset mouse to centre of window
-            if (_useMouseDelta && _mouseManager.Enabled) {
-                _mouseDelta = new Vector2(0.5f - _mouseState.X, 0.5f - _mouseState.Y);
-                _mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
+            if (useMouseDelta && mouseManager.Enabled) {
+                mouseDelta = new Vector2(0.5f - mouseState.X, 0.5f - mouseState.Y);
+                mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
             }
 
 
@@ -107,7 +107,7 @@ namespace Project2
         /// </summary>
         /// <returns></returns>
         public MouseState MouseState() {
-            return this._mouseState;
+            return this.mouseState;
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Project2
         /// </summary>
         /// <returns></returns>
         public Vector2 MouseDelta() {
-            return this._mouseDelta;
+            return this.mouseDelta;
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Project2
         /// </summary>
         /// <param name="t"></param>
         public void MouseDeltaEnabled(Boolean t) {
-            this._useMouseDelta = t;
+            this.useMouseDelta = t;
             
 
         }
@@ -134,7 +134,7 @@ namespace Project2
         /// <param name="key"></param>
         /// <returns></returns>
         public Boolean IsKeyDown(Keys key) {
-            return _keyboardState.IsKeyDown(key);
+            return keyboardState.IsKeyDown(key);
         }
 
         /// <summary>
@@ -143,11 +143,11 @@ namespace Project2
         /// <returns></returns>
         public Vector3 Acceleration() {
             var v = new Vector3();
-            if (_accelerometerEnabled) {
+            if (accelerometerEnabled) {
                 v = new Vector3(
-                    (float)_accelerometerReading.AccelerationX,
-                    (float)_accelerometerReading.AccelerationY,
-                    (float)_accelerometerReading.AccelerationZ
+                    (float)accelerometerReading.AccelerationX,
+                    (float)accelerometerReading.AccelerationY,
+                    (float)accelerometerReading.AccelerationZ
                     );
             }
             return v;
@@ -160,24 +160,24 @@ namespace Project2
         public Vector3 PrimaryDirection()
         {
             var v = new Vector3();
-            if (_keyboardState.IsKeyDown(keyMapping.up_Primary_key)) {
+            if (keyboardState.IsKeyDown(keyMapping.up_Primary_key)) {
                 v.Y += 1;
             }
-            if (_keyboardState.IsKeyDown(keyMapping.down_Primary_key))
+            if (keyboardState.IsKeyDown(keyMapping.down_Primary_key))
             {
                 v.Y -= 1;
             }
-            if (_keyboardState.IsKeyDown(keyMapping.right_Primary_key))
+            if (keyboardState.IsKeyDown(keyMapping.right_Primary_key))
             {
                 v.X += 1;
             }
-            if (_keyboardState.IsKeyDown(keyMapping.left_Primary_key))
+            if (keyboardState.IsKeyDown(keyMapping.left_Primary_key))
             {
                 v.X -= 1;
             }
 
             // do accelerometer stuff here if enabled
-            if (_accelerometerEnabled) {
+            if (accelerometerEnabled) {
             }
 
             return v;
@@ -191,19 +191,19 @@ namespace Project2
         {
             var v = new Vector3();
 
-            if (_keyboardState.IsKeyDown(keyMapping.up_Secondary_key))
+            if (keyboardState.IsKeyDown(keyMapping.up_Secondary_key))
             {
                 v.Z += 1;
             }
-            if (_keyboardState.IsKeyDown(keyMapping.down_Secondary_key))
+            if (keyboardState.IsKeyDown(keyMapping.down_Secondary_key))
             {
                 v.Z -= 1;
             }
-            if (_keyboardState.IsKeyDown(keyMapping.right_Secondary_key))
+            if (keyboardState.IsKeyDown(keyMapping.right_Secondary_key))
             {
                 v.X += 1;
             }
-            if (_keyboardState.IsKeyDown(keyMapping.left_Secondary_key))
+            if (keyboardState.IsKeyDown(keyMapping.left_Secondary_key))
             {
                 v.X -= 1;
             }
@@ -220,11 +220,11 @@ namespace Project2
             var T = new Boolean();
             T = false;
 
-            if (_keyboardState.IsKeyDown(keyMapping.jump_key)) {
+            if (keyboardState.IsKeyDown(keyMapping.jump_key)) {
                 T = true;
             }
 
-            if (_accelerometerEnabled) {
+            if (accelerometerEnabled) {
                 // look for impulse event of user jolting the tablet PC upward
             }
             return T;
@@ -239,12 +239,12 @@ namespace Project2
             var T = new Boolean();
             T = false;
 
-            if (_keyboardState.IsKeyDown(keyMapping.sprint_key))
+            if (keyboardState.IsKeyDown(keyMapping.sprint_key))
             {
                 T = true;
             }
 
-            if (_accelerometerEnabled)
+            if (accelerometerEnabled)
             {
                 // I'm not sure what a "sprint" action might be like on the accelerometer, maybe an impulse in the direction of movement?
             }

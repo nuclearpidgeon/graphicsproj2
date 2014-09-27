@@ -32,8 +32,8 @@ namespace Project2
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
                 VertexColorEnabled = true,
-                View = game._camera.view,
-                Projection = game._camera.projection,
+                View = game.camera.view,
+                Projection = game.camera.projection,
                 World = Matrix.Identity
             };
             basicEffect.VertexColorEnabled = false;
@@ -139,8 +139,8 @@ namespace Project2
         override public void Draw(GameTime gameTime)
         {
 
-                basicEffect.View = game._camera.view;
-                basicEffect.Projection = game._camera.projection;
+                basicEffect.View = game.camera.view;
+                basicEffect.Projection = game.camera.projection;
 
 
                 // enable wireframe mode here if you want

@@ -33,7 +33,7 @@ namespace Project2
 
         private GameState _state;
 
-        private static GameStateManager _instance = null;
+        private static GameStateManager instance = null;
         private Project2Game game;
         protected GameStateManager(Project2Game game) : base(game) {
             this.game = game;
@@ -46,10 +46,10 @@ namespace Project2
         /// <returns></returns>
         public static GameStateManager Instance(Project2Game game)
         {
-            if (_instance == null) {
+            if (instance == null) {
                 return new GameStateManager(game);
             }
-            return _instance;
+            return instance;
         }
 
 
