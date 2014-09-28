@@ -107,7 +107,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <ToolkitModel Include="GameObjects\Torus.cs" />
+    <None Include="GameObjects\Ball.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="GameObjects\Abstract\ColoredGameObject.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
@@ -115,6 +115,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="GameObjects\Cube.cs" />
+    <Compile Include="GameObjects\TestObject.cs" />
     <Compile Include="GameSystems\DebugDrawer.cs" />
     <Compile Include="GameObjects\Abstract\GameObject.cs" />
     <Compile Include="GameSystems\GameState.cs" />
@@ -143,6 +144,11 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Content\Models\duckCM.dds" />
+    <Content Include="Content\Models\head.dds" />
+    <Content Include="Content\Models\jacket.dds" />
+    <Content Include="Content\Models\pants.dds" />
+    <Content Include="Content\Models\upBodyC.dds" />
     <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ToolkitFont>
@@ -200,9 +206,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\sphere.obj" />
-    <None Include="Content\torus.fbx" />
-    <ToolkitModel Include="Content\box.x" />
+    <None Include="Content\Models\sphere.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Models\torus.fbx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <ToolkitModel Include="Content\Models\box.x">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitModel>
+    <ToolkitModel Include="Content\Models\Car.x" />
+    <ToolkitModel Include="Content\Models\duck.dae" />
+    <ToolkitModel Include="Content\Models\dude.fbx" />
+    <ToolkitModel Include="Content\Models\Happy.x" />
+    <ToolkitModel Include="Content\Models\Knot.x" />
+    <ToolkitModel Include="Content\Models\Skull.x" />
+    <ToolkitModel Include="Content\Models\Sphere.x" />
+    <ToolkitModel Include="Content\Models\Teapot.x" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -44,8 +44,9 @@ namespace Project2
                 VertexColorEnabled = true,
                 View = game.camera.view,
                 Projection = game.camera.projection,
-                World = Matrix.Identity
+                World = Matrix.Identity,
             };
+
             this.DebugDrawStatus = false;
         }
 

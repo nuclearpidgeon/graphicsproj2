@@ -69,7 +69,7 @@ namespace Project2
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
             gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
             gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
-            gameObjects.Add(new Ball(this, new Vector3(0f, 10f, 0f), Vector3.One, Vector3.Zero));
+            gameObjects.Add(new GameObjects.TestObject(this, new Vector3(3f, 3f, 0f), Vector3.One * 10.0f, Vector3.One));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
             //Model model2 = Content.Load<Model>("torus.fbx");
@@ -162,7 +162,7 @@ namespace Project2
         protected override void Draw(GameTime gameTime)
         {
             // Clears the screen with the Color.CornflowerBlue
-            GraphicsDevice.Clear(new Color(0.1f));
+            GraphicsDevice.Clear(new Color(0.5f));
 
             for (int i = 0; i < gameObjects.Count; i++)
             {

@@ -22,6 +22,7 @@ namespace Project2
         {
 
             // physics system stuff
+            
             this.size = size / 2.0f;
             Terrain t = new Terrain(this.game);
             Shape boxShape;
