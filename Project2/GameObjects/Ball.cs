@@ -15,9 +15,8 @@ using Jitter.Dynamics;
 namespace Project2.GameObjects
 {
 
-    
-
-    public class Ball : GameObject
+   
+    class Ball : GameObject
     {
         
         public Ball(Project2Game game, Vector3 position, Vector3 scale, Vector3 orientation) : base(game) {
@@ -32,19 +31,6 @@ namespace Project2.GameObjects
             this.physicsShape = new SphereShape(this.boundingSphere.Radius);
             this.physicsBody = new RigidBody(this.physicsShape);
             this.game.physics.AddBody(this.physicsBody);
-        }
-
-        public override void Update(GameTime gametime)
-        {
-            base.Update(gametime);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            // Apply the basic effect technique and draw the rotating cube
-            //this.model.Draw(game.GraphicsDevice, this.worldMatrix, this.game.camera.view, this.game.camera.projection);
-
-            base.Draw(gameTime);
         }
     }
 }

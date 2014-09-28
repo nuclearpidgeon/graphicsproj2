@@ -37,11 +37,14 @@ namespace Project2
         public GameObject(Project2Game game)
         {
             this.game = game;
-
+            this.scaleMatrix = Matrix.Identity;
+            this.positionMatrix = Matrix.Identity;
+            this.orientationMatrix = Matrix.Identity;
+            this.worldMatrix = Matrix.Identity;
             // Setup rendering effect
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
-                VertexColorEnabled = true,
+                VertexColorEnabled = false,
                 View = game.camera.view,
                 Projection = game.camera.projection,
                 World = Matrix.Identity,
@@ -66,8 +69,16 @@ namespace Project2
             CalculateWorldMatrix();
         }
 
+        public virtual void SetOrientation(Matrix orientation)
+        {
+            
+            this.orientationMatrix = orientation;
+            CalculateWorldMatrix();
+        }
+
         protected void CalculateWorldMatrix() {
-            this.worldMatrix = this.orientationMatrix * this.scaleMatrix * this.positionMatrix;
+            // multiply in S R T order (Scale, Rotation, Translation)
+            this.worldMatrix = this.scaleMatrix * this.orientationMatrix * this.positionMatrix;
         }
 
         public virtual void Update(GameTime gametime)
@@ -77,10 +88,8 @@ namespace Project2
             basicEffect.Projection = game.camera.projection;
         }
         public virtual void Draw(GameTime gametime) {
-            if (this.model != null) {
-                model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection);
-            }
-            if (DebugDrawStatus == true && physicsBody != null)
+
+            if (this.physicsBody.EnableDebugDraw && physicsBody != null)
             {
                 this.physicsBody.DebugDraw(game.debugDrawer);
             }
@@ -88,6 +97,7 @@ namespace Project2
 
         public void DebugDrawEnabled(Boolean t)
         {
+            this.physicsBody.EnableDebugDraw = t;
             this.DebugDrawStatus = t;
         }
 

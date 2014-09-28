@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,24 +22,47 @@ namespace Project2.GameObjects
             this.SetOrientation(orientation);
             this.SetPosition(position);
 
-            this.model = game.Content.Load<Model>("Models\\Knot");
+            this.model = game.Content.Load<Model>("Models\\Teapot");
             
             this.boundingSphere = this.model.CalculateBounds(this.worldMatrix);
-            //Jitter.Collision.Octree = new Jitter.Collision.Octree(model.)
-            this.physicsShape = new SphereShape(this.boundingSphere.Radius);
+            System.Diagnostics.Debug.WriteLine(this.boundingSphere.ToString());
+
+            //Jitter.Collision.Octree o = new Jitter.Collision.Octree(model.Meshes[0].MeshParts[0].)
+            this.physicsShape = new SphereShape(3.0f);
+            
             this.physicsBody = new RigidBody(this.physicsShape);
             this.physicsBody.Position = PhysicsSystem.toJVector(position);
             this.physicsBody.Orientation = PhysicsSystem.toJMatrix(this.orientationMatrix);
             this.game.physics.AddBody(this.physicsBody);
-            this.basicEffect.LightingEnabled = true;
+
+
+            this.basicEffect.EnableDefaultLighting();
+            this.basicEffect.PreferPerPixelLighting = true;
             //this.basicEffect.EnableDefaultLighting(this.model);
             this.DebugDrawEnabled(true);
-        }   
+        }
+
+        public override void Update(GameTime gametime)
+        {
+            var pos = PhysicsSystem.toVector3(this.physicsBody.Position);
+            var orientation = PhysicsSystem.toMatrix(this.physicsBody.Orientation);
+            //System.Diagnostics.Debug.WriteLine(pos);
+            //System.Diagnostics.Debug.WriteLine(orientation);
+
+            // each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
+            this.SetPosition(pos);
+            this.SetOrientation(orientation);
+            base.Update(gametime);
+        }
 
         public override void Draw(GameTime gametime)
         {
-            this.model.Draw(game.GraphicsDevice, Matrix.Identity, game.camera.view, game.camera.projection);
-            this.physicsBody.DebugDraw(game.debugDrawer);
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+            basicEffect.World = this.worldMatrix;
+            basicEffect.View = game.camera.view;
+            basicEffect.Projection = game.camera.projection;
+
+            this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
             base.Draw(gametime);
         }
     }
