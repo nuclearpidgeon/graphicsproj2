@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 
 using Jitter;
+using Jitter.Collision;
 using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
 using Jitter.LinearMath;
 using Jitter.Dynamics.Constraints;
 using SharpDX;
 using SharpDX.Toolkit;
+using SharpDX.Toolkit.Graphics;
 
 
 namespace Project2
@@ -54,9 +56,56 @@ namespace Project2
             World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
-        public void AddBody(RigidBody rigidBody) {
+        public void AddBody(RigidBody rigidBody)
+        {
             this.World.AddBody(rigidBody);
         }
+
+        public static TriangleMeshShape BuildTriangleMeshShape(Model model)
+        {
+            TriangleMeshShape result = new TriangleMeshShape(BuildOctree(model));
+            return result;
+        }
+
+        public static Octree BuildOctree(Model model) {
+
+            List<JVector> vertices = new List<JVector>();
+            List<TriangleVertexIndices> indices = new List<TriangleVertexIndices>();           
+            Matrix[] bones = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(bones);   
+            
+            foreach (ModelMesh modelMesh in model.Meshes)
+            {               
+                JMatrix boneTransform = PhysicsSystem.toJMatrix(bones[modelMesh.ParentBone.Index]);
+                foreach (ModelMeshPart meshPart in modelMesh.MeshParts)
+                {
+                    int offset = vertices.Count;              
+                    var meshVertices = meshPart.VertexBuffer.Resource.Buffer.GetData<JVector>();
+                    for (int i = 0; i < meshVertices.Length; ++i)
+                    {
+                        JVector.Transform(ref meshVertices[i], ref boneTransform, out meshVertices[i]);
+                    }
+                    vertices.AddRange(meshVertices);    // append transformed vertices
+
+                    // there should DEFINITELY be a check here to ensure that the indices used in the model
+                    // don't exceed 65535 (max short int). If the model doesn't use shorts, then they get cast all weird.
+                    var indexElements = meshPart.IndexBuffer.Resource.GetData<short>();      
+             
+                    // Each TriangleVertexIndices holds the indices that constitute a triangle primitive
+                    TriangleVertexIndices[] tvi = new TriangleVertexIndices[indexElements.Length];
+                    for (int i = 0; i <= tvi.Length - 2; i += 3) {
+                        tvi[i].I0 = indexElements[i + 0] + offset;
+                        tvi[i].I1 = indexElements[i + 1] + offset;
+                        tvi[i].I2 = indexElements[i + 2] + offset;
+                    }
+                    indices.AddRange(tvi);  // append triangles           
+                }
+            }
+            Octree ot = new Octree(vertices, indices);
+            //ot.BuildOctree(); // (already happens in Octree constructor)
+            return ot;
+        }
+
 
         /// <summary>
         /// Helper method to interface SharpDX vector class with Jitter vector class.

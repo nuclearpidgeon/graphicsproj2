@@ -90,6 +90,7 @@ namespace Project2
 
             if (accelerometer != null) {
                 accelerometerReading = accelerometer.GetCurrentReading();
+                
             }
 
             // get mouse delta and reset mouse to centre of window

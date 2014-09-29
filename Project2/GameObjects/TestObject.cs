@@ -26,9 +26,9 @@ namespace Project2.GameObjects
             
             this.boundingSphere = this.model.CalculateBounds(this.worldMatrix);
             System.Diagnostics.Debug.WriteLine(this.boundingSphere.ToString());
-
-            //Jitter.Collision.Octree o = new Jitter.Collision.Octree(model.Meshes[0].MeshParts[0].)
-            this.physicsShape = new SphereShape(3.0f);
+            
+            this.physicsShape = PhysicsSystem.BuildTriangleMeshShape(this.model);
+            //this.physicsShape = new SphereShape(this.boundingSphere.Radius / 4);
             
             this.physicsBody = new RigidBody(this.physicsShape);
             this.physicsBody.Position = PhysicsSystem.toJVector(position);
@@ -38,7 +38,8 @@ namespace Project2.GameObjects
 
             this.basicEffect.EnableDefaultLighting();
             this.basicEffect.PreferPerPixelLighting = true;
-            //this.basicEffect.EnableDefaultLighting(this.model);
+
+            // this could add a fair performance penalty
             this.DebugDrawEnabled(true);
         }
 
