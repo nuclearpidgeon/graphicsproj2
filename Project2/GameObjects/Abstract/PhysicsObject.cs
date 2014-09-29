@@ -12,8 +12,10 @@ using Jitter.Dynamics.Constraints;
 
 namespace Project2
 {
-    abstract class PhysicsObject
+    abstract class PhysicsObject : GameObject
     {
-        
+        public PhysicsObject(Project2Game game) : base(game) {
+            
+        }
     }
 }

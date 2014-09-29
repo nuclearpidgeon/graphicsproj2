@@ -67,9 +67,9 @@ namespace Project2
 
             gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
-            gameObjects.Add(new GameObjects.TestObject(this, new Vector3(12f, 3f, 12f), Vector3.One, Vector3.One));
+            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
+            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
+            gameObjects.Add(new GameObjects.TestObject(this, new Vector3(12f, 3f, 12f), Vector3.One, Vector3.Zero));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
             //Model model2 = Content.Load<Model>("torus.fbx");

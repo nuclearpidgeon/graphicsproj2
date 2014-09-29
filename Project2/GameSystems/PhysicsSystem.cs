@@ -33,7 +33,7 @@ namespace Project2
 
         public int accuracy { get; set; }
         // collision system used by world (or on its own)
-        Jitter.Collision.CollisionSystem collisionSystem = new Jitter.Collision.CollisionSystemSAP(); // SAP = Scan and Prune (good for large scenes, bruteforce might be fine for small scenes too)
+        Jitter.Collision.CollisionSystem collisionSystem = new Jitter.Collision.CollisionSystemPersistentSAP(); // SAP = Scan and Prune (good for large scenes, bruteforce might be fine for small scenes too)
 
         public PhysicsSystem(Game game)
             : base(game)
@@ -42,7 +42,7 @@ namespace Project2
             World = new JitterWorld(collisionSystem); // whole_new_world.wav
             // gravity defaults to -9.8 m.s^-2
             // World.Gravity = new JVector(0f, -20, 0);
-            accuracy = 3;   // lower this for higher FPS (accuracy = 1 still seems to work okay, it's just not ideal)
+            accuracy = 1;   // lower this for higher FPS (accuracy = 1 still seems to work okay, it's just not ideal)
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
-            World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
+            World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
         public void AddBody(RigidBody rigidBody)
@@ -80,7 +80,7 @@ namespace Project2
                     var meshVertices = meshPart.VertexBuffer.Resource.Buffer.GetData<JVector>();
                     for (int i = 0; i < meshVertices.Length; ++i)
                     {
-                        JVector.Transform(ref meshVertices[i], ref boneTransform, out meshVertices[i]);
+                        //JVector.Transform(ref meshVertices[i], ref boneTransform, out meshVertices[i]);
                     }
                     vertices.AddRange(meshVertices); // append transformed vertices  
                 }
