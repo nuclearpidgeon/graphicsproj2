@@ -61,6 +61,33 @@ namespace Project2
             this.World.AddBody(rigidBody);
         }
 
+        public static ConvexHullShape BuildConvexHullShape(Model model) {
+            var vertices = ExtractVertices(model);
+            return new ConvexHullShape(vertices);
+        }
+
+        private static List<JVector> ExtractVertices(Model model) {
+            List<JVector> vertices = new List<JVector>();
+            Matrix[] bones = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(bones);
+
+            foreach (ModelMesh modelMesh in model.Meshes)
+            {
+                JMatrix boneTransform = PhysicsSystem.toJMatrix(bones[modelMesh.ParentBone.Index]);
+                foreach (ModelMeshPart meshPart in modelMesh.MeshParts)
+                {
+                    int offset = vertices.Count;
+                    var meshVertices = meshPart.VertexBuffer.Resource.Buffer.GetData<JVector>();
+                    for (int i = 0; i < meshVertices.Length; ++i)
+                    {
+                        JVector.Transform(ref meshVertices[i], ref boneTransform, out meshVertices[i]);
+                    }
+                    vertices.AddRange(meshVertices); // append transformed vertices  
+                }
+            }
+            return vertices;
+        }
+
         public static TriangleMeshShape BuildTriangleMeshShape(Model model)
         {
             TriangleMeshShape result = new TriangleMeshShape(BuildOctree(model));

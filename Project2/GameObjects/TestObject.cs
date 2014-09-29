@@ -27,7 +27,8 @@ namespace Project2.GameObjects
             this.boundingSphere = this.model.CalculateBounds(this.worldMatrix);
             System.Diagnostics.Debug.WriteLine(this.boundingSphere.ToString());
             
-            this.physicsShape = PhysicsSystem.BuildTriangleMeshShape(this.model);
+            //this.physicsShape = PhysicsSystem.BuildTriangleMeshShape(this.model);
+            this.physicsShape = PhysicsSystem.BuildConvexHullShape(this.model);
             //this.physicsShape = new SphereShape(this.boundingSphere.Radius / 4);
             
             this.physicsBody = new RigidBody(this.physicsShape);
