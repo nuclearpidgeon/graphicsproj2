@@ -217,12 +217,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Models\sphere.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Models\torus.fbx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <ToolkitModel Include="Content\Models\box.x">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ToolkitModel>
