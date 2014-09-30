@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
+using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
+using Project2.GameObjects.Abstract;
 using SharpDX;
-using SharpDX.Direct3D11;
 using SharpDX.Toolkit;
+using Texture2D = SharpDX.Toolkit.Graphics.Texture2D;
 
-
-
-namespace Project2
+namespace Project2.GameObjects
 {
-
-    using SharpDX.Toolkit.Graphics;
-
-
-    public class Terrain : GameObject
+    class Terrain : PhysicsObject
     {
 
-        Vector3 modelRotation = Vector3.Zero;
-        Vector3 modelPosition = Vector3.Zero;
-        Vector3 rotationVelocity = Vector3.Zero;
-        Vector3 positionVelocity = Vector3.Zero;
-
-        public float[,] terrainData;
+        public float[,] TerrainData;
         private int terrainWidth;
         private int terrainHeight;
         private float maxHeight = 0;
@@ -34,69 +24,108 @@ namespace Project2
         private System.Random rng;
 
 
+        /// <summary>
+        /// Creates a static terrain mesh based on a heightmap texture.
+        /// </summary>
+        /// <param name="game"></param> 
+        /// <param name="position"></param>
+        /// <param name="heightMap"></param>
+        /// <param name="scale"></param>
+        public Terrain(Project2Game game, Vector3 position, Texture2D heightMap, double scale)
+            : this(game, GeneratePhysicsDescription(position, heightMap, scale, true))
+        {
+        }
 
 
         /// <summary>
-        /// Construct square terrain of width 2^n + 1 using procedural generation (diamond-square algorithm)
+        /// Construct a static physics mesh terrain procedurally using diamond-square. Density is n, a square with width 2^n-1 will be generated.
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="worldMatrix"></param>
-        public Terrain(Project2Game game) : base(game)
+        /// <param name="position">Bottom left corner of heightfield</param>
+        /// <param name="density">Controls number of points in height field as square of side length 2^n-1 (e.g. 6)</param>
+        /// <param name="scale">Distance between height field points</param>
+        /// <param name="amplitude">Variance of height field</param>
+        public Terrain(Project2Game game, Vector3 position, int density, double scale, double amplitude)
+            : this(game, GeneratePhysicsDescription(position, density, scale, amplitude, true))
         {
-            //Console.WriteLine("Creating terrain.");
-            //this.worldMatrix = worldMatrix;
 
-            // Initialise random number generator
-            this.rng = new System.Random(); // automagically seeded with current time
-
-            // heightmap to generate from
-            //var textureName = "heightmap.bmp";
-            //heightMap = game.Content.Load<Texture2D>(textureName);
-
-            // turn texture into square array
-            //this.terrainData = ProcessHeightMap(heightMap);
-            this.terrainData = GenerateDiamondSquare(6, 4f);
-
-
-            // recenter over origin
-            modelPosition = new Vector3(-terrainWidth / 2.0f, 0, -terrainHeight / 2.0f);
-
-
-
-            Initialise();
         }
 
-        public override void Draw(GameTime t) { 
+        private Terrain(Project2Game game, PhysicsDescription physicsDescription) 
+            : base(game, physicsDescription)
+        {       
         }
 
-        private void Initialise()
+        /// <summary>
+        /// Static method to construct physics description
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="heightMapTexture"></param>
+        /// <param name="scale"></param>
+        /// <param name="isStatic"></param>
+        /// <returns></returns>
+        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Texture2D heightMapTexture, double scale, Boolean isStatic)
         {
-            // I couldn't get stuff I was initialising in the class constructor to work here. Maybe I'm missing something about C#
-        }
-
-        public float getHeight(Vector3 position)
-        {
-            const float defaultHeight = -100000; // height to return when out of map bounds
-            position += new Vector3((terrainWidth / 2.0f) + 0.5f, 0, (terrainHeight / 2.0f) + 0.5f); // center camera coordinates over terrain coordinates
-            if ((position.X >= 1 && position.X <= (terrainWidth - 1)) && (position.Z >= 1 && position.Z <= (terrainHeight - 1)))
+            var terrainData = ProcessHeightMap(heightMapTexture);
+            var minHeight = 255f;
+            foreach (var h in terrainData)
             {
-                // note that these are not the "closest" points on terrain, but truncated floats (1.9999 returns point at 1, not 2)
-                // probably should use a different rounding strategy but meh...
-                return terrainData[(int)position.Z, (int)position.X];
+                if (h < minHeight)
+                {
+                    minHeight = h;
+                }
             }
-            else
+            var collisionShape = new TerrainShape(terrainData, (float) scale, (float) scale);
+            var rigidBody = new RigidBody(collisionShape)
             {
-                return defaultHeight;
-            }
+                Position = PhysicsSystem.toJVector(position - new Vector3(0f, 50f, 0f)),
+                IsStatic = isStatic,
+                EnableDebugDraw = true,
+            };
+
+            var description = new PhysicsDescription()
+            {
+                IsStatic = isStatic,
+                CollisionShape = collisionShape,
+                Debug = true,
+                RigidBody = rigidBody,
+                Position = position
+            };
+
+            return description;
+        }
+
+        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, int density, double scale, double amplitude, Boolean isStatic)
+        {
+            var terrainData = GenerateDiamondSquare(density, (float)amplitude);
+            var collisionShape = new TerrainShape(terrainData, (float) scale, (float) scale);
+            var rigidBody = new RigidBody(collisionShape)
+            {
+                Position = PhysicsSystem.toJVector(position),
+                IsStatic = isStatic,
+                EnableDebugDraw = true,
+            };
+
+            var description = new PhysicsDescription()
+            {
+                IsStatic = isStatic,
+                CollisionShape = collisionShape,
+                Debug = true,
+                RigidBody = rigidBody,
+                Position = position
+            };
+
+            return description;
         }
 
 
-        public float[,] GenerateDiamondSquare(int n, float amplitude)
+        public static float[,] GenerateDiamondSquare(int n, float amplitude)
         {
+            var rng = new System.Random();
 
-            terrainWidth = (1 << n) + 1; // must be 2^n + 1
+            var terrainWidth = (1 << n) + 1; // must be 2^n + 1
             //Console.WriteLine("Generating terrain with width {0}", terrainWidth);
-            terrainHeight = terrainWidth;
+            var terrainHeight = terrainWidth;
             var terrainData = new float[terrainWidth, terrainHeight];
 
 
@@ -152,25 +181,6 @@ namespace Project2
                 }
             }
 
-            // find minimum and maximum heights of generated terrain
-            this.maxHeight = terrainData[0, 0];
-            this.minHeight = terrainData[0, 0];
-            for (int x = 0; x < terrainWidth; x++)
-            {
-                for (int y = 0; y < terrainHeight; y++)
-                {
-                    if (terrainData[x, y] > maxHeight)
-                    {
-                        maxHeight = terrainData[x, y];
-                    }
-                    if (terrainData[x, y] < minHeight)
-                    {
-                        minHeight = terrainData[x, y];
-                    }
-                }
-            }
-            //Console.WriteLine("Finished generating terrain!");
-
             return terrainData;
 
         }
@@ -222,31 +232,31 @@ namespace Project2
         /// </summary>
         /// <param name="heightmap"></param>
         /// <returns></returns>
-        private float[,] ProcessHeightMap(Texture2D heightMap)
+        private static float[,] ProcessHeightMap(Texture2D heightMap)
         {
             /* Code here is based upon: http://www.riemers.net/eng/Tutorials/XNA/Csharp/Series1/Terrain_from_file.php
              * 
              * I'm not sure of a more 'unique' way to load an image to a heightmap */
 
             // get terrain size
-            this.terrainWidth = heightMap.Width;
-            this.terrainHeight = heightMap.Height;
+            var terrainWidth = heightMap.Width;
+            var terrainHeight = heightMap.Height;
             // allocate array for resultant data
             var terrainData = new float[terrainWidth, terrainHeight];
 
 
             // make a 1D array to hold all pixel data in, because Texture2D.GetData() works like that
-            Color[] colourmap = new Color[terrainHeight * terrainWidth];
+            var colourmap = new Color[terrainHeight * terrainWidth];
             heightMap.GetData(colourmap); // get pixel data, put it in 1D array
 
             // rework that 1D array into 2D array, taking value of pixel as height
-            for (int y = 0; y < terrainHeight; y++)
+            for (var y = 0; y < terrainHeight; y++)
             {
-                for (int x = 0; x < terrainWidth; x++)
+                for (var x = 0; x < terrainWidth; x++)
                 {
                     // take the green value (0-255) as height data. heightmap should be black and white image, so it doesn't really matter.
                     // scale height down by a factor because 255 height is really high
-                    terrainData[x, y] = colourmap[y * terrainHeight + x].G / 7;
+                    terrainData[x, y] = colourmap[y * terrainHeight + x].G / 7.0f;
                 }
             }
 

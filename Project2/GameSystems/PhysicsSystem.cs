@@ -53,7 +53,7 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
-            World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
+            World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
         public void AddBody(RigidBody rigidBody)
@@ -63,7 +63,9 @@ namespace Project2
 
         public static ConvexHullShape BuildConvexHullShape(Model model) {
             var vertices = ExtractVertices(model);
-            return new ConvexHullShape(vertices);
+            var hull = new ConvexHullShape(vertices);
+            //hull.MakeHull(vertices, 1);
+            return hull;
         }
 
         private static List<JVector> ExtractVertices(Model model) {
@@ -80,7 +82,7 @@ namespace Project2
                     var meshVertices = meshPart.VertexBuffer.Resource.Buffer.GetData<JVector>();
                     for (int i = 0; i < meshVertices.Length; ++i)
                     {
-                        //JVector.Transform(ref meshVertices[i], ref boneTransform, out meshVertices[i]);
+                        JVector.Transform(ref meshVertices[i], ref boneTransform, out meshVertices[i]);
                     }
                     vertices.AddRange(meshVertices); // append transformed vertices  
                 }
