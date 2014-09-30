@@ -78,7 +78,7 @@ namespace Project2.GameObjects
             var collisionShape = new TerrainShape(terrainData, (float) scale, (float) scale);
             var rigidBody = new RigidBody(collisionShape)
             {
-                Position = PhysicsSystem.toJVector(position - new Vector3(0f, 50f, 0f)),
+                Position = PhysicsSystem.toJVector(position - new Vector3(0f, 255f, 0f)),
                 IsStatic = isStatic,
                 EnableDebugDraw = true,
             };

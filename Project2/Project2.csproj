@@ -157,6 +157,7 @@
     <Content Include="Content\Models\jacket.dds" />
     <Content Include="Content\Models\pants.dds" />
     <Content Include="Content\Models\upBodyC.dds" />
+    <Content Include="Content\Terrain\heightmap.jpg" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

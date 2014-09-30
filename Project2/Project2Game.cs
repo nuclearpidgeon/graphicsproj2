@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using Project2.GameObjects;
 using Project2.GameObjects.Abstract;
 using SharpDX;
 using SharpDX.Toolkit;
@@ -49,6 +50,8 @@ namespace Project2
         public PhysicsSystem physics { private set; get; }
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
+
+        private Ball playerBall;
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -80,15 +83,17 @@ namespace Project2
                     //throw;
                 }
             }
-
+            var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
             //gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
-            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
-            gameObjects.Add(new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false));
-            gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 6, 10.0, 20));
+            playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
 
+            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            gameObjects.Add(playerBall);
+            //gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 6, 10.0, 20));
+            gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
             // Load font for console
             //consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
@@ -153,8 +158,12 @@ namespace Project2
             // Quit on escape key
             if (inputManager.IsKeyDown(Keys.Escape))
             {
-                this.Exit();
+                gameObjects.Remove(playerBall);
+                
+                playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+                gameObjects.Add(playerBall);
             }
+            
 
 
             // Handle base.Update
