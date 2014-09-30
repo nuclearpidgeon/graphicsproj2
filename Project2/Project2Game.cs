@@ -68,7 +68,7 @@ namespace Project2
 
         protected override void LoadContent()
         {
-            foreach (var modelName in new List<String> { "Teapot", "box" })
+            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere" })
             {
                 try
                 {
@@ -86,6 +86,7 @@ namespace Project2
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
             gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            gameObjects.Add(new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false));
             gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 6, 10.0, 20));
 
 

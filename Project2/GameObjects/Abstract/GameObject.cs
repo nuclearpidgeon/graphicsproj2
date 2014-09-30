@@ -55,7 +55,9 @@ namespace Project2.GameObjects.Abstract
                 View = game.camera.view,
                 Projection = game.camera.projection,
                 World = Matrix.Identity,
+                LightingEnabled = true
             };
+            basicEffect.EnableDefaultLighting();
         }
         
 
