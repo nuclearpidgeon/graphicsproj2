@@ -8,7 +8,7 @@ using SharpDX.Toolkit.Graphics;
 
 namespace Project2.GameObjects.Abstract
 {
-    struct PhysicsDescription
+    public struct PhysicsDescription
     {
         public RigidBody RigidBody;
         public Shape CollisionShape;
@@ -17,7 +17,7 @@ namespace Project2.GameObjects.Abstract
         public Vector3 Position;
     }
 
-    abstract class PhysicsObject : GameObject
+    public abstract class PhysicsObject : GameObject
     {
         public Project2Game Game { get; set; }
 

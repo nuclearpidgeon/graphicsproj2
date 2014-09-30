@@ -16,7 +16,7 @@ using Jitter.Dynamics;
 
 namespace Project2.GameObjects
 {
-    class Ball : PhysicsObject
+    public class Ball : PhysicsObject
     {
         public Ball(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))

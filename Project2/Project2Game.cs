@@ -39,7 +39,7 @@ namespace Project2
         private List<GameObject> gameObjects;
         public Dictionary<String, Model> models; 
 
-        public Camera camera { private set; get; }
+        public ThirdPersonCamera camera { private set; get; }
 
         private MouseManager mouseManager;
         public MouseState mouseState;
@@ -84,16 +84,14 @@ namespace Project2
                 }
             }
             var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
-            //gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
+
+
             playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
 
-            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
             gameObjects.Add(playerBall);
-            //gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 6, 10.0, 20));
-            gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
+            gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 7, 2, 15));
+            //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
             // Load font for console
             //consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
@@ -101,6 +99,7 @@ namespace Project2
             // Setup spritebatch
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
+            camera.SetFollowObject(playerBall);
 
             base.LoadContent();
         }
@@ -112,11 +111,13 @@ namespace Project2
             graphicsDeviceManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
             graphicsDeviceManager.ApplyChanges();
             // Create camera
-            camera = new Camera(
-                this,
-                new Vector3(0, 15, -15),
-                new Vector3(0, 0, 0)
-            );
+            //camera = new Camera(
+            //    this,
+            //    new Vector3(0, 15, -15),
+            //    new Vector3(0, 0, 0)
+            //);
+            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
+
 
             // Create some GameSystems
             inputManager = new InputManager(this);
@@ -159,8 +160,9 @@ namespace Project2
             if (inputManager.IsKeyDown(Keys.Escape))
             {
                 gameObjects.Remove(playerBall);
-                
+                playerBall = null;
                 playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+                this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
             
