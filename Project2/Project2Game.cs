@@ -20,7 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using Project2.GameObjects.Abstract;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -33,8 +33,10 @@ namespace Project2
 
     public class Project2Game : Game
     {
+        
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
+        public Dictionary<String, Model> models; 
 
         public Camera camera { private set; get; }
 
@@ -60,19 +62,32 @@ namespace Project2
             Content.RootDirectory = "Content";
 
             gameObjects = new List<GameObject>();
+            models = new Dictionary<string, Model>();
+            
         }
 
         protected override void LoadContent()
         {
+            foreach (var modelName in new List<String> { "Teapot", "box" })
+            {
+                try
+                {
+                    models.Add(modelName, Content.Load<Model>("Models\\" + modelName));
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                    //throw;
+                }
+            }
 
-            gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
+            //gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
             //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
-            gameObjects.Add(new GameObjects.TestObject(this, new Vector3(12f, 3f, 12f), Vector3.One, Vector3.Zero));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
-            //Model model2 = Content.Load<Model>("torus.fbx");
+            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 6, 10.0, 20));
+
 
             // Load font for console
             //consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));

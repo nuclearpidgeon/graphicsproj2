@@ -7,10 +7,10 @@
 
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
-  <Identity Name="e6f07fdd-657d-4690-b3e5-a7bb4050e2af" Publisher="CN=Stewart" Version="1.0.0.0" ProcessorArchitecture="neutral" />
+  <Identity Name="65418LucasBerezy.Project2App" Publisher="CN=4C313793-6B08-405F-A557-ABEDA241F016" Version="1.1.0.4" ProcessorArchitecture="neutral" />
   <Properties>
-    <DisplayName>Project2</DisplayName>
-    <PublisherDisplayName>Stewart</PublisherDisplayName>
+    <DisplayName>Project2App</DisplayName>
+    <PublisherDisplayName>Lucas Berezy</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -22,8 +22,11 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="Project2.exe" EntryPoint="Project2.App">
-      <m2:VisualElements DisplayName="Project2" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Project2" ForegroundText="light" BackgroundColor="#464646">
+      <m2:VisualElements DisplayName="Project2App" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Project2" ForegroundText="light" BackgroundColor="#464646">
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="landscape" />
+        </m2:InitialRotationPreference>
       </m2:VisualElements>
     </Application>
   </Applications>
