@@ -55,11 +55,14 @@ namespace Project2.GameObjects.Abstract
                 View = game.camera.view,
                 Projection = game.camera.projection,
                 World = Matrix.Identity,
+                LightingEnabled = true
             };
+            basicEffect.EnableDefaultLighting();
         }
         
 
         public Vector3 Position{ get; set; }
+        public Matrix Orientation { get; set; }
 
         public virtual void LoadContent()
         {
@@ -138,18 +141,22 @@ namespace Project2.GameObjects.Abstract
 
         public virtual void SetPosition(Vector3 position)
         {
+            this.Position = position;
             positionMatrix = Matrix.Translation(position);
             CalculateWorldMatrix();
         }
 
         public virtual void SetOrientation(Vector3 orientation)
         {
+           
             orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
+            this.Orientation = orientationMatrix;
             CalculateWorldMatrix();
         }
 
         public virtual void SetOrientation(Matrix orientation)
         {
+            this.Orientation = orientation;
             orientationMatrix = orientation;
             CalculateWorldMatrix();
         }

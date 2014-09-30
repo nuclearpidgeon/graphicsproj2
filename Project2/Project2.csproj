@@ -112,7 +112,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
-    <None Include="GameObjects\Ball.cs" />
+    <Compile Include="ThirdPersonCamera.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="GameObjects\Abstract\ColoredGameObject.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="GameObjects\Cube.cs" />
+    <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\TestObject.cs" />
     <Compile Include="GameSystems\DebugDrawer.cs" />
     <Compile Include="GameObjects\Abstract\GameObject.cs" />
@@ -157,6 +158,7 @@
     <Content Include="Content\Models\jacket.dds" />
     <Content Include="Content\Models\pants.dds" />
     <Content Include="Content\Models\upBodyC.dds" />
+    <Content Include="Content\Terrain\heightmap.jpg" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
