@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +59,7 @@ namespace Project2
            
             // get the accelerometer. Returns null if no accelerometer found
             accelerometer = Accelerometer.GetDefault();
+            
             // automatically enable accelerometer if we have one
             this.AccelerometerEnabled(true);
             this.MouseDeltaEnabled(true);
@@ -90,6 +92,7 @@ namespace Project2
 
             if (accelerometer != null) {
                 accelerometerReading = accelerometer.GetCurrentReading();
+                
             }
 
             // get mouse delta and reset mouse to centre of window
@@ -143,13 +146,14 @@ namespace Project2
         /// <returns></returns>
         public Vector3 Acceleration() {
             var v = new Vector3();
-            if (accelerometerEnabled) {
+            if (accelerometerEnabled && accelerometerReading != null) {
                 v = new Vector3(
                     (float)accelerometerReading.AccelerationX,
-                    (float)accelerometerReading.AccelerationY,
-                    (float)accelerometerReading.AccelerationZ
+                    0f,
+                    (float)accelerometerReading.AccelerationY
                     );
             }
+            //Debug.WriteLine(v);
             return v;
         }
 

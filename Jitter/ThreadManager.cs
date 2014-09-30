@@ -83,6 +83,7 @@ namespace Jitter
 
         private void Initialize()
         {
+            
             lock (this.tasksLock)
             {
                 this.tasks.Clear();
