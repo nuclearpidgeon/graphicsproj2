@@ -57,16 +57,13 @@ namespace Project2
         {
             if (followObject == null) return;
 
-            var campos = offset;
-
-            campos = Vector3.Transform(campos, (Matrix3x3)Matrix.RotationAxis(Vector3.Up, MathUtil.Pi));
-            campos += followObject.Position;
+            this.position = Vector3.Transform(offset, (Matrix3x3)Matrix.RotationAxis(Vector3.Up, MathUtil.Pi));
+            this.position += followObject.Position;
 
             //Vector3 camup = Vector3.Up;
             //camup = Vector3.Transform(camup, (Matrix3x3)followObject.Orientation.Transpose());
-
-
-            view = Matrix.LookAtLH(campos, followObject.Position, Vector3.Up);
+            
+            view = Matrix.LookAtLH(this.position, followObject.Position, Vector3.Up);
             projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.2f, 500.0f);
         }
 

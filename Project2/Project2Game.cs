@@ -94,7 +94,7 @@ namespace Project2
             //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
             // Load font for console
-            //consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
+            consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
             // Setup spritebatch
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
@@ -200,11 +200,11 @@ namespace Project2
             base.Draw(gameTime);
 
             // SpriteBatch must be the last thing drawn, not super sure why yet.
-            //spriteBatch.Begin();
-            //spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
-            //spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
-            //spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-            //spriteBatch.End();
+            spriteBatch.Begin();
+            spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.End();
 
         }
     }
