@@ -42,6 +42,10 @@ namespace Project2.GameObjects.Abstract
             game.physics.AddBody(physicsDescription.RigidBody);
         }
 
+        public void Destroy() {
+            game.physics.RemoveBody(this.physicsDescription);
+        }
+
 
 
         public override void Update(GameTime gametime)

@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Project2.GameSystems;
 using Project2.GameObjects;
 using Project2.GameObjects.Abstract;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -11,7 +14,7 @@ using SharpDX.Toolkit.Input;
 
 namespace Project2
 {
-    public class ThirdPersonCamera
+    public class ThirdPersonCamera : Camera
     {
         public Project2Game game;
         public Matrix view { get; set; }
@@ -53,7 +56,7 @@ namespace Project2
         /// </summary>
         /// <param name="gameTime"></param>
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (followObject == null) return;
 

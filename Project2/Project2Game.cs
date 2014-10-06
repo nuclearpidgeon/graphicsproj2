@@ -20,8 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+
+using Project2.GameSystems;
 using Project2.GameObjects;
 using Project2.GameObjects.Abstract;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -40,6 +43,7 @@ namespace Project2
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
+        //public ControllableCamera camera { private set; get; }
 
         private MouseManager mouseManager;
         public MouseState mouseState;
@@ -71,11 +75,13 @@ namespace Project2
 
         protected override void LoadContent()
         {
-            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere" })
+            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere", "monkey", "bigmonkey" })
             {
                 try
                 {
-                    models.Add(modelName, Content.Load<Model>("Models\\" + modelName));
+                    var model = Content.Load<Model>("Models\\" + modelName);
+                    BasicEffect.EnableDefaultLighting(model, false);
+                    models.Add(modelName, model);
                 }
                 catch (Exception e)
                 {
@@ -86,11 +92,27 @@ namespace Project2
             var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
 
-            playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+            playerBall = new GameObjects.Ball(this, models["monkey"], new Vector3(19f, 3f, 14f), false);
 
             //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
             gameObjects.Add(playerBall);
-            gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 7, 2, 15));
+            gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
+
+            for (int i = 0; i < 20; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    gameObjects.Add(
+                        new Project2.GameObjects.Monkey(
+                            this, 
+                            models["bigmonkey"], 
+                            new Vector3( (float)i*4, 10f, (float)j*4),
+                            false
+                        )
+                    );
+                }
+            }
+            //gameObjects.Add(new Project2.GameObjects.Monkey(this, Vector3.Zero, 7, 2, 15));
             //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
             // Load font for console
@@ -117,7 +139,7 @@ namespace Project2
             //    new Vector3(0, 0, 0)
             //);
             camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
-
+            //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
             // Create some GameSystems
             inputManager = new InputManager(this);
@@ -156,7 +178,7 @@ namespace Project2
                 gameObjects[i].Update(gameTime);
             }
 
-            // Quit on escape key
+            // Reset on escape key
             if (inputManager.IsKeyDown(Keys.Escape))
             {
                 gameObjects.Remove(playerBall);

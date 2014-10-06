@@ -112,8 +112,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
-    <Compile Include="ThirdPersonCamera.cs" />
-    <Compile Include="Camera.cs" />
+    <Compile Include="GameObjects\Monkey.cs" />
+    <Compile Include="GameSystems\Camera.cs" />
+    <Compile Include="GameSystems\ThirdPersonCamera.cs" />
+    <Compile Include="GameSystems\ControllableCamera.cs" />
     <Compile Include="GameObjects\Abstract\ColoredGameObject.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
@@ -139,6 +141,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Terrain.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
+    <ToolkitModel Include="Content\Models\monkey.fbx" />
+    <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
     <None Include="Project2_StoreKey.pfx" />
     <None Include="Project2_TemporaryKey.pfx" />
     <None Include="SigningKey.snk" />

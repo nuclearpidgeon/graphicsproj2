@@ -53,7 +53,7 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
-            World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
+            World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
         public void AddBody(RigidBody rigidBody)
@@ -202,5 +202,10 @@ namespace Project2
             this.World.AddBody(body);
         }
 
+
+        internal void RemoveBody(GameObjects.Abstract.PhysicsDescription physicsDescription)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
