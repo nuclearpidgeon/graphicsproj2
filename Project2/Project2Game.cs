@@ -40,6 +40,7 @@ namespace Project2
         
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
+        private BasicLevel level;
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
@@ -89,14 +90,13 @@ namespace Project2
                     //throw;
                 }
             }
-            var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
+            level = new BasicLevel(this);
 
-            playerBall = new GameObjects.Ball(this, models["monkey"], new Vector3(19f, 3f, 14f), false);
+            playerBall = new GameObjects.Ball(this, models["monkey"], level.getStartPosition(), false);
 
-            //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
             gameObjects.Add(playerBall);
-            gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
+            gameObjects.Add(level.floor);
 
             for (int i = 0; i < 20; i++)
             {
@@ -112,15 +112,14 @@ namespace Project2
                     );
                 }
             }
-            //gameObjects.Add(new Project2.GameObjects.Monkey(this, Vector3.Zero, 7, 2, 15));
-            //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
-
+            
             // Load font for console
             consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
-            // Setup spritebatch
+            // Setup spritebatch for console
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
+            // Snap camera to player's ball
             camera.SetFollowObject(playerBall);
 
             base.LoadContent();
@@ -132,13 +131,11 @@ namespace Project2
             graphicsDeviceManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
             graphicsDeviceManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
             graphicsDeviceManager.ApplyChanges();
-            // Create camera
-            //camera = new Camera(
-            //    this,
-            //    new Vector3(0, 15, -15),
-            //    new Vector3(0, 0, 0)
-            //);
+
+            // Create automatic ball camera
             camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
+
+            // Create keyboard/mouse-controlled camera
             //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
             // Create some GameSystems
@@ -157,22 +154,19 @@ namespace Project2
             this.GameSystems.Add(physics);
             this.GameSystems.Add(inputManager);
 
-
             base.Initialize();
         }
 
 
         protected override void Update(GameTime gameTime)
         {
-
-
             // Get new mouse info
             mouseState = inputManager.MouseState();
 
             // Update camera
             camera.Update(gameTime);
 
-            // Update the basic model
+            // Update game objects
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Update(gameTime);
@@ -187,8 +181,6 @@ namespace Project2
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
-            
-
 
             // Handle base.Update
             base.Update(gameTime);
@@ -201,13 +193,11 @@ namespace Project2
         /// <param name="args"></param>
         protected override void OnExiting(object sender, EventArgs args)
         {
-
             System.Diagnostics.Debug.WriteLine("Shutting down...");
             App.Current.Exit();
             base.OnExiting(sender, args);
         }
-
-
+        
         protected override void Draw(GameTime gameTime)
         {
             // Clears the screen with the Color.CornflowerBlue
