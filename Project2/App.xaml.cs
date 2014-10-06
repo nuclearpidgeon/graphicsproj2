@@ -71,7 +71,6 @@ namespace Project2
 
                 // Associate the frame with a SuspensionManager key.
                 SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
-                System.Diagnostics.Debug.WriteLine("WEEEEEEEEE");
                 /*
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -119,6 +118,18 @@ namespace Project2
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        /// <summary>
+        /// Invoked when you wish to switch to another screen. The content of rootFrame is switched to
+        /// a new instance of the supplied `nextScreen` argument.
+        /// </summary>
+        /// <param name="nextScreen">The Type of the page you wish to move to. typeof(Example)</param>
+        public static void MoveToScreen(Type nextScreen)
+        {
+            MainPage mainPage = Window.Current.Content as MainPage;
+            Frame rootFrame = (Frame)mainPage.FindName("rootFrame");
+            rootFrame.Navigate(nextScreen);
         }
     }
 }

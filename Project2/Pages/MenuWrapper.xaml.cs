@@ -28,26 +28,14 @@ namespace Project2
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private Project2Game game;
 
         public MainPage()
         {
             InitializeComponent();
-           // game = new Project2Game();
         }
 
         private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            /* Super dirty/bad setup while I work on the menu*/
-          //  if (game.IsRunning == false) game.Run(this);
-            //playBtn.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-           // optionsBtn.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            //creditsBtn.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-        }
-
-        private void Button_Click_1(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            
         }
     }
 }
