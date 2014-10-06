@@ -107,9 +107,8 @@ namespace Project2
         protected override void Initialize()
         {
             Window.Title = "Project 2";
-            graphicsDeviceManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
-            graphicsDeviceManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
-            graphicsDeviceManager.ApplyChanges();
+
+            graphicsDeviceManager.DeviceCreated += graphicsDeviceManager_DeviceCreated;
             // Create camera
             //camera = new Camera(
             //    this,
@@ -137,6 +136,14 @@ namespace Project2
 
 
             base.Initialize();
+        }
+
+        void graphicsDeviceManager_DeviceCreated(object sender, EventArgs e)
+        {
+            graphicsDeviceManager.PreferredBackBufferWidth = (int)GraphicsDevice.Viewport.Width;
+            graphicsDeviceManager.PreferredBackBufferHeight = (int)GraphicsDevice.Viewport.Height;
+            graphicsDeviceManager.ApplyChanges();
+
         }
 
 
