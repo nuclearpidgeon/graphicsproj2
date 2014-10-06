@@ -161,6 +161,10 @@ namespace Project2
             base.Initialize();
         }
 
+        public void RemoveGameObject(GameObject o)
+        {
+            this.gameObjects.Remove(o);
+        }
 
         protected override void Update(GameTime gameTime)
         {
@@ -181,8 +185,8 @@ namespace Project2
             // Reset on escape key
             if (inputManager.IsKeyDown(Keys.Escape))
             {
-                gameObjects.Remove(playerBall);
-                playerBall = null;
+                // this is janky
+                playerBall.Destroy();
                 playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
@@ -220,12 +224,15 @@ namespace Project2
 
             // Handle base.Draw
             base.Draw(gameTime);
-
             // SpriteBatch must be the last thing drawn, not super sure why yet.
             spriteBatch.Begin();
             spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
             spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
             spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Rigid bodies: " + physics.World.RigidBodies.Count, new Vector2(0f, 36f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Physics: " + physics.World.DebugTimes[0], new Vector2(0f, 48f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "FPS: " + 1.0 /this.gameTime.ElapsedGameTime.TotalSeconds, new Vector2(0f, 60f), Color.AliceBlue);
+
             spriteBatch.End();
 
         }

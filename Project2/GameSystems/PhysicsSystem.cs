@@ -33,7 +33,7 @@ namespace Project2
 
         public int accuracy { get; set; }
         // collision system used by world (or on its own)
-        Jitter.Collision.CollisionSystem collisionSystem = new Jitter.Collision.CollisionSystemPersistentSAP(); // SAP = Scan and Prune (good for large scenes, bruteforce might be fine for small scenes too)
+        Jitter.Collision.CollisionSystem collisionSystem = new Jitter.Collision.CollisionSystemSAP(); // SAP = Scan and Prune (good for large scenes, bruteforce might be fine for small scenes too)
 
         public PhysicsSystem(Game game)
             : base(game)
@@ -205,7 +205,7 @@ namespace Project2
 
         internal void RemoveBody(GameObjects.Abstract.PhysicsDescription physicsDescription)
         {
-            throw new NotImplementedException();
+            World.RemoveBody(physicsDescription.RigidBody);
         }
     }
 }
