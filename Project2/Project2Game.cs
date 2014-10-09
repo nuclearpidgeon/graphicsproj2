@@ -108,13 +108,12 @@ namespace Project2
         {
             Window.Title = "Project 2";
 
-            graphicsDeviceManager.DeviceCreated += graphicsDeviceManager_DeviceCreated;
+            // Listen for the virtual graphics device so we can initialise the 
+            // graphicsDeviceManagers' rendering variables
+            graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
+
             // Create camera
-            //camera = new Camera(
-            //    this,
-            //    new Vector3(0, 15, -15),
-            //    new Vector3(0, 0, 0)
-            //);
+            //camera = new Camera(this, new Vector3(0, 15, -15), new Vector3(0, 0, 0));
             camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
 
@@ -138,7 +137,14 @@ namespace Project2
             base.Initialize();
         }
 
-        void graphicsDeviceManager_DeviceCreated(object sender, EventArgs e)
+        /// <summary>
+        /// When the virtual graphics device is created, we need to grab its viewport dimensions to
+        /// pass into the graphicsManager's PreferredBackBuffer Width and Height variables. This data is not
+        /// available until the device has been initialised.
+        /// </summary>
+        /// <param name="sender">The object which dispatched the event.</param>
+        /// <param name="e">Additional data stored in the event</param>
+        void OnDeviceCreated(object sender, EventArgs e)
         {
             graphicsDeviceManager.PreferredBackBufferWidth = (int)GraphicsDevice.Viewport.Width;
             graphicsDeviceManager.PreferredBackBufferHeight = (int)GraphicsDevice.Viewport.Height;

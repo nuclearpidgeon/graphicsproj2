@@ -24,7 +24,9 @@ using Windows.UI.Xaml.Controls;
 namespace Project2
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// MainWrapper - provides a frame-system that can be used for navigation
+    /// purposes between pages. Requires manual population of the frame's content by calling
+    /// Navigate() on the frame's instance.
     /// </summary>
     public sealed partial class MainPage : Page
     {
@@ -34,8 +36,5 @@ namespace Project2
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-        }
     }
 }
