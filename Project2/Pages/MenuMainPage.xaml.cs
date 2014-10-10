@@ -106,7 +106,6 @@ namespace Project2.Pages
         #endregion
 
         #region MenuMainPage ButtonListeners
-
         /// The methods provided in this section pertain to the actions
         /// that occur on the press of the buttons in the Main menu.
         /// They simply delegate to a staticly-defined function, but pass
@@ -128,5 +127,6 @@ namespace Project2.Pages
         {
             App.MoveToScreen(typeof(CreditsPage));
         }
+        #endregion
     }
 }
