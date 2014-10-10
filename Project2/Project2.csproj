@@ -112,6 +112,20 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
+    <Compile Include="Pages\CreditsPage.xaml.cs">
+      <DependentUpon>CreditsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GamePage.xaml.cs">
+      <DependentUpon>GamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\InstructionsPage.xaml.cs">
+      <DependentUpon>InstructionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MenuMainPage.xaml.cs">
+      <DependentUpon>MenuMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ThirdPersonCamera.cs" />
+    <Compile Include="Camera.cs" />
     <Compile Include="GameObjects\Boids\Boid.cs" />
     <Compile Include="GameObjects\Monkey.cs" />
     <Compile Include="GameSystems\Camera.cs" />
@@ -130,8 +144,8 @@
     <Compile Include="GameSystems\GameState.cs" />
     <Compile Include="GameSystems\GameStateManager.cs" />
     <Compile Include="GameSystems\InputManager.cs" />
-    <Compile Include="Pages\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Pages\MenuWrapper.xaml.cs">
+      <DependentUpon>MenuWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\OptionsPage.xaml.cs">
       <DependentUpon>OptionsPage.xaml</DependentUpon>
@@ -178,7 +192,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MainPage.xaml">
+    <Page Include="Pages\CreditsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\InstructionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MenuMainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MenuWrapper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

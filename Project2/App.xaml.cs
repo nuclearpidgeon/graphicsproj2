@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Project2.Common;
+using Project2.Pages;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +25,9 @@ namespace Project2
     /// </summary>
     sealed partial class App : Application
     {
+        MainPage mainPage;
+        Frame rootFrame;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -46,9 +51,58 @@ namespace Project2
                 //TODO: Load state from previously suspended application
             }
 
+            /*
             // Place the frame in the current Window and ensure that it is active
             var swapchainPanel = new MainPage();
             Window.Current.Content = swapchainPanel;
+            Window.Current.Activate();*/
+
+            mainPage = Window.Current.Content as MainPage;
+            // Do not repeat app initialization when the Window already has content,
+            // just ensure that the window is active
+
+            if (mainPage == null)
+            {
+                mainPage = new MainPage();
+
+                // Retrieve the root Frame to act as the navigation context and navigate to the first page
+                // Don't change the name of "rootFrame" in MainPage.xaml unless you change it here to match.
+                rootFrame = (Frame)mainPage.FindName("rootFrame");
+
+                // Associate the frame with a SuspensionManager key.
+                SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
+                /*
+                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    // Restore the saved session state only when appropriate
+                    try
+                    {
+                        await SuspensionManager.RestoreAsync();
+                    }
+                    catch (SuspensionManagerException)
+                    {
+                        //Something went wrong restoring state.
+                        //Assume there is no state and continue
+                    }
+                }*/
+
+                // Place the main page in the current Window.
+                Window.Current.Content = mainPage;
+                rootFrame.Navigate(typeof(MenuMainPage));
+            }
+
+            if (rootFrame.Content == null)
+            {
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+                if (!rootFrame.Navigate(typeof(MenuMainPage)))
+                {
+                    throw new Exception("Failed to create initial page");
+                }
+            }
+
+            // Ensure the current window is active
             Window.Current.Activate();
         }
 
@@ -64,6 +118,18 @@ namespace Project2
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        /// <summary>
+        /// Invoked when you wish to switch to another screen. The content of rootFrame is switched to
+        /// a new instance of the supplied `nextScreen` argument.
+        /// </summary>
+        /// <param name="nextScreen">The Type of the page you wish to move to. typeof(Example)</param>
+        public static void MoveToScreen(Type nextScreen)
+        {
+            MainPage mainPage = Window.Current.Content as MainPage;
+            Frame rootFrame = (Frame)mainPage.FindName("rootFrame");
+            rootFrame.Navigate(nextScreen);
         }
     }
 }
