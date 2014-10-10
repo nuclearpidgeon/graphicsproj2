@@ -112,6 +112,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
+    <Compile Include="GameObjects\Boids\Boid.cs" />
     <Compile Include="GameObjects\Monkey.cs" />
     <Compile Include="GameSystems\Camera.cs" />
     <Compile Include="GameSystems\ThirdPersonCamera.cs" />

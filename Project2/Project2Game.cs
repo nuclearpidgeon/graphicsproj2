@@ -55,7 +55,7 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
-        private Ball playerBall;
+        public Ball playerBall;
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -98,14 +98,14 @@ namespace Project2
             gameObjects.Add(playerBall);
             gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 3; i++)
             {
-                for (int j = 0; j < 20; j++)
+                for (int j = 0; j < 3; j++)
                 {
                     gameObjects.Add(
-                        new Project2.GameObjects.Monkey(
+                        new Project2.GameObjects.Boids.Boid(
                             this, 
-                            models["bigmonkey"], 
+                            models["Sphere"], 
                             new Vector3( (float)i*4, 10f, (float)j*4),
                             false
                         )
@@ -192,8 +192,6 @@ namespace Project2
                 gameObjects.Add(playerBall);
             }
             
-
-
             // Handle base.Update
             base.Update(gameTime);
         }
