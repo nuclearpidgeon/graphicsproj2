@@ -124,8 +124,6 @@
     <Compile Include="Pages\MenuMainPage.xaml.cs">
       <DependentUpon>MenuMainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ThirdPersonCamera.cs" />
-    <Compile Include="Camera.cs" />
     <Compile Include="GameObjects\Boids\Boid.cs" />
     <Compile Include="GameObjects\Monkey.cs" />
     <Compile Include="GameSystems\Camera.cs" />
