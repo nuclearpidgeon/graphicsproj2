@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Project2.GameSystems;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -10,7 +12,7 @@ using SharpDX.Toolkit.Input;
 
 namespace Project2
 {
-    public class Camera
+    public class ControllableCamera : Camera
     {
         public Project2Game game;
         public Matrix view { get; set; }
@@ -22,7 +24,7 @@ namespace Project2
 
         Vector2 lastMousePos;
 
-        public Camera(Project2Game game, Vector3 position, Vector3 target)
+        public ControllableCamera(Project2Game game, Vector3 position, Vector3 target)
         {
             this.game = game;
             this.position = position;
@@ -43,7 +45,7 @@ namespace Project2
         /// </summary>
         /// <param name="gameTime"></param>
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             // convert time to more useful format
             float time = gameTime.ElapsedGameTime.Milliseconds;
@@ -85,11 +87,6 @@ namespace Project2
 
             // update view with new position
             this.view = Matrix.LookAtLH(this.position, this.direction + this.position, Vector3.Up);
-
-        }
-
-        public void SetEffects(BasicEffect basicEffect)
-        {
 
         }
     }

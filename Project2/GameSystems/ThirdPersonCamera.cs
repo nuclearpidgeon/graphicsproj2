@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Project2.GameSystems;
 using Project2.GameObjects;
 using Project2.GameObjects.Abstract;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -11,7 +14,7 @@ using SharpDX.Toolkit.Input;
 
 namespace Project2
 {
-    public class ThirdPersonCamera
+    public class ThirdPersonCamera : Camera
     {
         public Project2Game game;
         public Matrix view { get; set; }
@@ -53,20 +56,17 @@ namespace Project2
         /// </summary>
         /// <param name="gameTime"></param>
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (followObject == null) return;
 
-            var campos = offset;
-
-            campos = Vector3.Transform(campos, (Matrix3x3)Matrix.RotationAxis(Vector3.Up, MathUtil.Pi));
-            campos += followObject.Position;
+            this.position = Vector3.Transform(offset, (Matrix3x3)Matrix.RotationAxis(Vector3.Up, MathUtil.Pi));
+            this.position += followObject.Position;
 
             //Vector3 camup = Vector3.Up;
             //camup = Vector3.Transform(camup, (Matrix3x3)followObject.Orientation.Transpose());
-
-
-            view = Matrix.LookAtLH(campos, followObject.Position, Vector3.Up);
+            
+            view = Matrix.LookAtLH(this.position, followObject.Position, Vector3.Up);
             projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.2f, 500.0f);
         }
 
