@@ -34,7 +34,7 @@ namespace Project2.GameObjects
                 Position = PhysicsSystem.toJVector(position),
                 IsStatic = isStatic,
                 EnableDebugDraw = false,
-                Mass = 0.25f
+                Mass = 20f,
             };
 
             var description = new PhysicsDescription()
@@ -61,8 +61,8 @@ namespace Project2.GameObjects
             //// each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             //this.SetPosition(pos);
             //this.SetOrientation(orientation);
-            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
-            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
 
             base.Update(gametime);
         }

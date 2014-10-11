@@ -56,7 +56,7 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
-        public Ball playerBall;
+        public Monkey playerBall;
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -94,7 +94,7 @@ namespace Project2
 
             level = new BasicLevel(this);
 
-            playerBall = new GameObjects.Ball(this, models["monkey"], level.getStartPosition(), false);
+            playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
 
             //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
             gameObjects.Add(playerBall);
@@ -207,7 +207,7 @@ namespace Project2
             {
                 // this is janky
                 playerBall.Destroy();
-                playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+                playerBall = new GameObjects.Monkey(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }

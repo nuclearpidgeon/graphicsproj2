@@ -62,7 +62,7 @@ namespace Project2.GameObjects.Boids
 
             var dist_to_player  = game.playerBall.Position - this.Position;
             var dir_to_player = Vector3.Zero;
-            if (dist_to_player.Length() < 10f)
+            if (dist_to_player.Length() < 20f)
             {
                 dir_to_player = Vector3.Normalize(dist_to_player);
             }
