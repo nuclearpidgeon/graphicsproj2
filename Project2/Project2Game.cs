@@ -99,7 +99,10 @@ namespace Project2
             //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
             gameObjects.Add(playerBall);
             //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
-            gameObjects.AddRange(level.gameObjects);
+            foreach (var levelPiece in level.levelPieces)
+            {
+                gameObjects.AddRange(levelPiece.gameObjects);
+            }
 
             int size = 3;
             for (int i = 0; i < size; i++)

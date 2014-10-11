@@ -15,29 +15,44 @@ using Project2.GameObjects.Abstract;
 namespace Project2.GameObjects
 {
     using SharpDX.Toolkit.Graphics;
-    class BasicLevel : IUpdateable, IDrawable
+    class BasicLevelPlane : IUpdateable, IDrawable
     {
         private Project2Game game;
         private Matrix worldMatrix;
 
-        public List<BasicLevelPlane> levelPieces;
+        public List<GameObject> gameObjects;
         
+        public Terrain floor;
+        private List<Box> walls;
+
         private BasicEffect basicEffect;
 
-        int length;
         int xSize;
         int ySize;
 
-        public BasicLevel(Project2Game game, int length = 8)
+        public BasicLevelPlane(Project2Game game, Vector3 position, int xSize = 64, int ySize = 64)
         {
             this.game = game;
-            this.xSize = 64;
-            this.ySize = 64;
-            levelPieces = new List<BasicLevelPlane>();
-            for (int i = 0; i < length; i++)
+            this.worldMatrix = Matrix.Identity;
+            this.xSize = xSize;
+            this.ySize = ySize;
+            this.floor = new Terrain(game, position, xSize, ySize);
+            this.walls = new List<Box>();
+            for (int i = 0; i < (ySize/4); i++)
             {
-                levelPieces.Add(new BasicLevelPlane(game, new Vector3(0f,0f,(float)ySize*i), xSize, ySize));
+                var yPos = 2f;
+                var zPos = i * 4;
+                var size = 4f;
+                walls.Add(
+                    new Box(game, game.models["box"], position + new Vector3(0f,yPos,zPos), new Vector3(size), true)
+                );
+                walls.Add(
+                    new Box(game, game.models["box"], position + new Vector3(xSize, yPos, zPos), new Vector3(size), true)
+                );
             }
+            this.gameObjects = new List<GameObject>();
+            this.gameObjects.Add(floor);
+            this.gameObjects.AddRange(walls);
 
             //basicEffect = new BasicEffect(game.GraphicsDevice)
             //{
@@ -52,12 +67,12 @@ namespace Project2.GameObjects
 
         public void Update(GameTime gameTime)
         {
-            
+            floor.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
-            
+            floor.Draw(gameTime);
 
             // saving this for later if we use a single effect for all level things??
             //basicEffect.CurrentTechnique.Passes[0].Apply();
