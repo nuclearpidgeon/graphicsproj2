@@ -19,8 +19,11 @@ namespace Project2.GameObjects
     {
         private Project2Game game;
         private Matrix worldMatrix;
+
+        public List<GameObject> gameObjects;
+        
         public Terrain floor;
-        private List<GeometricPrimitive> walls;
+        private List<Box> walls;
 
         private BasicEffect basicEffect;
 
@@ -34,6 +37,22 @@ namespace Project2.GameObjects
             this.xSize = xSize;
             this.ySize = ySize;
             this.floor = new Terrain(game, new Vector3(0.0f), xSize, ySize);
+            this.walls = new List<Box>();
+            for (int i = 0; i < (ySize/4); i++)
+            {
+                var yPos = 2f;
+                var zPos = i * 4;
+                var size = 4f;
+                walls.Add(
+                    new Box(game, game.models["box"], new Vector3(0f,yPos,zPos), new Vector3(size), true)
+                );
+                walls.Add(
+                    new Box(game, game.models["box"], new Vector3(xSize, yPos, zPos), new Vector3(size), true)
+                );
+            }
+            this.gameObjects = new List<GameObject>();
+            this.gameObjects.Add(floor);
+            this.gameObjects.AddRange(walls);
 
             //basicEffect = new BasicEffect(game.GraphicsDevice)
             //{
