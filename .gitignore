@@ -5,3 +5,5 @@ packages/
 *.suo
 *.dll
 *.pdb
+Project2/Libraries/JitterPortable/Jitter.xml
+Jitter/bin/
