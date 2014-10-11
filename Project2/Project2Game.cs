@@ -40,6 +40,7 @@ namespace Project2
         
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
+        private BasicLevel level;
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
@@ -89,8 +90,7 @@ namespace Project2
                     //throw;
                 }
             }
-            var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
-
+            //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
             playerBall = new GameObjects.Ball(this, models["monkey"], new Vector3(19f, 3f, 14f), false);
 

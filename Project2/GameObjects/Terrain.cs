@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Threading;
-using Jitter.Collision.Shapes;
-using Jitter.Dynamics;
-using Project2.GameObjects.Abstract;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using Texture2D = SharpDX.Toolkit.Graphics.Texture2D;
+
+using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
+
+using Project2.GameObjects.Abstract;
 
 namespace Project2.GameObjects
 {
     class Terrain : PhysicsObject
     {
-
         public float[,] TerrainData;
         private int terrainWidth;
         private int terrainHeight;
@@ -47,6 +49,19 @@ namespace Project2.GameObjects
         /// <param name="amplitude">Variance of height field</param>
         public Terrain(Project2Game game, Vector3 position, int density, double scale, double amplitude)
             : this(game, GeneratePhysicsDescription(position, density, scale, amplitude, true))
+        {
+
+        }
+
+        /// <summary>
+        /// Constructs a flat terrain
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="position"></param>
+        /// <param name="xScale"></param>
+        /// <param name="yScale"></param>
+        public Terrain(Project2Game game, Vector3 position, int xScale, int yScale) 
+            : this(game, GeneratePhyicsDescription(position, xScale, yScale, true))
         {
 
         }
@@ -118,6 +133,27 @@ namespace Project2.GameObjects
             return description;
         }
 
+        private static PhysicsDescription GeneratePhyicsDescription(Vector3 position, int xScale, int yScale, bool isStatic)
+        {
+            var terrainData = new float[,] { {0.0f, 0.0f} , {0.0f, 0.0f} };
+            var collisionShape = new TerrainShape(terrainData, (float) xScale, (float) yScale);
+            var rigidBody = new RigidBody(collisionShape)
+            {
+                Position = PhysicsSystem.toJVector(position),
+                IsStatic = isStatic,
+                EnableDebugDraw = true,
+            };
+            var description = new PhysicsDescription()
+            {
+                IsStatic = isStatic,
+                CollisionShape = collisionShape,
+                Debug = true,
+                RigidBody = rigidBody,
+                Position = position
+            };
+            
+            return description;
+        }
 
         public static float[,] GenerateDiamondSquare(int n, float amplitude)
         {
