@@ -34,7 +34,7 @@ namespace Project2.GameObjects
         int xSize;
         int ySize;
 
-        public BasicLevelPlane(Project2Game game, Vector3 position, SlopeType slopeType, int xSize = 64, int ySize = 64)
+        public BasicLevelPlane(Project2Game game, Vector3 position, SlopeType slopeType, float slopeHeight = 16f, int xSize = 64, int ySize = 64)
         {
             this.game = game;
             this.worldMatrix = Matrix.Identity;
@@ -42,20 +42,19 @@ namespace Project2.GameObjects
             this.ySize = ySize;
             float frontHeight = 0f;
             float backHeight = 0f;
-            float heightScale = 32f; // should probably move this into a parameter
-            if (slopeType == SlopeType.SlopeUp) { backHeight = heightScale; }
-            if (slopeType == SlopeType.SlopeDown) { frontHeight = heightScale; }
+            if (slopeType == SlopeType.SlopeUp) { backHeight = slopeHeight; }
+            if (slopeType == SlopeType.SlopeDown) { frontHeight = slopeHeight; }
             this.floor = new Terrain(game, position, xSize, ySize, frontHeight, backHeight);
             this.walls = new List<Box>();
             for (int i = 0; i < (ySize/4); i++)
             {
                 float yPos = 2f; // base height
                 if (slopeType == SlopeType.SlopeUp) {
-                    yPos += heightScale*((float)i)/((float)ySize / 4.0f); // oh god what have I done
+                    yPos += slopeHeight * ((float)i) / ((float)ySize / 4.0f); // oh god what have I done
                 }
                 else if (slopeType == SlopeType.SlopeDown) {
-                    yPos += heightScale;
-                    yPos -= heightScale * ((float)i) / ((float)ySize / 4.0f); // oh god what have I done again
+                    yPos += slopeHeight;
+                    yPos -= slopeHeight * ((float)i) / ((float)ySize / 4.0f); // oh god what have I done again
                 }
                 var zPos = i * 4;
                 var size = 4f;
