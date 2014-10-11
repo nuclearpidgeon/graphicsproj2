@@ -145,6 +145,8 @@
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
     <None Include="Project2_StoreKey.pfx" />
     <None Include="Project2_TemporaryKey.pfx" />
+    <None Include="Shaders\Phong.dgsl" />
+    <None Include="Shaders\Shader1.dgsl" />
     <None Include="SigningKey.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +165,7 @@
     <Content Include="Content\Models\pants.dds" />
     <Content Include="Content\Models\upBodyC.dds" />
     <Content Include="Content\Terrain\heightmap.jpg" />
+    <Content Include="Shaders\Phong.hlsl" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -236,7 +239,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scenes\" />
-    <Folder Include="Shaders\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
