@@ -17,6 +17,10 @@ namespace Project2.GameObjects
     using SharpDX.Toolkit.Graphics;
     class BasicLevelPlane : IUpdateable, IDrawable
     {
+        public enum SlopeType
+        {
+            SlopeUp, Flat, SlopeDown
+        }
         private Project2Game game;
         private Matrix worldMatrix;
 
@@ -30,13 +34,17 @@ namespace Project2.GameObjects
         int xSize;
         int ySize;
 
-        public BasicLevelPlane(Project2Game game, Vector3 position, int xSize = 64, int ySize = 64)
+        public BasicLevelPlane(Project2Game game, Vector3 position, SlopeType slopeType, int xSize = 64, int ySize = 64)
         {
             this.game = game;
             this.worldMatrix = Matrix.Identity;
             this.xSize = xSize;
             this.ySize = ySize;
-            this.floor = new Terrain(game, position, xSize, ySize);
+            float frontHeight = 0f;
+            float backHeight = 0f;
+            if (slopeType == SlopeType.SlopeUp) { backHeight = 32f; }
+            if (slopeType == SlopeType.SlopeDown) { frontHeight = 32f; }
+            this.floor = new Terrain(game, position, xSize, ySize, frontHeight, backHeight);
             this.walls = new List<Box>();
             for (int i = 0; i < (ySize/4); i++)
             {

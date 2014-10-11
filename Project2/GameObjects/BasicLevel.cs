@@ -28,7 +28,7 @@ namespace Project2.GameObjects
         int xSize;
         int ySize;
 
-        public BasicLevel(Project2Game game, int length = 8)
+        public BasicLevel(Project2Game game, int length = 9)
         {
             this.game = game;
             this.xSize = 64;
@@ -36,7 +36,29 @@ namespace Project2.GameObjects
             levelPieces = new List<BasicLevelPlane>();
             for (int i = 0; i < length; i++)
             {
-                levelPieces.Add(new BasicLevelPlane(game, new Vector3(0f,0f,(float)ySize*i), xSize, ySize));
+                BasicLevelPlane.SlopeType slopeType;
+                float yHeight = 0f;
+                switch (i % 4)
+                {
+                    case 0:
+                        slopeType = BasicLevelPlane.SlopeType.Flat;
+                        break;
+                    case 1:
+                        slopeType = BasicLevelPlane.SlopeType.SlopeUp;
+                        break;
+                    case 2:
+                        slopeType = BasicLevelPlane.SlopeType.Flat;
+                        yHeight = 32f;
+                        break;
+                    case 3:
+                        slopeType = BasicLevelPlane.SlopeType.SlopeDown;
+                        break;
+                    default:
+                        // just in case yea
+                        slopeType = BasicLevelPlane.SlopeType.Flat;
+                        break;
+                }
+                levelPieces.Add(new BasicLevelPlane(game, new Vector3(0f,yHeight,(float)ySize*i), slopeType, xSize, ySize));
             }
 
             //basicEffect = new BasicEffect(game.GraphicsDevice)

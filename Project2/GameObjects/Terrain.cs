@@ -60,8 +60,8 @@ namespace Project2.GameObjects
         /// <param name="position"></param>
         /// <param name="xScale"></param>
         /// <param name="yScale"></param>
-        public Terrain(Project2Game game, Vector3 position, int xScale, int yScale) 
-            : this(game, GeneratePhyicsDescription(position, xScale, yScale, true))
+        public Terrain(Project2Game game, Vector3 position, int xScale, int yScale, float frontHeight = 0.0f, float backHeight = 0.0f) 
+            : this(game, GeneratePhyicsDescription(position, xScale, yScale, frontHeight, backHeight, true))
         {
 
         }
@@ -133,9 +133,12 @@ namespace Project2.GameObjects
             return description;
         }
 
-        private static PhysicsDescription GeneratePhyicsDescription(Vector3 position, int xScale, int yScale, bool isStatic)
+        private static PhysicsDescription GeneratePhyicsDescription(Vector3 position, int xScale, int yScale, float frontHeight, float backHeight, bool isStatic)
         {
-            var terrainData = new float[,] { {0.0f, 0.0f} , {0.0f, 0.0f} };
+            float[,] terrainData = new float[,] { 
+                {frontHeight, backHeight} ,
+                {frontHeight, backHeight}
+            };
             var collisionShape = new TerrainShape(terrainData, (float) xScale, (float) yScale);
             var rigidBody = new RigidBody(collisionShape)
             {
