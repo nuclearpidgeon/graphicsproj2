@@ -92,21 +92,25 @@ namespace Project2
             }
             //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
-            playerBall = new GameObjects.Ball(this, models["monkey"], new Vector3(19f, 3f, 14f), false);
+            level = new BasicLevel(this);
+
+            playerBall = new GameObjects.Ball(this, models["monkey"], level.getStartPosition(), false);
 
             //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
             gameObjects.Add(playerBall);
-            gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
+            //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
+            gameObjects.Add(level.floor);
 
-            for (int i = 0; i < 3; i++)
+            int size = 3;
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < size; j++)
                 {
                     gameObjects.Add(
                         new Project2.GameObjects.Boids.Boid(
                             this, 
-                            models["Sphere"], 
-                            new Vector3( (float)i*4, 10f, (float)j*4),
+                            models["Sphere"],
+                            level.getStartPosition() + new Vector3((float)((size / 2.0 - i) * 4), 10f, (float)(size / 2.0 - j) * 4),
                             false
                         )
                     );
@@ -118,7 +122,7 @@ namespace Project2
             // Load font for console
             consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
-            // Setup spritebatch
+            // Setup spritebatch for console
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
             camera.SetFollowObject(playerBall);
@@ -134,9 +138,9 @@ namespace Project2
             // graphicsDeviceManagers' rendering variables
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
 
-            // Create camera
-            //camera = new Camera(this, new Vector3(0, 15, -15), new Vector3(0, 0, 0));
+            // Create automatic ball-following camera
             camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
+            //// Create keyboard/mouse-controlled camera
             //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
             // Create some GameSystems
@@ -189,7 +193,7 @@ namespace Project2
             // Update camera
             camera.Update(gameTime);
 
-            // Update the basic model
+            // Update the game objects
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Update(gameTime);

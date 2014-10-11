@@ -112,6 +112,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
+    <Compile Include="GameObjects\BasicLevel.cs" />
     <Compile Include="Pages\CreditsPage.xaml.cs">
       <DependentUpon>CreditsPage.xaml</DependentUpon>
     </Compile>
