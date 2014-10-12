@@ -1,11 +1,11 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Jitter.LinearMath;
 using Project2.GameObjects.Abstract;
-
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -13,35 +13,35 @@ using SharpDX.Toolkit.Graphics;
 using Jitter;
 using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
-using Jitter.LinearMath;
 
 namespace Project2.GameObjects
 {
-    public class Monkey : PhysicsObject
+    public class Box : PhysicsObject
     {
-        public Monkey(Project2Game game, Model model, Vector3 position, Boolean isStatic)
-            : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
+        public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Boolean isStatic)
+            : base(game, model, position, GeneratePhysicsDescription(position, model, size, isStatic))
         {
 
         }
 
-        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
+        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Vector3 size, Boolean isStatic)
         {
+
             var bounds = model.CalculateBounds();
-            var collisionShape = new SphereShape(bounds.Radius);
+            var collisionShape = new BoxShape(PhysicsSystem.toJVector(size));//SphereShape(bounds.Radius);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(position),
                 IsStatic = isStatic,
-                EnableDebugDraw = false,
-                Mass = 20f,
+                EnableDebugDraw = true,
+                Mass = 600f
             };
 
             var description = new PhysicsDescription()
             {
                 IsStatic = isStatic,
                 CollisionShape = collisionShape,
-                Debug = false,
+                Debug = true,
                 RigidBody = rigidBody,
                 Position = position
             };
@@ -49,7 +49,7 @@ namespace Project2.GameObjects
             return description;
         }
 
-
+        
 
         public override void Update(GameTime gametime)
         {
@@ -61,8 +61,8 @@ namespace Project2.GameObjects
             //// each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             //this.SetPosition(pos);
             //this.SetOrientation(orientation);
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
+            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
 
             base.Update(gametime);
         }
