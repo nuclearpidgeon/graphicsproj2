@@ -145,6 +145,10 @@
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
     <None Include="Project2_StoreKey.pfx" />
     <None Include="Project2_TemporaryKey.pfx" />
+    <None Include="Shaders\BlurCray.dgsl" />
+    <None Include="Shaders\EdgeFucker.dgsl" />
+    <None Include="Shaders\GreyScale.dgsl" />
+    <None Include="Shaders\Invertbw.dgsl" />
     <None Include="Shaders\Phong.dgsl" />
     <None Include="Shaders\Shader1.dgsl" />
     <None Include="SigningKey.snk" />
