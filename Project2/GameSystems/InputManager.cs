@@ -148,7 +148,7 @@ namespace Project2
             var v = new Vector3();
             if (accelerometerEnabled && accelerometerReading != null) {
                 v = new Vector3(
-                    (float)accelerometerReading.AccelerationX,
+                    (float)accelerometerReading.AccelerationX * -1, //this is due to RH matrix stuff
                     0f,
                     (float)accelerometerReading.AccelerationY
                     );
@@ -171,11 +171,11 @@ namespace Project2
             {
                 v.Y -= 1;
             }
-            if (keyboardState.IsKeyDown(keyMapping.right_Primary_key))
+            if (keyboardState.IsKeyDown(keyMapping.left_Primary_key))
             {
                 v.X += 1;
             }
-            if (keyboardState.IsKeyDown(keyMapping.left_Primary_key))
+            if (keyboardState.IsKeyDown(keyMapping.right_Primary_key))
             {
                 v.X -= 1;
             }
@@ -203,11 +203,11 @@ namespace Project2
             {
                 v.Z -= 1;
             }
-            if (keyboardState.IsKeyDown(keyMapping.right_Secondary_key))
+            if (keyboardState.IsKeyDown(keyMapping.left_Secondary_key))
             {
                 v.X += 1;
             }
-            if (keyboardState.IsKeyDown(keyMapping.left_Secondary_key))
+            if (keyboardState.IsKeyDown(keyMapping.right_Secondary_key))
             {
                 v.X -= 1;
             }

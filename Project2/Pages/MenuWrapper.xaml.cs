@@ -18,35 +18,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using Project2.Pages;
 using Windows.UI.Xaml.Controls;
 
 namespace Project2
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// MainWrapper - provides a frame-system that can be used for navigation
+    /// purposes between pages. Requires manual population of the frame's content by calling
+    /// Navigate() on the frame's instance.
     /// </summary>
-    public sealed partial class MainPage
+    public sealed partial class MainPage : Page
     {
-        private Project2Game game;
 
         public MainPage()
         {
             InitializeComponent();
-            game = new Project2Game();
         }
 
-        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            /* Super dirty/bad setup while I work on the menu*/
-            if (game.IsRunning == false) game.Run(this);
-            playBtn.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            optionsBtn.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            creditsBtn.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-        }
-
-        private void Button_Click_1(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            
-        }
     }
 }

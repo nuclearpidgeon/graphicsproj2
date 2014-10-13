@@ -40,6 +40,7 @@ namespace Project2
         
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
+        private BasicLevel level;
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
@@ -55,7 +56,7 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
-        private Ball playerBall;
+        public Monkey playerBall;
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -89,24 +90,30 @@ namespace Project2
                     //throw;
                 }
             }
-            var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
+            //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
+            level = new BasicLevel(this);
 
-            playerBall = new GameObjects.Ball(this, models["monkey"], new Vector3(19f, 3f, 14f), false);
+            playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
 
             //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
             gameObjects.Add(playerBall);
-            gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
-
-            for (int i = 0; i < 20; i++)
+            //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
+            foreach (var levelPiece in level.levelPieces)
             {
-                for (int j = 0; j < 20; j++)
+                gameObjects.AddRange(levelPiece.gameObjects);
+            }
+
+            int size = 3;
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
                 {
                     gameObjects.Add(
-                        new Project2.GameObjects.Monkey(
+                        new Project2.GameObjects.Boids.Boid(
                             this, 
-                            models["bigmonkey"], 
-                            new Vector3( (float)i*4, 10f, (float)j*4),
+                            models["Sphere"],
+                            level.getStartPosition() + new Vector3((float)((size / 2.0 - i) * 4), 10f, (float)(size / 2.0 - j) * 4),
                             false
                         )
                     );
@@ -118,7 +125,7 @@ namespace Project2
             // Load font for console
             consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
-            // Setup spritebatch
+            // Setup spritebatch for console
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
             camera.SetFollowObject(playerBall);
@@ -129,16 +136,14 @@ namespace Project2
         protected override void Initialize()
         {
             Window.Title = "Project 2";
-            graphicsDeviceManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
-            graphicsDeviceManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
-            graphicsDeviceManager.ApplyChanges();
-            // Create camera
-            //camera = new Camera(
-            //    this,
-            //    new Vector3(0, 15, -15),
-            //    new Vector3(0, 0, 0)
-            //);
+
+            // Listen for the virtual graphics device so we can initialise the 
+            // graphicsDeviceManagers' rendering variables
+            graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
+
+            // Create automatic ball-following camera
             camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
+            //// Create keyboard/mouse-controlled camera
             //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
             // Create some GameSystems
@@ -161,6 +166,21 @@ namespace Project2
             base.Initialize();
         }
 
+        /// <summary>
+        /// When the virtual graphics device is created, we need to grab its viewport dimensions to
+        /// pass into the graphicsManager's PreferredBackBuffer Width and Height variables. This data is not
+        /// available until the device has been initialised.
+        /// </summary>
+        /// <param name="sender">The object which dispatched the event.</param>
+        /// <param name="e">Additional data stored in the event</param>
+        void OnDeviceCreated(object sender, EventArgs e)
+        {
+            graphicsDeviceManager.PreferredBackBufferWidth = (int)GraphicsDevice.Viewport.Width;
+            graphicsDeviceManager.PreferredBackBufferHeight = (int)GraphicsDevice.Viewport.Height;
+            graphicsDeviceManager.ApplyChanges();
+
+        }
+
         public void RemoveGameObject(GameObject o)
         {
             this.gameObjects.Remove(o);
@@ -176,7 +196,7 @@ namespace Project2
             // Update camera
             camera.Update(gameTime);
 
-            // Update the basic model
+            // Update the game objects
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Update(gameTime);
@@ -187,13 +207,11 @@ namespace Project2
             {
                 // this is janky
                 playerBall.Destroy();
-                playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+                playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
             
-
-
             // Handle base.Update
             base.Update(gameTime);
         }
@@ -226,12 +244,19 @@ namespace Project2
             base.Draw(gameTime);
             // SpriteBatch must be the last thing drawn, not super sure why yet.
             spriteBatch.Begin();
-            spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Rigid bodies: " + physics.World.RigidBodies.Count, new Vector2(0f, 36f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Physics: " + physics.World.DebugTimes[0], new Vector2(0f, 48f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "FPS: " + 1.0 /this.gameTime.ElapsedGameTime.TotalSeconds, new Vector2(0f, 60f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player game x location: " + this.playerBall.Position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player game y location: " + this.playerBall.Position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player game z location: " + this.playerBall.Position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player phys x location: " + this.playerBall.physicsDescription.RigidBody.Position.X, new Vector2(0f, 36f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player phys y location: " + this.playerBall.physicsDescription.RigidBody.Position.Y, new Vector2(0f, 48f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player phys z location: " + this.playerBall.physicsDescription.RigidBody.Position.Z, new Vector2(0f, 60f), Color.AliceBlue);
+
+            //spriteBatch.DrawString(consoleFont, "Rigid bodies: " + physics.World.RigidBodies.Count, new Vector2(0f, 36f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Physics: " + physics.World.DebugTimes[0], new Vector2(0f, 48f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "FPS: " + 1.0 /this.gameTime.ElapsedGameTime.TotalSeconds, new Vector2(0f, 60f), Color.AliceBlue);
 
             spriteBatch.End();
 

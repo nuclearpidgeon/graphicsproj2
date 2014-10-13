@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Jitter.Collision.Shapes;
+using Jitter.Dynamics;
 using Project2.GameObjects.Abstract;
-
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
-using Jitter;
-using Jitter.Collision.Shapes;
-using Jitter.Dynamics;
-using Jitter.LinearMath;
-
-namespace Project2.GameObjects
+namespace Project2.GameObjects.Boids
 {
-    public class Monkey : PhysicsObject
+    class Boid : PhysicsObject
     {
-        public Monkey(Project2Game game, Model model, Vector3 position, Boolean isStatic)
+
+        public Boid(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
         {
 
@@ -34,14 +30,14 @@ namespace Project2.GameObjects
                 Position = PhysicsSystem.toJVector(position),
                 IsStatic = isStatic,
                 EnableDebugDraw = true,
-                Mass = 20f,
+                Mass = 0.25f
             };
 
             var description = new PhysicsDescription()
             {
                 IsStatic = isStatic,
                 CollisionShape = collisionShape,
-                Debug = true,
+                Debug = false,
                 RigidBody = rigidBody,
                 Position = position
             };
@@ -61,9 +57,17 @@ namespace Project2.GameObjects
             //// each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             //this.SetPosition(pos);
             //this.SetOrientation(orientation);
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
 
+            var dist_to_player  = game.playerBall.Position - this.Position;
+            var dir_to_player = Vector3.Zero;
+            if (dist_to_player.Length() < 20f)
+            {
+                dir_to_player = Vector3.Normalize(dist_to_player);
+            }
+
+            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.1f);
             base.Update(gametime);
         }
 
@@ -78,4 +82,5 @@ namespace Project2.GameObjects
             base.Draw(gametime);
         }
     }
+
 }
