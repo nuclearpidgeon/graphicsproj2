@@ -207,7 +207,7 @@ namespace Project2
             {
                 // this is janky
                 playerBall.Destroy();
-                playerBall = new GameObjects.Monkey(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+                playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
