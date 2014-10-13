@@ -33,7 +33,7 @@ namespace Project2.GameObjects
             {
                 Position = PhysicsSystem.toJVector(position),
                 IsStatic = isStatic,
-                EnableDebugDraw = false,
+                EnableDebugDraw = true,
                 Mass = 20f,
             };
 
@@ -41,7 +41,7 @@ namespace Project2.GameObjects
             {
                 IsStatic = isStatic,
                 CollisionShape = collisionShape,
-                Debug = false,
+                Debug = true,
                 RigidBody = rigidBody,
                 Position = position
             };

@@ -244,12 +244,19 @@ namespace Project2
             base.Draw(gameTime);
             // SpriteBatch must be the last thing drawn, not super sure why yet.
             spriteBatch.Begin();
-            spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Rigid bodies: " + physics.World.RigidBodies.Count, new Vector2(0f, 36f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "Physics: " + physics.World.DebugTimes[0], new Vector2(0f, 48f), Color.AliceBlue);
-            spriteBatch.DrawString(consoleFont, "FPS: " + 1.0 /this.gameTime.ElapsedGameTime.TotalSeconds, new Vector2(0f, 60f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player game x location: " + this.playerBall.Position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player game y location: " + this.playerBall.Position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player game z location: " + this.playerBall.Position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player phys x location: " + this.playerBall.physicsDescription.RigidBody.Position.X, new Vector2(0f, 36f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player phys y location: " + this.playerBall.physicsDescription.RigidBody.Position.Y, new Vector2(0f, 48f), Color.AliceBlue);
+            spriteBatch.DrawString(consoleFont, "Player phys z location: " + this.playerBall.physicsDescription.RigidBody.Position.Z, new Vector2(0f, 60f), Color.AliceBlue);
+
+            //spriteBatch.DrawString(consoleFont, "Rigid bodies: " + physics.World.RigidBodies.Count, new Vector2(0f, 36f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "Physics: " + physics.World.DebugTimes[0], new Vector2(0f, 48f), Color.AliceBlue);
+            //spriteBatch.DrawString(consoleFont, "FPS: " + 1.0 /this.gameTime.ElapsedGameTime.TotalSeconds, new Vector2(0f, 60f), Color.AliceBlue);
 
             spriteBatch.End();
 

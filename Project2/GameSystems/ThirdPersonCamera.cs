@@ -36,12 +36,12 @@ namespace Project2
             this.position = position;
             this.offset = offset;
 
-            this.view = Matrix.LookAtLH(position, Vector3.Zero, Vector3.Up);
-            this.projection = Matrix.PerspectiveFovLH(
+            this.view = Matrix.LookAtRH(position, Vector3.Zero, Vector3.Up);
+            this.projection = Matrix.PerspectiveFovRH(
                 (float)Math.PI / 4.0f,
                 (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height,
                 0.1f,
-                100.0f
+                500.0f
             );
         }
 
@@ -66,8 +66,9 @@ namespace Project2
             //Vector3 camup = Vector3.Up;
             //camup = Vector3.Transform(camup, (Matrix3x3)followObject.Orientation.Transpose());
             
-            view = Matrix.LookAtLH(this.position, followObject.Position, Vector3.Up);
-            projection = Matrix.PerspectiveFovLH(MathUtil.PiOverFour, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.2f, 500.0f);
+            view = Matrix.LookAtRH(this.position, followObject.Position, Vector3.Up);
+            // Don't need to do this every frame. Would put on a screen-resize event but fuck that
+            //projection = Matrix.PerspectiveFovRH(MathUtil.PiOverFour, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.2f, 500.0f);
         }
 
         public void SetEffects(BasicEffect basicEffect)

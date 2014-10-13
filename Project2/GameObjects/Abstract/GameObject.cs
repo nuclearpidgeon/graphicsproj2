@@ -19,6 +19,7 @@ namespace Project2.GameObjects.Abstract
         protected Matrix scaleMatrix;
         protected Matrix worldMatrix;
 
+        public Vector3 Position { get; set; }
 
         protected GameObject(Project2Game game, Vector3 position)
             : this(game, null, position, Vector3.Zero, Vector3.One)
@@ -59,10 +60,6 @@ namespace Project2.GameObjects.Abstract
             };
             basicEffect.EnableDefaultLighting();
         }
-        
-
-        public Vector3 Position{ get; set; }
-        public Matrix Orientation { get; set; }
 
         public virtual void LoadContent()
         {
@@ -149,15 +146,15 @@ namespace Project2.GameObjects.Abstract
         public virtual void SetOrientation(Vector3 orientation)
         {
            
-            orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
-            this.Orientation = orientationMatrix;
+            this.orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
+            this.orientationMatrix *= Matrix.Identity * (float)(2 * Math.PI);
             CalculateWorldMatrix();
         }
 
         public virtual void SetOrientation(Matrix orientation)
         {
-            this.Orientation = orientation;
-            orientationMatrix = orientation;
+            this.orientationMatrix = orientation;
+            //this.orientationMatrix *= Matrix.Identity * (float)(2 * Math.PI);
             CalculateWorldMatrix();
         }
 
