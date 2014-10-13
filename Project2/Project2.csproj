@@ -169,6 +169,10 @@
     <Content Include="Content\Models\pants.dds" />
     <Content Include="Content\Models\upBodyC.dds" />
     <Content Include="Content\Terrain\heightmap.jpg" />
+    <Content Include="Shaders\BlurCray.hlsl" />
+    <Content Include="Shaders\EdgeFucker.hlsl" />
+    <Content Include="Shaders\GreyScale.hlsl" />
+    <Content Include="Shaders\Invertbw.hlsl" />
     <Content Include="Shaders\Phong.hlsl" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">
