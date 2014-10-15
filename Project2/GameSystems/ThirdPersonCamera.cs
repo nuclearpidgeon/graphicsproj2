@@ -43,6 +43,7 @@ namespace Project2
                 0.1f,
                 500.0f
             );
+
         }
 
         public void SetFollowObject(PhysicsObject toFollow)

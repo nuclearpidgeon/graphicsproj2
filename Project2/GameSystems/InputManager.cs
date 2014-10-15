@@ -117,6 +117,15 @@ namespace Project2
         }
 
         /// <summary>
+        /// Get the raw mouse position
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 MousePosition()
+        {
+            return new Vector2(mouseState.X, mouseState.Y);
+        }
+
+        /// <summary>
         /// Get a non-normalised vector representing the direction of mouse movement since the last frame;
         /// </summary>
         /// <returns></returns>

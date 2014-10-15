@@ -8,4 +8,5 @@
     mc:Ignorable="d"    
     d:DesignWidth="1280"
     d:DesignHeight="800">
+    <Button Content="Button" HorizontalAlignment="Left" Margin="1152,25,0,0" VerticalAlignment="Top"/>
 </SwapChainBackgroundPanel>
