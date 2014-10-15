@@ -59,7 +59,7 @@ namespace Project2
            
             // get the accelerometer. Returns null if no accelerometer found
             accelerometer = Accelerometer.GetDefault();
-            
+
             // automatically enable accelerometer if we have one
             this.AccelerometerEnabled(true);
             this.MouseDeltaEnabled(true);
