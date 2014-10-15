@@ -95,8 +95,8 @@ namespace Project2
             level = new BasicLevel(this);
 
             playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
-
-            //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            
+            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
             gameObjects.Add(playerBall);
             //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
             foreach (var levelPiece in level.levelPieces)
@@ -211,6 +211,8 @@ namespace Project2
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
+
+            
             
             // Handle base.Update
             base.Update(gameTime);

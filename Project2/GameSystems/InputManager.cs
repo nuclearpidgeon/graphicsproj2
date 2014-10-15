@@ -29,6 +29,7 @@ namespace Project2
         KeyboardState keyboardState;
         MouseState mouseState;
 
+
         private Boolean accelerometerEnabled;
         private Boolean useMouseDelta;
 
@@ -55,6 +56,7 @@ namespace Project2
             mouseManager = new MouseManager(game);
             pointerManager = new PointerManager(game);
             keyMapping = new KeyMapping();
+
 
            
             // get the accelerometer. Returns null if no accelerometer found
@@ -101,6 +103,7 @@ namespace Project2
                 mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
             }
 
+            
 
  	        base.Update(gameTime);
         }

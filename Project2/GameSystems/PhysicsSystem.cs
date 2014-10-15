@@ -13,6 +13,9 @@ using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
+using SingleBodyConstraints = Jitter.Dynamics.Constraints.SingleBody;
+using SharpDX.Toolkit.Input;
+
 
 namespace Project2
 {
@@ -28,22 +31,37 @@ namespace Project2
     /// </summary>
     public class PhysicsSystem : GameSystem, IUpdateable
     {
-
+        protected Project2Game game;
         public JitterWorld World;
+
+        private MouseState mouseState;
 
         public int accuracy { get; set; }
         // collision system used by world (or on its own)
         Jitter.Collision.CollisionSystem collisionSystem = new Jitter.Collision.CollisionSystemPersistentSAP(); // SAP = Scan and Prune (good for large scenes, bruteforce might be fine for small scenes too)
 
-        public PhysicsSystem(Game game)
+        public PhysicsSystem(Project2Game game)
             : base(game)
         {
+            this.game = game;
 
             World = new JitterWorld(collisionSystem); // whole_new_world.wav
             // gravity defaults to -9.8 m.s^-2
             // World.Gravity = new JVector(0f, -20, 0);
             accuracy = 1;   // lower this for higher FPS (accuracy = 1 still seems to work okay, it's just not ideal)
         }
+
+        #region update - global variables
+        // Hold previous input states.
+        MouseState mousePreviousState = new MouseState();
+
+        // Store information for drag and drop
+        JVector hitPoint, hitNormal;
+        SingleBodyConstraints.PointOnPoint grabConstraint;
+        RigidBody grabBody;
+        float hitDistance = 0.0f;
+        int scrollWheel = 0;
+        #endregion
 
         /// <summary>
         /// This method is automagically called as part of GameSystem to update the physics simulation.
@@ -53,7 +71,90 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
+            mouseState = game.inputManager.MouseState();
+
+            #region drag and drop physical objects with the mouse
+            if (mouseState.LeftButton.Down &&
+                !mousePreviousState.LeftButton.Down)
+            {
+                System.Diagnostics.Debug.WriteLine("INIT MOUSE CLICK");
+                JVector ray = toJVector(RayTo((int)mouseState.X, (int)mouseState.Y));
+                JVector camp = toJVector(game.camera.position);
+
+                ray = JVector.Normalize(ray) * 100;
+
+                float fraction;
+
+                bool result = World.CollisionSystem.Raycast(camp, ray, RaycastCallback, out grabBody, out hitNormal, out fraction);
+
+                if (result)
+                {
+                    hitPoint = camp + fraction * ray;
+
+                    if (grabConstraint != null) World.RemoveConstraint(grabConstraint);
+
+                    JVector lanchor = hitPoint - grabBody.Position;
+                    lanchor = JVector.Transform(lanchor, JMatrix.Transpose(grabBody.Orientation));
+
+                    grabConstraint = new SingleBodyConstraints.PointOnPoint(grabBody, lanchor);
+                    grabConstraint.Softness = 0.01f;
+                    grabConstraint.BiasFactor = 0.1f;
+
+                    World.AddConstraint(grabConstraint);
+                    hitDistance = (toVector3(hitPoint) - game.camera.position).Length();
+                    scrollWheel = mouseState.WheelDelta;
+                    grabConstraint.Anchor = hitPoint;
+                }
+            }
+
+            if (mouseState.LeftButton.Pressed)
+            {
+                hitDistance += (mouseState.WheelDelta - scrollWheel) * 0.01f;
+                scrollWheel = mouseState.WheelDelta;
+
+                if (grabBody != null)
+                {
+                    Vector3 ray = RayTo((int)mouseState.X, (int)mouseState.Y); ray.Normalize();
+                    grabConstraint.Anchor = toJVector(game.camera.position + ray * hitDistance);
+                    grabBody.IsActive = true;
+                    if (!grabBody.IsStatic)
+                    {
+                        grabBody.LinearVelocity *= 0.98f;
+                        grabBody.AngularVelocity *= 0.98f;
+                    }
+                }
+            }
+            else
+            {
+                if (grabConstraint != null) World.RemoveConstraint(grabConstraint);
+                grabBody = null;
+                grabConstraint = null;
+            }
+            #endregion
+
+            mousePreviousState = mouseState;
+            
             World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
+        }
+
+        private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
+        {
+            if (body.IsStatic) return false;
+            else return true;
+        }
+
+        private Vector3 RayTo(int x, int y)
+        {
+            Vector3 nearSource = new Vector3(x, y, 0);
+            Vector3 farSource = new Vector3(x, y, 1);
+
+            Matrix world = Matrix.Identity;
+
+            Vector3 nearPoint = game.GraphicsDevice.Viewport.Unproject(nearSource, game.camera.projection, game.camera.view, world);
+            Vector3 farPoint = game.GraphicsDevice.Viewport.Unproject(farSource, game.camera.projection, game.camera.view, world);
+
+            Vector3 direction = farPoint - nearPoint;
+            return direction;
         }
 
         public void AddBody(RigidBody rigidBody)
