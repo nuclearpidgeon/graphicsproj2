@@ -8,7 +8,7 @@ namespace Project2.GameObjects.Abstract
 {
     public abstract class GameObject : IUpdateable, IDrawable
     {
-        protected BasicEffect basicEffect;
+        protected Effect basicEffect;
         protected BoundingSphere boundingSphere;
         protected Project2Game game;
         protected VertexInputLayout inputLayout;
@@ -48,29 +48,32 @@ namespace Project2.GameObjects.Abstract
             {
                 boundingSphere = model.CalculateBounds();
             }
+            this.LoadContent();
             // Setup rendering effect
            
-            basicEffect = new BasicEffect(game.GraphicsDevice)
+            /*basicEffect = new BasicEffect(game.GraphicsDevice)
             {
                 VertexColorEnabled = false,
                 View = game.camera.view,
                 Projection = game.camera.projection,
                 World = Matrix.Identity,
                 LightingEnabled = true
-            };
-            basicEffect.EnableDefaultLighting();
+            };*/
+            //basicEffect.EnableDefaultLighting();
         }
 
         public virtual void LoadContent()
         {
+            this.basicEffect = game.Content.Load<Effect>("Shaders/BlurCray");
         }
 
         public virtual void Draw(GameTime gametime)
         {
-            basicEffect.CurrentTechnique.Passes[0].Apply();
+            /*basicEffect.CurrentTechnique.Passes[0].Apply();
             basicEffect.World = this.worldMatrix;
             basicEffect.View = game.camera.view;
             basicEffect.Projection = game.camera.projection;
+            basicEffect.*/
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
             
@@ -79,7 +82,15 @@ namespace Project2.GameObjects.Abstract
                 pass.Apply();
                 if (model != null)
                 {
-                    model.Draw(game.GraphicsDevice, worldMatrix, game.camera.view, game.camera.projection, basicEffect);
+                    //model.Draw(game.GraphicsDevice, worldMatrix, game.camera.view, game.camera.projection, basicEffect);
+                    foreach (ModelMesh mesh in model.Meshes)
+                    {
+                        foreach (ModelMeshPart part in mesh.MeshParts)
+                        {
+                            part.Effect = basicEffect;
+                            part.Draw(game.GraphicsDevice);
+                        }
+                    }
                 }
             }
         }
@@ -112,8 +123,29 @@ namespace Project2.GameObjects.Abstract
         public virtual void Update(GameTime gametime)
         {
             // get matricies from camera
-            basicEffect.View = game.camera.view;
-            basicEffect.Projection = game.camera.projection;
+            /*basicEffect.View = game.camera.view;
+            basicEffect.Projection = game.camera.projection;*/
+            
+            // Materials
+            basicEffect.ConstantBuffers[0].Set(0, new Color4(0.2f, 0.2f, 0.2f, 1.0f)); // Ambient
+            basicEffect.ConstantBuffers[0].Set(1, new Color4(0.6f, 0.2f, 0.2f, 1.0f)); // Diffuse
+            basicEffect.ConstantBuffers[0].Set(2, new Color4(0.2f, 0.6f, 0.2f, 1.0f)); // Specular
+            basicEffect.ConstantBuffers[0].Set(4, 1.0f); // Specular power
+            basicEffect.ConstantBuffers[0].IsDirty = true;
+
+            // Lights
+            basicEffect.ConstantBuffers[1].Set(0, new Color4(0.8f, 0.8f, 0.8f, 1.0f)); // Ambient light
+            basicEffect.ConstantBuffers[1].IsDirty = true;
+
+            // Object
+            basicEffect.ConstantBuffers[2].Set(0, positionMatrix); // LocalToWorld
+            basicEffect.ConstantBuffers[2].Set(1, game.camera.projection); // LocalToProjected
+            basicEffect.ConstantBuffers[2].Set(2, worldMatrix); // WorldToLocal
+            basicEffect.ConstantBuffers[2].Set(3, game.camera.view); // WorldToview
+            //basicEffect.ConstantBuffers[2].Set(4, ); // UVTransform
+            basicEffect.ConstantBuffers[2].Set(5, game.camera.position); // EyePosition
+            basicEffect.ConstantBuffers[2].IsDirty = true;
+            
         }
 
         public bool Enabled
