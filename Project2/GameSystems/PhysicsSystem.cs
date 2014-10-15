@@ -72,31 +72,36 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
-            mouseState = game.inputManager.MouseState();
-            #region drag and drop physical objects with the mouse
-            if (mouseState.LeftButton.Down) // this does a test WHILE the mouse is held, so it'll be slowasf when held
-            {
-                //System.Diagnostics.Debug.WriteLine("INIT MOUSE CLICK");
-                //System.Diagnostics.Debug.WriteLine("Mouse: " + game.inputManager.MousePosition());
-                var ray = GetRayTo(new Point((int)mouseState.X, (int)mouseState.Y), game.camera.position, game.playerBall.Position, (float)Math.PI / 4.0f);//RayTo((int)mouseState.X, (int)mouseState.Y);
-                //System.Diagnostics.Debug.WriteLine("Ray: " + ray);
-                System.Diagnostics.Debug.WriteLine("Ray direction: " + ray.Direction);
-                System.Diagnostics.Debug.WriteLine("Calculated direction: " + Vector3.Normalize(game.playerBall.Position - ray.Position));
-                float rayLength = 100f; // not even sure if this matters anymore when we're using the non-overloaded Raycast()
-                
-                float fraction;
+            HandlePicking();
+            
+            World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
+        }
 
-                // if you replace ray.Direction with the calculated direction above and click, it works.
-                bool result = World.CollisionSystem.Raycast(toJVector(ray.Position), toJVector(ray.Direction) * rayLength, null, out grabBody, out hitNormal, out fraction);
+        private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
+        {
+            if (body.IsStatic) return false;
+            else return true;
+        }
+
+
+        private void HandlePicking()
+        {
+            if (game.inputManager.mouseClick)
+            {
+                var ray = RayTo(game.inputManager.MousePosition()); // shoot a ray from point in camera's view into scene
+
+                float fraction; // represents distance ray travelled before colliding
+
+                bool result = World.CollisionSystem.Raycast(toJVector(ray.Position), toJVector(ray.Direction), RaycastCallback, out grabBody, out hitNormal, out fraction);
                 if (result)
                 {
-                    hitPoint = toJVector(ray.Position + fraction * (ray.Direction * rayLength));
-                    System.Diagnostics.Debug.WriteLine("Hitpoint: " + hitPoint);
+                    hitPoint = toJVector(ray.Position + fraction * (ray.Direction));
+                    //System.Diagnostics.Debug.WriteLine("Hitpoint: " + hitPoint);
                     if (!grabBody.IsStatic)
                     {
-                        grabBody.ApplyImpulse(toJVector(new Vector3(1, 1, 1) * 200f), toJVector(Vector3.Zero));
-                        System.Diagnostics.Debug.WriteLine(grabBody);
+                        grabBody.ApplyImpulse(hitNormal * -10f, JVector.Zero); // invert the normal vector to create a repulsion
                     }
+                    // leftover cruft from example code
                     /*if (grabConstraint != null) World.RemoveConstraint(grabConstraint);
 
                     JVector lanchor = hitPoint - grabBody.Position;
@@ -112,39 +117,6 @@ namespace Project2
                     grabConstraint.Anchor = hitPoint;*/
                 }
             }
-
-            if (mouseState.LeftButton.Pressed)
-            {
-                hitDistance += (mouseState.WheelDelta - scrollWheel) * 0.01f;
-                scrollWheel = mouseState.WheelDelta;
-
-                if (grabBody != null)
-                {
-
-                    if (!grabBody.IsStatic)
-                    {
-                        grabBody.ApplyImpulse(toJVector(new Vector3(1, 0, 0) * 200f), toJVector(Vector3.Zero));
-                    }
-                }
-            }
-
-            #endregion
-
-            
-            World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
-        }
-
-        private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
-        {
-            if (body.IsStatic) return false;
-            else return true;
-        }
-
-
-        private void HandlePicking()
-        {
-            // started wrapping stuff and then...nah
-            //if (game.inputManager.mou)
         }
 
         /// <summary>
@@ -153,62 +125,27 @@ namespace Project2
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private Ray RayTo(int x, int y)
+        private Ray RayTo(Vector2 mousePos)
         {
-            // this all looks to be perfectly correct, but it's not giving the right values when we unproject
-            // Our viewport frustrum might have wrong near and far planes set?
-            Vector3 nearSource = new Vector3(x, y, 0);
-            Vector3 farSource = new Vector3(x, y, 1);
 
-            Matrix world = Matrix.Translation(Vector3.Zero);
+            // need to convert normalised screen coordinates back into pixel units
+            // mousepos = mousepos [0..1, 0..1] * screensize[0..1024, 0..768]
+            mousePos *= new Vector2(game.GraphicsDevice.BackBuffer.Width, game.GraphicsDevice.BackBuffer.Height);
 
+            // represents extruded screenspace
+            Vector3 nearSource = new Vector3(mousePos.X, mousePos.Y, 0);
+            Vector3 farSource = new Vector3(mousePos.X, mousePos.Y, 1);
+
+            Matrix world = Matrix.Identity;
+            
+            // get the
             Vector3 nearPoint = game.GraphicsDevice.Viewport.Unproject(nearSource, game.camera.projection, game.camera.view, world);
             Vector3 farPoint = game.GraphicsDevice.Viewport.Unproject(farSource, game.camera.projection, game.camera.view, world);
 
-            Vector3 direction = Vector3.Normalize(farPoint - nearPoint);
+            Vector3 direction = farPoint - nearPoint;
             return new Ray(nearPoint, direction);
         }
 
-        protected Ray GetRayTo(Point point, Vector3 eye, Vector3 target, float fov)
-        { // found this online somewhere, it's pretty shit, don't use it
-            float aspect;
-
-            Vector3 rayFrom = eye;
-            Vector3 rayForward = target - eye;
-            rayForward.Normalize();
-            float farPlane = 10000.0f;
-            rayForward *= farPlane;
-
-            Vector3 vertical = Vector3.UnitY;
-
-            Vector3 hor = Vector3.Cross(rayForward, vertical);
-            hor.Normalize();
-            vertical = Vector3.Cross(hor, rayForward);
-            vertical.Normalize();
-
-            float tanFov = (float)Math.Tan(fov / 2);
-            hor *= 2.0f * farPlane * tanFov;
-            vertical *= 2.0f * farPlane * tanFov;
-
-            if (game.GraphicsDevice.BackBuffer.Width > game.GraphicsDevice.BackBuffer.Height)
-            {
-                aspect = (float)game.GraphicsDevice.BackBuffer.Width / (float)game.GraphicsDevice.BackBuffer.Height;
-                hor *= aspect;
-            }
-            else
-            {
-                aspect = (float)game.GraphicsDevice.BackBuffer.Height / (float)game.GraphicsDevice.BackBuffer.Width;
-                vertical *= aspect;
-            }
-            Vector3 rayToCenter = rayFrom + rayForward;
-            Vector3 dHor = hor / (float)game.GraphicsDevice.BackBuffer.Width;
-            Vector3 dVert = vertical / (float)game.GraphicsDevice.BackBuffer.Height;
-
-            Vector3 rayTo = rayToCenter - 0.5f * hor + 0.5f * vertical;
-            rayTo += (game.GraphicsDevice.BackBuffer.Width - point.X) * dHor;
-            rayTo -= point.Y * dVert;
-            return new Ray(eye, rayTo);
-        }
 
         public void AddBody(RigidBody rigidBody)
         {

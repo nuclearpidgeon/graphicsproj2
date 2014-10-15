@@ -27,11 +27,13 @@ namespace Project2
 
 
         KeyboardState keyboardState;
-        MouseState mouseState;
+        MouseState mouseState, prevMouseState;
 
 
         private Boolean accelerometerEnabled;
         private Boolean useMouseDelta;
+
+        public Boolean mouseClick, mouseHeld;
 
         Accelerometer accelerometer;
         AccelerometerReading accelerometerReading;
@@ -57,7 +59,7 @@ namespace Project2
             pointerManager = new PointerManager(game);
             keyMapping = new KeyMapping();
 
-
+            //prevMouseState = mouseManager.GetState();
            
             // get the accelerometer. Returns null if no accelerometer found
             accelerometer = Accelerometer.GetDefault();
@@ -92,6 +94,9 @@ namespace Project2
             mouseState = mouseManager.GetState();
             pointerState = pointerManager.GetState();
 
+            mouseClick = mouseState.LeftButton.Pressed && !prevMouseState.LeftButton.Pressed;
+            mouseHeld = mouseState.LeftButton.Pressed && prevMouseState.LeftButton.Pressed;
+
             if (accelerometer != null) {
                 accelerometerReading = accelerometer.GetCurrentReading();
                 
@@ -103,7 +108,8 @@ namespace Project2
                 mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
             }
 
-            
+            // record previous mouse state
+            prevMouseState = mouseState;
 
  	        base.Update(gameTime);
         }
@@ -114,6 +120,11 @@ namespace Project2
         /// <returns></returns>
         public MouseState MouseState() {
             return this.mouseState;
+        }
+
+        public Boolean SingleClick()
+        {
+            return mouseClick;
         }
 
         /// <summary>

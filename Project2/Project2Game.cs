@@ -141,7 +141,7 @@ namespace Project2
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
             
             // Create automatic ball-following camera
-            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 0.000001f, 1f) * 30);
+            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 30);
             //// Create keyboard/mouse-controlled camera
             //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
