@@ -49,6 +49,7 @@ namespace Project2
             // gravity defaults to -9.8 m.s^-2
             // World.Gravity = new JVector(0f, -20, 0);
             accuracy = 1;   // lower this for higher FPS (accuracy = 1 still seems to work okay, it's just not ideal)
+
         }
 
         #region update - global variables
@@ -60,7 +61,6 @@ namespace Project2
         SingleBodyConstraints.PointOnPoint grabConstraint;
         RigidBody grabBody;
         float hitDistance = 0.0f;
-        int scrollWheel = 0;
         #endregion
 
         /// <summary>
@@ -71,25 +71,37 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
+            HandlePicking();
+            
+            World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
+        }
+
+        private void HandlePicking()
+        {
             mouseState = game.inputManager.MouseState();
 
-            #region drag and drop physical objects with the mouse
             if (mouseState.LeftButton.Down &&
                 !mousePreviousState.LeftButton.Down)
             {
-                System.Diagnostics.Debug.WriteLine("INIT MOUSE CLICK");
-                JVector ray = toJVector(RayTo((int)mouseState.X, (int)mouseState.Y));
-                JVector camp = toJVector(game.camera.position);
 
-                ray = JVector.Normalize(ray) * 100;
+                Ray ray = RayTo(new Vector2(mouseState.X, mouseState.Y));
+
+                float rayLength = 100f;
 
                 float fraction;
 
-                bool result = World.CollisionSystem.Raycast(camp, ray, RaycastCallback, out grabBody, out hitNormal, out fraction);
+                bool result = World.CollisionSystem.Raycast(toJVector(ray.Position), toJVector(ray.Direction) * rayLength, RaycastCallback, out grabBody, out hitNormal, out fraction);
 
                 if (result)
                 {
-                    hitPoint = camp + fraction * ray;
+                    hitPoint = toJVector(ray.Position + fraction * (ray.Direction * rayLength));
+
+                    /*
+                     * if (!grabBody.IsStatic)
+                    {
+                        grabBody.ApplyImpulse(hitNormal * -10f, JVector.Zero); // invert the normal vector to create a repulsion
+                    }
+                     */
 
                     if (grabConstraint != null) World.RemoveConstraint(grabConstraint);
 
@@ -101,21 +113,21 @@ namespace Project2
                     grabConstraint.BiasFactor = 0.1f;
 
                     World.AddConstraint(grabConstraint);
-                    hitDistance = (toVector3(hitPoint) - game.camera.position).Length();
-                    scrollWheel = mouseState.WheelDelta;
+                    hitDistance = (toVector3(hitPoint) - ray.Position).Length();
                     grabConstraint.Anchor = hitPoint;
+
                 }
             }
 
-            if (mouseState.LeftButton.Pressed)
+            if (mouseState.LeftButton.Down)
             {
-                hitDistance += (mouseState.WheelDelta - scrollWheel) * 0.01f;
-                scrollWheel = mouseState.WheelDelta;
+                hitDistance += (mouseState.WheelDelta) * 0.01f;
 
                 if (grabBody != null)
                 {
-                    Vector3 ray = RayTo((int)mouseState.X, (int)mouseState.Y); ray.Normalize();
-                    grabConstraint.Anchor = toJVector(game.camera.position + ray * hitDistance);
+
+                    Ray ray = RayTo(new Vector2(mouseState.X, mouseState.Y));
+                    grabConstraint.Anchor = toJVector(ray.Position + ray.Direction * hitDistance);
                     grabBody.IsActive = true;
                     if (!grabBody.IsStatic)
                     {
@@ -130,11 +142,8 @@ namespace Project2
                 grabBody = null;
                 grabConstraint = null;
             }
-            #endregion
 
             mousePreviousState = mouseState;
-            
-            World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
         private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
@@ -143,18 +152,30 @@ namespace Project2
             else return true;
         }
 
-        private Vector3 RayTo(int x, int y)
+        /// <summary>
+        /// Takes a screen space point and maps it to a unit length ray vector in world space.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private Ray RayTo(Vector2 mousePos)
         {
-            Vector3 nearSource = new Vector3(x, y, 0);
-            Vector3 farSource = new Vector3(x, y, 1);
+
+            // need to convert normalised screen coordinates back into pixel units
+            // mousepos = mousepos [0..1, 0..1] * screensize[0..1024, 0..768]
+            mousePos *= new Vector2(game.GraphicsDevice.BackBuffer.Width, game.GraphicsDevice.BackBuffer.Height);
+
+            // represents extruded screenspace
+            Vector3 nearSource = new Vector3(mousePos.X, mousePos.Y, 0);
+            Vector3 farSource = new Vector3(mousePos.X, mousePos.Y, 1);
 
             Matrix world = Matrix.Identity;
 
             Vector3 nearPoint = game.GraphicsDevice.Viewport.Unproject(nearSource, game.camera.projection, game.camera.view, world);
             Vector3 farPoint = game.GraphicsDevice.Viewport.Unproject(farSource, game.camera.projection, game.camera.view, world);
 
-            Vector3 direction = farPoint - nearPoint;
-            return direction;
+            Vector3 direction = Vector3.Normalize(farPoint - nearPoint);
+            return new Ray(nearPoint, direction);
         }
 
         public void AddBody(RigidBody rigidBody)
