@@ -86,7 +86,7 @@ namespace Project2
 
         private void HandlePicking()
         {
-            if (game.inputManager.mouseClick)
+            if (game.inputManager.pointerClick)
             {
                 var ray = RayTo(game.inputManager.MousePosition()); // shoot a ray from point in camera's view into scene
 

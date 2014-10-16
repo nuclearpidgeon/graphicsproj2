@@ -33,11 +33,10 @@ namespace Project2
         private Boolean accelerometerEnabled;
         private Boolean useMouseDelta;
 
-        public Boolean mouseClick, mouseHeld;
+        public Boolean pointerClick, pointerHeld;
 
         Accelerometer accelerometer;
         AccelerometerReading accelerometerReading;
-
         
         
         KeyMapping keyMapping { get; set; }
@@ -66,7 +65,7 @@ namespace Project2
             
             // automatically enable accelerometer if we have one
             this.AccelerometerEnabled(true);
-            this.MouseDeltaEnabled(true);
+            this.MouseDeltaEnabled(false);
             
         }
 
@@ -94,9 +93,18 @@ namespace Project2
             mouseState = mouseManager.GetState();
             pointerState = pointerManager.GetState();
 
-            mouseClick = mouseState.LeftButton.Pressed && !prevMouseState.LeftButton.Pressed;
-            mouseHeld = mouseState.LeftButton.Pressed && prevMouseState.LeftButton.Pressed;
+            pointerClick = mouseState.LeftButton.Pressed && !prevMouseState.LeftButton.Pressed;
+            pointerHeld = mouseState.LeftButton.Pressed && prevMouseState.LeftButton.Pressed;
 
+            if (pointerState.Points.Count > 0)
+            {
+                pointerClick |= true;
+                //pointerState.Points[0].Position;
+            }
+            else
+            {
+                pointerClick |= false;
+            }
             if (accelerometer != null) {
                 accelerometerReading = accelerometer.GetCurrentReading();
                 
@@ -124,7 +132,7 @@ namespace Project2
 
         public Boolean SingleClick()
         {
-            return mouseClick;
+            return pointerClick;
         }
 
         /// <summary>
