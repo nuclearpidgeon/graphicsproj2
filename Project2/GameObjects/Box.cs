@@ -19,9 +19,8 @@ namespace Project2.GameObjects
     public class Box : PhysicsObject
     {
         public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Boolean isStatic)
-            : base(game, model, position, GeneratePhysicsDescription(position, model, size, isStatic))
+            : base(game, model, position, size, GeneratePhysicsDescription(position, model, size, isStatic))
         {
-
         }
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Vector3 size, Boolean isStatic)

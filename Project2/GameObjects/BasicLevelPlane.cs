@@ -46,11 +46,14 @@ namespace Project2.GameObjects
             if (slopeType == SlopeType.SlopeDown) { frontHeight = slopeHeight; }
             this.floor = new Terrain(game, position, xSize, ySize, frontHeight, backHeight);
             this.walls = new List<Box>();
+            // Create boxes
             for (int i = 0; i < (ySize/4); i++)
             {
+                // Iterating over each box position
                 float yPos = 2f; // base height
                 if (slopeType == SlopeType.SlopeUp) {
-                    yPos += slopeHeight * ((float)i) / ((float)ySize / 4.0f); // oh god what have I done
+                    // Increase the height of the box to match the slope
+                    yPos += slopeHeight * ((float)i) / ((float)ySize / 4.0f);
                 }
                 else if (slopeType == SlopeType.SlopeDown) {
                     yPos += slopeHeight;

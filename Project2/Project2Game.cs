@@ -1,4 +1,4 @@
-﻿  // Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
+﻿// Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +75,7 @@ namespace Project2
 
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
-
+            
         }
 
         protected override void LoadContent()
@@ -99,7 +99,7 @@ namespace Project2
             level = new BasicLevel(this);
 
             playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
-            
+
             gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
             gameObjects.Add(playerBall);
             //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
@@ -144,9 +144,9 @@ namespace Project2
             // Listen for the virtual graphics device so we can initialise the 
             // graphicsDeviceManagers' rendering variables
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
-            
+
             // Create automatic ball-following camera
-            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 30);
+            camera = new ThirdPersonCamera(this, new Vector3(0f, 20f, 0f), new Vector3(0f, 1f, 2f) * 25);
             //// Create keyboard/mouse-controlled camera
             //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
@@ -221,7 +221,7 @@ namespace Project2
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
-
+            
             
             
             // Handle base.Update
