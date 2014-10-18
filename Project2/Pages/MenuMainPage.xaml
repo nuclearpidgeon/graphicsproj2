@@ -36,14 +36,14 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+            <TextBlock x:Name="pageTitle" Text="Chase" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" SelectionChanged="pageTitle_SelectionChanged"/>
         </Grid>
-        <Canvas HorizontalAlignment="Center" Height="Auto" Width="200"  Grid.Row="1" VerticalAlignment="Top" Margin="0,50,0,0">
-            <Button Content="Play" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="200" Height="50" Click="Click_Play"/>
-            <Button Content="Instructions" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Margin="0,50,0,0" Width="200" Height="50" Click="Click_Instructions"/>
-            <Button Content="Options" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Margin="0,100,0,0" Width="200" Height="50" Click="Click_Options"/>
-            <Button Content="Credits" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Margin="0,150,0,0" Width="200" Height="50" Click="Click_Credits"/>
+        <Canvas HorizontalAlignment="Center" Height="Auto" Width="350"  Grid.Row="1" VerticalAlignment="Top" Margin="0,50,0,0">
+            <Button Content="Play" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Height="105" Click="Click_Play" Width="350" FontSize="36"/>
+            <Button Content="Instructions" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="350" Height="106" Click="Click_Instructions" Canvas.Top="105" FontSize="30"/>
+            <Button Content="Options" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="350" Height="105" Click="Click_Options" Canvas.Top="211" FontSize="22"/>
+            <Button Content="Credits" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Top" Width="350" Height="105" Click="Click_Credits" Canvas.Top="316" FontSize="22"/>
         </Canvas>
     </Grid>
 </Page>
