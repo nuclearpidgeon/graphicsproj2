@@ -167,14 +167,46 @@ namespace Project2
            this.navigationHelper.GoBack();
         }
 
-
         #endregion
+
         private void initView()
         {
             accelSensitiveSlider.Value = PersistentStateManager.accelSensitivity;
             accelSensitiveSlider.ValueChanged += AccelerometerSensitiveChanged;
-           // accelSensitiveSlider.SetValue(Slider.ValueProperty, );
+
+            accelPhysAccuracySlider.Value = PersistentStateManager.physicsAccuracy;
+            accelPhysAccuracySlider.ValueChanged += PhysicsAccuracyChanged;
+
+            cboxMultithreadingPhysics.IsChecked = PersistentStateManager.physicsMultithreading;
+            cboxMultithreadingPhysics.Checked += cboxMultithreadingPhysicsChecked;
+            cboxMultithreadingPhysics.Unchecked += cboxMultithreadingPhysicsChecked;
+
+            cboxDebugRender.IsChecked = PersistentStateManager.debugRender;
+            cboxDebugRender.Checked += cboxDebugRenderChecked;
+            cboxDebugRender.Unchecked += cboxDebugRenderChecked;
+
+            cboxDynamicTimestep.IsChecked = PersistentStateManager.dynamicTimestep;
+            cboxDynamicTimestep.Checked += cboxDynamicTimestepChecked;
+            cboxDynamicTimestep.Unchecked += cboxDynamicTimestepChecked;
+
             UpdateButtons();
+        }
+
+        private void cboxMultithreadingPhysicsChecked(object sender, RoutedEventArgs e)
+        {
+            PersistentStateManager.physicsMultithreading = cboxMultithreadingPhysics.IsChecked.Value;
+        }
+
+
+        private void cboxDebugRenderChecked(object sender, RoutedEventArgs e)
+        {
+            PersistentStateManager.debugRender = cboxDebugRender.IsChecked.Value;
+        }
+
+
+        private void cboxDynamicTimestepChecked(object sender, RoutedEventArgs e)
+        {
+            PersistentStateManager.dynamicTimestep = cboxDynamicTimestep.IsChecked.Value;
         }
 
         private void TextureHighClick(object sender, RoutedEventArgs e)
@@ -224,11 +256,17 @@ namespace Project2
             PersistentStateManager.lightingQuality = q;
             UpdateButtons();
         }
-
+        
         private void AccelerometerSensitiveChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine(e.OldValue);
             PersistentStateManager.accelSensitivity = e.NewValue;
+        }
+        private void PhysicsAccuracyChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            int newVal = (int)e.NewValue;
+            if (newVal == 0) newVal = 1;
+            ((Slider)sender).Value = newVal;
+            PersistentStateManager.physicsAccuracy = newVal;
         }
     }
 }

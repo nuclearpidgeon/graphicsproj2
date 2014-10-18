@@ -49,8 +49,8 @@
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40"/>
         </Grid>
 
-        <Canvas HorizontalAlignment="Center" Height="Auto" Grid.Row="2" Width="500"  VerticalAlignment="Top" Margin="0,50,0,0">
-            <Grid HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Width="500" Height="400" >
+        <Canvas HorizontalAlignment="Center" Height="Auto" Grid.Row="2" Width="850"  VerticalAlignment="Top" Margin="0,20,0,0">
+            <Grid HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Width="850" Height="600" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="*"/>
@@ -58,25 +58,40 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="300"/>
                 </Grid.ColumnDefinitions>
-                <!-- Row 0 & 1 -->
-                <TextBlock Text="Lighting" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="3" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button x:Name="lighting_low_btn" FontSize="24" Content="Low" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Click="LightingLowClick"/>
-                <Button x:Name="lighting_med_btn" FontSize="24" Content="Medium" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Click="LightingMediumClick"/>
-                <Button x:Name="lighting_high_btn" FontSize="24" Content="High" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" Click="LightingHighClick"/>
-                <!-- Row 2 & 3 -->
-                <TextBlock Text="Textures" FontSize="24" FontWeight="Bold" Grid.Row="2" Grid.ColumnSpan="3" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button x:Name="txture_low_btn" FontSize="24" Content="Low" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Click="TextureLowClick" />
-                <Button x:Name="txture_med_btn" FontSize="24" Content="Medium" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Click="TextureMediumClick"/>
-                <Button x:Name="txture_high_btn" FontSize="24" Content="High" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" Click="TextureHighClick"/>
                 <!-- Row 4 & 5 -->
-                <TextBlock Text="Accelerometer Sensitivity" FontSize="24"  FontWeight="Bold" Grid.Row="4" Grid.ColumnSpan="3" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center"/>
-                <Slider x:Name="accelSensitiveSlider" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="500" Maximum="2" Minimum="0.2" LargeChange="0.1" SmallChange="0.05" StepFrequency="0.05" TickFrequency="3"/>
+                <TextBlock Text="Accelerometer Sensitivity" FontSize="24"  FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="5" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center"/>
+                <Slider x:Name="accelSensitiveSlider" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="2" Minimum="0.2" LargeChange="0.1" SmallChange="0.05" StepFrequency="0.05" TickFrequency="3"/>
+                <!-- Row 4 & 5 -->
+                <TextBlock Text="Physics Accuracy" FontSize="24"  FontWeight="Bold" Grid.Row="2" Grid.ColumnSpan="5" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center"/>
+                <Slider x:Name="accelPhysAccuracySlider" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="10" LargeChange="1" SmallChange="1" StepFrequency="1" TickFrequency="1" Value="1"/>
+                <!-- Row 0 & 1 -->
+                <TextBlock Text="Lighting" FontSize="24" FontWeight="Bold" Grid.Row="4" Grid.ColumnSpan="3" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="lighting_low_btn" FontSize="24" Content="Low" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Click="LightingLowClick"/>
+                <Button x:Name="lighting_med_btn" FontSize="24" Content="Medium" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Click="LightingMediumClick"/>
+                <Button x:Name="lighting_high_btn" FontSize="24" Content="High" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" Click="LightingHighClick"/>
+                <!-- Row 2 & 3 -->
+                <TextBlock Text="Textures" FontSize="24" FontWeight="Bold" Grid.Row="6" Grid.ColumnSpan="3" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="txture_low_btn" FontSize="24" Content="Low" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Center" Click="TextureLowClick" />
+                <Button x:Name="txture_med_btn" FontSize="24" Content="Medium" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" Click="TextureMediumClick"/>
+                <Button x:Name="txture_high_btn" FontSize="24" Content="High" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center" Click="TextureHighClick"/>
+                <!-- Row 6 & 7, Checkboxes -->
+                <TextBlock Text="Misc" FontSize="24" FontWeight="Bold" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="1" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <CheckBox x:Name="cboxMultithreadingPhysics" Content="Physics Multithreading" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300"  />
+                <CheckBox x:Name="cboxDebugRender" Content="Debug Renderer" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300" />
+                <CheckBox x:Name="cboxDynamicTimestep" Content="Dynamic Timestep" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300" />
+                
             </Grid>
         </Canvas>
     </Grid>
