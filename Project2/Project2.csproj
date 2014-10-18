@@ -159,6 +159,9 @@
     <Compile Include="VertexPositionNormalColor.cs" />
     <ToolkitModel Include="Content\Models\monkey.fbx" />
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
+    <ToolkitModel Include="Content\Models\monkey.dae">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitModel>
     <None Include="Project2_StoreKey.pfx" />
     <None Include="Project2_TemporaryKey.pfx" />
     <None Include="Content\Shaders\BlurCray.dgsl" />
@@ -184,6 +187,9 @@
     <Content Include="Content\Models\jacket.dds" />
     <Content Include="Content\Models\pants.dds" />
     <Content Include="Content\Models\upBodyC.dds" />
+    <ToolkitFxc Include="Content\Shaders\Phong.fx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitFxc>
     <Content Include="Content\Terrain\heightmap.jpg" />
     <ToolkitFxc Include="Content\Shaders\BlurCray.hlsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -191,7 +197,7 @@
     <Content Include="Content\Shaders\EdgeFucker.hlsl" />
     <Content Include="Content\Shaders\GreyScale.hlsl" />
     <Content Include="Content\Shaders\Invertbw.hlsl" />
-    <Content Include="Content\Shaders\Phong.hlsl" />
+    <None Include="Content\Shaders\Phong.hlsl" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
