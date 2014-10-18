@@ -8,7 +8,4 @@
     mc:Ignorable="d"    
     d:DesignWidth="1280"
     d:DesignHeight="800">
-    <AppBar>
-        <AppBarButton Icon="Accept" Label="AppBarButton"/>
-    </AppBar>
 </SwapChainBackgroundPanel>
