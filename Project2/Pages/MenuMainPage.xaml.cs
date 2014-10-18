@@ -128,5 +128,10 @@ namespace Project2.Pages
             App.MoveToScreen(typeof(CreditsPage));
         }
         #endregion
+
+        private void pageTitle_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

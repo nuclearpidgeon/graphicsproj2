@@ -62,5 +62,6 @@
                     <TextBlock Grid.Row="4" Text="Robin Thompson" FontSize="24"/>
                 </Grid>
         </Canvas>
+        <TextBlock HorizontalAlignment="Left" Margin="10,605,0,0" Grid.Row="1" TextWrapping="Wrap" Text="This program incorporates the &quot;Jitter Portable&quot; physics library, our derivative work of the &quot;Jitter Physics&quot; library licensed under the zLib license." VerticalAlignment="Top" FontSize="14"/>
     </Grid>
 </Page>
