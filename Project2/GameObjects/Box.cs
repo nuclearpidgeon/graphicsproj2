@@ -16,19 +16,19 @@ using Jitter.Dynamics;
 
 namespace Project2.GameObjects
 {
-    public class Ball : PhysicsObject
+    public class Box : PhysicsObject
     {
-        public Ball(Project2Game game, Model model, Vector3 position, Boolean isStatic)
-            : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
+        public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Boolean isStatic)
+            : base(game, model, position, GeneratePhysicsDescription(position, model, size, isStatic))
         {
 
         }
 
-        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
+        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Vector3 size, Boolean isStatic)
         {
 
             var bounds = model.CalculateBounds();
-            var collisionShape = new SphereShape(bounds.Radius);
+            var collisionShape = new BoxShape(PhysicsSystem.toJVector(size));//SphereShape(bounds.Radius);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(position),
@@ -61,8 +61,8 @@ namespace Project2.GameObjects
             //// each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             //this.SetPosition(pos);
             //this.SetOrientation(orientation);
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
+            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
+            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
 
             base.Update(gametime);
         }

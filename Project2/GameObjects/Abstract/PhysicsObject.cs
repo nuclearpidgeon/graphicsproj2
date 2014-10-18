@@ -21,7 +21,7 @@ namespace Project2.GameObjects.Abstract
     {
         public Project2Game Game { get; set; }
 
-        protected PhysicsDescription physicsDescription;
+        public PhysicsDescription physicsDescription;
 
         protected Boolean IsStaticBody;
         protected Boolean DebugDrawStatus;
@@ -42,15 +42,25 @@ namespace Project2.GameObjects.Abstract
             game.physics.AddBody(physicsDescription.RigidBody);
         }
 
-
+        public void Destroy() {
+            game.physics.RemoveBody(this.physicsDescription);
+            game.RemoveGameObject(this);
+        }
+     
 
         public override void Update(GameTime gametime)
         {
             var pos = PhysicsSystem.toVector3(this.physicsDescription.RigidBody.Position);
-            var orientation = PhysicsSystem.toMatrix(this.physicsDescription.RigidBody.Orientation);
+            Matrix orientation = PhysicsSystem.toMatrix(this.physicsDescription.RigidBody.Orientation);
+            
             //System.Diagnostics.Debug.WriteLine(pos);
             //System.Diagnostics.Debug.WriteLine(orientation);
-
+            if (pos.Y < -75)
+            {
+                Destroy();
+                game.RemoveGameObject(this);
+                return;
+            }
             // each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             this.SetPosition(pos);
             this.SetOrientation(orientation);

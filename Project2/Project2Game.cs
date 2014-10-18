@@ -20,8 +20,15 @@
 
 using System;
 using System.Collections.Generic;
+
+using Project2.GameSystems;
 using Project2.GameObjects;
 using Project2.GameObjects.Abstract;
+
+using Windows.Devices.Sensors;
+using Windows.UI.Input;
+using Windows.UI.Core;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -39,9 +46,11 @@ namespace Project2
         
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
+        private BasicLevel level;
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
+        //public ControllableCamera camera { private set; get; }
 
         private MouseManager mouseManager;
         public MouseState mouseState;
@@ -53,7 +62,7 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
-        private Ball playerBall;
+        public Monkey playerBall;
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -73,11 +82,13 @@ namespace Project2
 
         protected override void LoadContent()
         {
-            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere" })
+            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere", "monkey", "bigmonkey" })
             {
                 try
                 {
-                    models.Add(modelName, Content.Load<Model>("Models\\" + modelName));
+                    var model = Content.Load<Model>("Models\\" + modelName);
+                    BasicEffect.EnableDefaultLighting(model, false);
+                    models.Add(modelName, model);
                 }
                 catch (Exception e)
                 {
@@ -85,20 +96,42 @@ namespace Project2
                     //throw;
                 }
             }
-            var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
+            //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
+            level = new BasicLevel(this);
 
-            playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+            playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
 
-            //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
             gameObjects.Add(playerBall);
-            gameObjects.Add(new Project2.GameObjects.Terrain(this, Vector3.Zero, 7, 2, 15));
+            //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
+            foreach (var levelPiece in level.levelPieces)
+            {
+                gameObjects.AddRange(levelPiece.gameObjects);
+            }
+
+            int size = 3;
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    gameObjects.Add(
+                        new Project2.GameObjects.Boids.Boid(
+                            this, 
+                            models["Sphere"],
+                            level.getStartPosition() + new Vector3((float)((size / 2.0 - i) * 4), 10f, (float)(size / 2.0 - j) * 4),
+                            false
+                        )
+                    );
+                }
+            }
+            //gameObjects.Add(new Project2.GameObjects.Monkey(this, Vector3.Zero, 7, 2, 15));
             //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
             // Load font for console
             consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
-            // Setup spritebatch
+            // Setup spritebatch for console
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
             camera.SetFollowObject(playerBall);
@@ -114,10 +147,10 @@ namespace Project2
             // graphicsDeviceManagers' rendering variables
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
 
-            // Create camera
-            //camera = new Camera(this, new Vector3(0, 15, -15), new Vector3(0, 0, 0));
-            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
-
+            // Create automatic ball-following camera
+            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 30);
+            //// Create keyboard/mouse-controlled camera
+            //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
             // Create some GameSystems
             inputManager = new InputManager(this);
@@ -135,6 +168,12 @@ namespace Project2
             this.GameSystems.Add(physics);
             this.GameSystems.Add(inputManager);
 
+            // Initialise event handling.
+            inputManager.gestureRecognizer.Tapped += Tapped;
+            inputManager.gestureRecognizer.ManipulationStarted += OnManipulationStarted;
+            inputManager.gestureRecognizer.ManipulationUpdated += OnManipulationUpdated;
+            inputManager.gestureRecognizer.ManipulationCompleted += OnManipulationCompleted;
+            inputManager.gestureRecognizer.Holding += OnHolding;
 
             base.Initialize();
         }
@@ -154,6 +193,10 @@ namespace Project2
 
         }
 
+        public void RemoveGameObject(GameObject o)
+        {
+            this.gameObjects.Remove(o);
+        }
 
         protected override void Update(GameTime gameTime)
         {
@@ -165,18 +208,18 @@ namespace Project2
             // Update camera
             camera.Update(gameTime);
 
-            // Update the basic model
+            // Update the game objects
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Update(gameTime);
             }
 
-            // Quit on escape key
+            // Reset on escape key
             if (inputManager.IsKeyDown(Keys.Escape))
             {
-                gameObjects.Remove(playerBall);
-                playerBall = null;
-                playerBall = new GameObjects.Ball(this, models["Sphere"], new Vector3(19f, 3f, 14f), false);
+                // this is janky
+                playerBall.Destroy();
+                playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
@@ -200,6 +243,32 @@ namespace Project2
             base.OnExiting(sender, args);
         }
 
+        #region touch input event handlers for this context
+        public void Tapped(GestureRecognizer sender, TappedEventArgs args)
+        {
+            physics.Tapped(sender, args);
+        }
+
+        public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
+        {
+            physics.OnManipulationStarted(sender, args);
+        }
+
+        public void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
+        {
+            physics.OnManipulationUpdated(sender, args);
+        }
+
+        public void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
+        {
+            physics.OnManipulationCompleted(sender, args);
+        }
+
+        public void OnHolding(GestureRecognizer sender, HoldingEventArgs args)
+        {
+            //physics.OnHolding(sender, args);
+        }
+        #endregion
 
         protected override void Draw(GameTime gameTime)
         {
@@ -213,7 +282,6 @@ namespace Project2
 
             // Handle base.Draw
             base.Draw(gameTime);
-
             // SpriteBatch must be the last thing drawn, not super sure why yet.
             if (PersistentStateManager.debugRender && consoleFont != null)
             {
