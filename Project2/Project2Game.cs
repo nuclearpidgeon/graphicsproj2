@@ -26,6 +26,8 @@ using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
 
+using Project2.GameSystems;
+
 namespace Project2
 {
     // Use this namespace here in case we need to use Direct3D11 namespace as well, as this
@@ -213,11 +215,14 @@ namespace Project2
             base.Draw(gameTime);
 
             // SpriteBatch must be the last thing drawn, not super sure why yet.
-            //spriteBatch.Begin();
-            //spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
-            //spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
-            //spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-            //spriteBatch.End();
+            if (PersistentStateManager.debugRender)
+            {
+                spriteBatch.Begin();
+                spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
+                spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+                spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+                spriteBatch.End();
+            }
 
         }
     }
