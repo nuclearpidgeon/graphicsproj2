@@ -78,7 +78,7 @@ namespace Project2.GameObjects.Abstract
             basicEffect.Parameters["View"].SetValue(game.camera.view);
             basicEffect.Parameters["cameraPos"].SetValue(game.camera.position);
             basicEffect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
-            basicEffect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalMilliseconds);
+            basicEffect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
             
@@ -87,12 +87,12 @@ namespace Project2.GameObjects.Abstract
                 pass.Apply();
                 if (model != null)
                 {
-                    model.Draw(game.GraphicsDevice, worldMatrix, game.camera.view, game.camera.projection, basicEffect);
-                    /*foreach (ModelMesh mesh in model.Meshes)
+                    //model.Draw(game.GraphicsDevice, Matrix.Identity, Matrix.Identity, Matrix.Identity, basicEffect);
+                    foreach (ModelMesh mesh in model.Meshes)
                     {
                         foreach (ModelMeshPart part in mesh.MeshParts)
                         {
-                            var x = part.VertexBuffer.Resource.Layout.BufferLayouts;
+                            /*var x = part.VertexBuffer.Resource.Layout.BufferLayouts;
                             part.Effect = basicEffect;
 
                             // Lights
@@ -113,11 +113,11 @@ namespace Project2.GameObjects.Abstract
                             basicEffect.ConstantBuffers[0].Set(1, new Color4(0.6f, 0.2f, 0.2f, 1.0f)); // Diffuse
                             basicEffect.ConstantBuffers[0].Set(2, new Color4(0.2f, 0.6f, 0.2f, 1.0f)); // Specular
                             basicEffect.ConstantBuffers[0].Set(4, 1.0f); // Specular power
-                            basicEffect.ConstantBuffers[0].IsDirty = true;
-
+                            basicEffect.ConstantBuffers[0].IsDirty = true;*/
+                            part.Effect = basicEffect;
                             part.Draw(game.GraphicsDevice);
                         }
-                    }*/
+                    }
                 }
             }
         }
