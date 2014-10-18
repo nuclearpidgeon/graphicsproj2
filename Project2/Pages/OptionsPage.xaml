@@ -75,7 +75,7 @@
                 <Slider x:Name="accelSensitiveSlider" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="2" Minimum="0.2" LargeChange="0.1" SmallChange="0.05" StepFrequency="0.05" TickFrequency="3"/>
                 <!-- Row 4 & 5 -->
                 <TextBlock Text="Physics Accuracy" FontSize="24"  FontWeight="Bold" Grid.Row="2" Grid.ColumnSpan="5" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center"/>
-                <Slider x:Name="accelPhysAccuracySlider" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="10" LargeChange="1" SmallChange="1" StepFrequency="1" TickFrequency="1" Value="1"/>
+                <Slider x:Name="accelPhysAccuracySlider" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="5" LargeChange="1" SmallChange="1" StepFrequency="1" TickFrequency="1" Value="1"/>
                 <!-- Row 0 & 1 -->
                 <TextBlock Text="Lighting" FontSize="24" FontWeight="Bold" Grid.Row="4" Grid.ColumnSpan="3" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button x:Name="lighting_low_btn" FontSize="24" Content="Low" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Click="LightingLowClick"/>

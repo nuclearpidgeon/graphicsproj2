@@ -62,7 +62,12 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
+        private bool paused = false;
+
         public Monkey playerBall;
+
+        public event EventHandler PauseRequest;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -198,8 +203,20 @@ namespace Project2
             this.gameObjects.Remove(o);
         }
 
+        private void TestPause()
+        {
+            // Pause on spacekey
+            if (inputManager.PauseRequest()) togglePaused();
+        }
+
         protected override void Update(GameTime gameTime)
         {
+            TestPause();
+            if (paused)
+            {
+                inputManager.Update(gameTime);
+                return;
+            }
 
 
             // Get new mouse info
@@ -215,21 +232,30 @@ namespace Project2
             }
 
             // Reset on escape key
-            if (inputManager.IsKeyDown(Keys.Escape))
-            {
-                // this is janky
-                playerBall.Destroy();
-                playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
-                this.camera.SetFollowObject(playerBall);
-                gameObjects.Add(playerBall);
-            }
-            
-
+            if (inputManager.IsKeyDown(Keys.Escape)) restartGame();
 
             // Handle base.Update
             base.Update(gameTime);
         }
 
+        public void restartGame()
+        {
+            // this is janky
+            playerBall.Destroy();
+            playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
+            this.camera.SetFollowObject(playerBall);
+            gameObjects.Add(playerBall);
+
+        }
+
+        public void togglePaused()
+        {
+            paused = !paused;
+            // Dispatch an event to pause
+            EventHandler handler = PauseRequest;
+            if (handler != null) handler(this, null);
+
+        }
         /// <summary>
         /// Use this method body to do stuff while the game is exiting.
         /// </summary>
@@ -291,6 +317,7 @@ namespace Project2
                 spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
                 spriteBatch.End();
             }
+
 
         }
     }

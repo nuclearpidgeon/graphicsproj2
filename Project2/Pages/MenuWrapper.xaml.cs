@@ -34,6 +34,7 @@ namespace Project2
         public MainPage()
         {
             InitializeComponent();
+            rootFrame.Navigate(typeof(MenuMainPage));
         }
 
     }

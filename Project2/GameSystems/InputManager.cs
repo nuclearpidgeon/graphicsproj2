@@ -122,6 +122,7 @@ namespace Project2
         override public void Update(GameTime gameTime)
         {   
             // update state
+            keyboardManager.Update(gameTime);
             keyboardState = keyboardManager.GetState();
             mouseState = mouseManager.GetState();
             pointerState = pointerManager.GetState();
@@ -319,6 +320,24 @@ namespace Project2
             }
             return T;
         }
+
+        /// <summary>
+        /// Helper method to determine the player has requested a new pause or unpause event
+        /// </summary>
+        /// <returns>If the user has just pressed the pause button</returns>
+        public bool PauseRequest()
+        {
+            bool result = false;
+
+            if (keyboardState.IsKeyDown(keyMapping.pause_key))
+            {
+                if (!keyMapping.pause_pressed) result = keyMapping.pause_pressed = true;
+            }
+            else keyMapping.pause_pressed = false;
+
+
+            return result;
+        }
     }
 
 
@@ -340,6 +359,9 @@ namespace Project2
 
         public Keys sprint_key { get; set; }
         public Keys jump_key { get; set; }
+
+        public Keys pause_key { get; set; }
+        public bool pause_pressed { get; set; }
         #endregion
 
         public KeyMapping()
@@ -363,8 +385,9 @@ namespace Project2
             left_Secondary_key = Keys.Left;
             right_Secondary_key = Keys.Right;
 
-            sprint_key = Keys.Shift;
+            sprint_key = Keys.Shift; 
             jump_key = Keys.Space;
+            pause_key = Keys.Z;
         }
     }
 }
