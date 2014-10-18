@@ -44,18 +44,13 @@ namespace Project2
         /// search results, and so forth.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(LaunchActivatedEventArgs args)
         {
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
                 //TODO: Load state from previously suspended application
+                // Currently we have no save state, stretch goal
             }
-
-            /*
-            // Place the frame in the current Window and ensure that it is active
-            var swapchainPanel = new MainPage();
-            Window.Current.Content = swapchainPanel;
-            Window.Current.Activate();*/
 
             mainPage = Window.Current.Content as MainPage;
             // Do not repeat app initialization when the Window already has content,
@@ -71,7 +66,7 @@ namespace Project2
 
                 // Associate the frame with a SuspensionManager key.
                 SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
-                /*
+
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     // Restore the saved session state only when appropriate
@@ -84,7 +79,7 @@ namespace Project2
                         //Something went wrong restoring state.
                         //Assume there is no state and continue
                     }
-                }*/
+                }
 
                 // Place the main page in the current Window.
                 Window.Current.Content = mainPage;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
+﻿  // Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,10 @@ using System.Collections.Generic;
 using Project2.GameSystems;
 using Project2.GameObjects;
 using Project2.GameObjects.Abstract;
+
+using Windows.Devices.Sensors;
+using Windows.UI.Input;
+using Windows.UI.Core;
 
 using SharpDX;
 using SharpDX.Toolkit;
@@ -71,7 +75,7 @@ namespace Project2
 
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
-            
+
         }
 
         protected override void LoadContent()
@@ -93,10 +97,10 @@ namespace Project2
             //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
             level = new BasicLevel(this);
-
-            playerBall = new GameObjects.Monkey(this, models["dude"], level.getStartPosition(), false);
-
-            //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            
+            playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
+            
+            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
             gameObjects.Add(playerBall);
             //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
             foreach (var levelPiece in level.levelPieces)
@@ -140,9 +144,9 @@ namespace Project2
             // Listen for the virtual graphics device so we can initialise the 
             // graphicsDeviceManagers' rendering variables
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
-
+            
             // Create automatic ball-following camera
-            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
+            camera = new ThirdPersonCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 30);
             //// Create keyboard/mouse-controlled camera
             //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
@@ -162,6 +166,12 @@ namespace Project2
             this.GameSystems.Add(physics);
             this.GameSystems.Add(inputManager);
 
+            // Initialise event handling.
+            inputManager.gestureRecognizer.Tapped += Tapped;
+            inputManager.gestureRecognizer.ManipulationStarted += OnManipulationStarted;
+            inputManager.gestureRecognizer.ManipulationUpdated += OnManipulationUpdated;
+            inputManager.gestureRecognizer.ManipulationCompleted += OnManipulationCompleted;
+            inputManager.gestureRecognizer.Holding += OnHolding;
 
             base.Initialize();
         }
@@ -211,6 +221,8 @@ namespace Project2
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
             }
+
+            
             
             // Handle base.Update
             base.Update(gameTime);
@@ -229,6 +241,32 @@ namespace Project2
             base.OnExiting(sender, args);
         }
 
+        #region touch input event handlers for this context
+        public void Tapped(GestureRecognizer sender, TappedEventArgs args)
+        {
+            physics.Tapped(sender, args);
+        }
+
+        public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
+        {
+            physics.OnManipulationStarted(sender, args);
+        }
+
+        public void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
+        {
+            physics.OnManipulationUpdated(sender, args);
+        }
+
+        public void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
+        {
+            physics.OnManipulationCompleted(sender, args);
+        }
+
+        public void OnHolding(GestureRecognizer sender, HoldingEventArgs args)
+        {
+            //physics.OnHolding(sender, args);
+        }
+        #endregion
 
         protected override void Draw(GameTime gameTime)
         {

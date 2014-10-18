@@ -169,7 +169,7 @@ namespace Project2.GameObjects.Abstract
 
         public virtual void SetScale(Vector3 scale)
         {
-            positionMatrix = Matrix.Scaling(scale);
+            scaleMatrix = Matrix.Scaling(scale);
             CalculateWorldMatrix();
         }
 
