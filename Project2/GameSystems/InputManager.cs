@@ -19,7 +19,7 @@ namespace Project2
     /// <summary>
     /// This class handles all user input for the game, implemented as a system.
     /// </summary>
-    public class InputManager : GameSystem, IUpdateable
+    public class InputManager : GameSystem
     {
         KeyboardManager keyboardManager;
         MouseManager mouseManager;
@@ -84,6 +84,7 @@ namespace Project2
             
         }
 
+        #region touch input event handlers
         // Call the gesture recognizer when a pointer event occurs
         void OnPointerPressed(CoreWindow sender, PointerEventArgs args)
         {
@@ -99,6 +100,7 @@ namespace Project2
         {
             gestureRecognizer.ProcessUpEvent(args.CurrentPoint);
         }
+        #endregion
 
         /// <summary>
         /// Used to set the enable state of the accelerometer.
@@ -190,8 +192,6 @@ namespace Project2
         /// <param name="t"></param>
         public void MouseDeltaEnabled(Boolean t) {
             this.useMouseDelta = t;
-            
-
         }
 
         /// <summary>
@@ -293,6 +293,7 @@ namespace Project2
 
             if (accelerometerEnabled) {
                 // look for impulse event of user jolting the tablet PC upward
+                // accelerometer.Shaken
             }
             return T;
         }
@@ -313,6 +314,7 @@ namespace Project2
 
             if (accelerometerEnabled)
             {
+                //accelerometer.Shaken
                 // I'm not sure what a "sprint" action might be like on the accelerometer, maybe an impulse in the direction of movement?
             }
             return T;
@@ -323,8 +325,9 @@ namespace Project2
     /// <summary>
     /// Class to map keys to their desired input effect. Allows for key remapping.
     /// </summary>
-    class KeyMapping {
-
+    class KeyMapping
+    {
+        #region default keymap
         public Keys up_Primary_key { get; set; }
         public Keys down_Primary_key { get; set; }
         public Keys left_Primary_key { get; set; }
@@ -337,6 +340,7 @@ namespace Project2
 
         public Keys sprint_key { get; set; }
         public Keys jump_key { get; set; }
+        #endregion
 
         public KeyMapping()
         {

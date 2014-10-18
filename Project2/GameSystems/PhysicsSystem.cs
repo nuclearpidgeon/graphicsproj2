@@ -35,7 +35,7 @@ namespace Project2
     /// 
     /// This class is implemented as a GameSystem, meaning that once it is registered, it is automagically updated at the correct frequency.
     /// </summary>
-    public class PhysicsSystem : GameSystem, IUpdateable
+    public class PhysicsSystem : GameSystem
     {
         protected Project2Game game;
         public JitterWorld World;
@@ -73,43 +73,40 @@ namespace Project2
             World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
-        /// <summary>
-        /// Takes a screen space point and maps it to a unit length ray vector in world space.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        private Ray RayTo(Vector2 mousePos)
-        {
 
-            // need to convert normalised screen coordinates back into pixel units
-            // mousepos = mousepos [0..1, 0..1] * screensize[0..1024, 0..768]
-            //mousePos *= new Vector2(game.GraphicsDevice.BackBuffer.Width, game.GraphicsDevice.BackBuffer.Height);
-
-            // represents extruded screenspace
-            Vector3 nearSource = new Vector3(mousePos.X, mousePos.Y, 0);
-            Vector3 farSource = new Vector3(mousePos.X, mousePos.Y, 1);
-
-            Matrix world = Matrix.Identity;
-            
-            // get the
-            Vector3 nearPoint = game.GraphicsDevice.Viewport.Unproject(nearSource, game.camera.projection, game.camera.view, world);
-            Vector3 farPoint = game.GraphicsDevice.Viewport.Unproject(farSource, game.camera.projection, game.camera.view, world);
-
-            Vector3 direction = Vector3.Normalize(farPoint - nearPoint);
-            return new Ray(nearPoint, direction);
-        }
-
-
-        public void AddBody(RigidBody rigidBody)
+        internal void AddBody(RigidBody rigidBody)
         {
             this.World.AddBody(rigidBody);
         }
 
+        internal void RemoveBody(GameObjects.Abstract.PhysicsDescription physicsDescription)
+        {
+            World.RemoveBody(physicsDescription.RigidBody);
+        }
+
+        /// <summary>
+        /// Adds a unit sized test cube to the physics world.
+        /// Deprecated.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="mass"></param>
+        public void addTestBox(Vector3 position, float mass)
+        {
+            // these can actually be reused between objects to save memory
+            Shape boxShape = new Jitter.Collision.Shapes.BoxShape(new JVector(1f, 1f, 1f));
+
+            RigidBody body = new RigidBody(new BoxShape(new JVector(1.0f, 1.0f, 1.0f)));
+            body.IsStatic = false;
+            body.AffectedByGravity = true;
+            body.Position = new JVector(position.X, position.Y, position.Z);
+            this.World.AddBody(body);
+        }
+
+
+        #region shape building
         public static ConvexHullShape BuildConvexHullShape(Model model) {
             var vertices = ExtractVertices(model);
             var hull = new ConvexHullShape(vertices);
-            //hull.MakeHull(vertices, 1);
             return hull;
         }
 
@@ -179,8 +176,9 @@ namespace Project2
             //ot.BuildOctree(); // (already happens in Octree constructor)
             return ot;
         }
+        #endregion
 
-
+        #region SharpDX/Jitter interop converters
         /// <summary>
         /// Helper method to interface SharpDX vector class with Jitter vector class.
         /// </summary>
@@ -228,29 +226,36 @@ namespace Project2
                 matrix.M31, matrix.M32, matrix.M33
                 );
         }
+        #endregion 
+        
+
+        #region touch manipulation
 
         /// <summary>
-        /// Adds a unit sized test cube to the physics world.
-        /// Deprecated.
+        /// Takes a screen space point and maps it to a unit length ray vector in world space.
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="mass"></param>
-        public void addTestBox(Vector3 position, float mass)
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private Ray RayTo(Vector2 mousePos)
         {
-            // these can actually be reused between objects to save memory
-            Shape boxShape = new Jitter.Collision.Shapes.BoxShape(new JVector(1f, 1f, 1f));
 
-            RigidBody body = new RigidBody(new BoxShape(new JVector(1.0f, 1.0f, 1.0f)));
-            body.IsStatic = false;
-            body.AffectedByGravity = true;
-            body.Position = new JVector(position.X, position.Y, position.Z);
-            this.World.AddBody(body);
-        }
+            // need to convert normalised screen coordinates back into pixel units
+            // mousepos = mousepos [0..1, 0..1] * screensize[0..1024, 0..768]
+            //mousePos *= new Vector2(game.GraphicsDevice.BackBuffer.Width, game.GraphicsDevice.BackBuffer.Height);
 
+            // represents extruded screenspace
+            Vector3 nearSource = new Vector3(mousePos.X, mousePos.Y, 0);
+            Vector3 farSource = new Vector3(mousePos.X, mousePos.Y, 1);
 
-        internal void RemoveBody(GameObjects.Abstract.PhysicsDescription physicsDescription)
-        {
-            World.RemoveBody(physicsDescription.RigidBody);
+            Matrix world = Matrix.Identity;
+
+            // get the
+            Vector3 nearPoint = game.GraphicsDevice.Viewport.Unproject(nearSource, game.camera.projection, game.camera.view, world);
+            Vector3 farPoint = game.GraphicsDevice.Viewport.Unproject(farSource, game.camera.projection, game.camera.view, world);
+
+            Vector3 direction = Vector3.Normalize(farPoint - nearPoint);
+            return new Ray(nearPoint, direction);
         }
 
         public void Tapped(GestureRecognizer sender, TappedEventArgs args)
@@ -374,5 +379,6 @@ namespace Project2
             if (body.IsStatic) return false;
             else return true;
         }
+        #endregion
     }
 }

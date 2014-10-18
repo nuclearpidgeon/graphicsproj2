@@ -75,6 +75,7 @@ namespace Project2
 
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
+
         }
 
         protected override void LoadContent()
@@ -240,6 +241,7 @@ namespace Project2
             base.OnExiting(sender, args);
         }
 
+        #region touch input event handlers for this context
         public void Tapped(GestureRecognizer sender, TappedEventArgs args)
         {
             physics.Tapped(sender, args);
@@ -264,6 +266,7 @@ namespace Project2
         {
             //physics.OnHolding(sender, args);
         }
+        #endregion
 
         protected override void Draw(GameTime gameTime)
         {
