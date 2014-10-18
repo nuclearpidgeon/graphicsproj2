@@ -52,6 +52,11 @@ namespace Project2
                 // Currently we have no save state, stretch goal
             }
 
+            InitMainPage();
+        }
+
+        public void InitMainPage()
+        {
             mainPage = Window.Current.Content as MainPage;
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -67,23 +72,8 @@ namespace Project2
                 // Associate the frame with a SuspensionManager key.
                 SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
 
-                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    // Restore the saved session state only when appropriate
-                    try
-                    {
-                        await SuspensionManager.RestoreAsync();
-                    }
-                    catch (SuspensionManagerException)
-                    {
-                        //Something went wrong restoring state.
-                        //Assume there is no state and continue
-                    }
-                }
-
                 // Place the main page in the current Window.
                 Window.Current.Content = mainPage;
-                rootFrame.Navigate(typeof(MenuMainPage));
             }
 
             if (rootFrame.Content == null)

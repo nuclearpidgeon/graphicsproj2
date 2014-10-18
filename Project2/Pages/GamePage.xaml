@@ -8,4 +8,17 @@
     mc:Ignorable="d"    
     d:DesignWidth="1280"
     d:DesignHeight="800">
+    <AppBar x:Name="pauseBar" Height="90" VerticalAlignment="Top" Canvas.ZIndex="1">
+        <StackPanel Orientation="Horizontal">
+            <AppBarButton x:Name="menuBtn" Label="Menu" Icon="Back" Click="menuBtn_Click"/>
+            <AppBarButton x:Name="unpauseBtn" Label="Unpause" Icon="Play" Click="unpauseBtn_Click"/>
+            <AppBarButton x:Name="restartBtn" Label="Restart" Icon="RepeatAll" Click="restartBtn_Click"/>
+        </StackPanel>
+    </AppBar>
+    <Grid x:Name="pauseOverlay" Visibility="Collapsed">
+        <Viewbox>
+            <Rectangle Fill="#FF000000" Width="1280" Height="800" Opacity="0.7"/>
+        </Viewbox>
+        <TextBlock Text="Paused" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF1F1F1" ></TextBlock>
+    </Grid>
 </SwapChainBackgroundPanel>

@@ -1,4 +1,4 @@
-﻿  // Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
+﻿// Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,12 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
+        private bool paused = false;
+
         public Monkey playerBall;
+
+        public event EventHandler PauseRequest;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -77,7 +82,7 @@ namespace Project2
 
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
-
+            
             this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
 
         }
@@ -103,7 +108,7 @@ namespace Project2
             level = new BasicLevel(this);
 
             playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
-            
+
             gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
             gameObjects.Add(playerBall);
             //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
@@ -148,7 +153,7 @@ namespace Project2
             // Listen for the virtual graphics device so we can initialise the 
             // graphicsDeviceManagers' rendering variables
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
-            
+
             // Create automatic ball-following camera
             camera = new ThirdPersonCamera(this, new Vector3(0f, 20f, 0f), new Vector3(0f, 1f, 2f) * 25);
             //// Create keyboard/mouse-controlled camera
@@ -200,8 +205,20 @@ namespace Project2
             this.gameObjects.Remove(o);
         }
 
+        private void TestPause()
+        {
+            // Pause on spacekey
+            if (inputManager.PauseRequest()) togglePaused();
+        }
+
         protected override void Update(GameTime gameTime)
         {
+            TestPause();
+            if (paused)
+            {
+                inputManager.Update(gameTime);
+                return;
+            }
 
 
             // Get new mouse info
@@ -217,21 +234,30 @@ namespace Project2
             }
 
             // Reset on escape key
-            if (inputManager.IsKeyDown(Keys.Escape))
+            if (inputManager.IsKeyDown(Keys.Escape)) restartGame();
+
+            // Handle base.Update
+            base.Update(gameTime);
+        }
+
+        public void restartGame()
             {
                 // this is janky
                 playerBall.Destroy();
                 playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
                 this.camera.SetFollowObject(playerBall);
                 gameObjects.Add(playerBall);
+
             }
+            
+        public void togglePaused()
+        {
+            paused = !paused;
+            // Dispatch an event to pause
+            EventHandler handler = PauseRequest;
+            if (handler != null) handler(this, null);
 
-            
-            
-            // Handle base.Update
-            base.Update(gameTime);
         }
-
         /// <summary>
         /// Use this method body to do stuff while the game is exiting.
         /// </summary>
@@ -287,12 +313,13 @@ namespace Project2
             // SpriteBatch must be the last thing drawn, not super sure why yet.
             if (PersistentStateManager.debugRender && consoleFont != null)
             {
-            spriteBatch.Begin();
+                spriteBatch.Begin();
                 spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
                 spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
                 spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-            spriteBatch.End();
+                spriteBatch.End();
             }
+
 
         }
     }
