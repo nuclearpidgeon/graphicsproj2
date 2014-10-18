@@ -13,6 +13,8 @@ using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
+using Project2.GameSystems;
+
 
 namespace Project2
 {
@@ -42,7 +44,7 @@ namespace Project2
             World = new JitterWorld(collisionSystem); // whole_new_world.wav
             // gravity defaults to -9.8 m.s^-2
             // World.Gravity = new JVector(0f, -20, 0);
-            accuracy = 1;   // lower this for higher FPS (accuracy = 1 still seems to work okay, it's just not ideal)
+            accuracy = PersistentStateManager.physicsAccuracy;   // lower this for higher FPS (accuracy = 1 still seems to work okay, it's just not ideal)
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
-            World.Step((float)time.TotalGameTime.TotalSeconds, true, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
+            World.Step((float)time.TotalGameTime.TotalSeconds, PersistentStateManager.physicsMultithreading, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
         }
 
         public void AddBody(RigidBody rigidBody)
