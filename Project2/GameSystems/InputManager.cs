@@ -10,6 +10,9 @@ using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
 
 using Windows.Devices.Sensors;
+using Windows.UI.Xaml;
+using Windows.UI.Input;
+using Windows.UI.Core;
 
 namespace Project2
 {
@@ -22,6 +25,8 @@ namespace Project2
         MouseManager mouseManager;
         Vector2 mouseDelta;
 
+        public GestureRecognizer gestureRecognizer;
+
         PointerManager pointerManager;
         PointerState pointerState;
 
@@ -33,11 +38,12 @@ namespace Project2
         private Boolean accelerometerEnabled;
         private Boolean useMouseDelta;
 
-        public Boolean pointerClick, pointerHeld;
+        public Boolean mouseClick, mouseHeld;
 
         Accelerometer accelerometer;
         AccelerometerReading accelerometerReading;
-        
+
+        public CoreWindow window;
         
         KeyMapping keyMapping { get; set; }
 
@@ -57,16 +63,41 @@ namespace Project2
             mouseManager = new MouseManager(game);
             pointerManager = new PointerManager(game);
             keyMapping = new KeyMapping();
-
-            //prevMouseState = mouseManager.GetState();
            
             // get the accelerometer. Returns null if no accelerometer found
             accelerometer = Accelerometer.GetDefault();
+            window = Window.Current.CoreWindow;
+
+            // Set up the gesture recognizer.  In this game, it only responds to TranslateX, TranslateY and Tap events
+            gestureRecognizer = new Windows.UI.Input.GestureRecognizer();
+            gestureRecognizer.GestureSettings = GestureSettings.ManipulationTranslateX | 
+                GestureSettings.ManipulationTranslateY | GestureSettings.Tap;
+
+            // Register event handlers for pointer events
+            window.PointerPressed += OnPointerPressed;
+            window.PointerMoved += OnPointerMoved;
+            window.PointerReleased += OnPointerReleased;
             
             // automatically enable accelerometer if we have one
             this.AccelerometerEnabled(true);
-            this.MouseDeltaEnabled(false);
+            this.MouseDeltaEnabled(true);
             
+        }
+
+        // Call the gesture recognizer when a pointer event occurs
+        void OnPointerPressed(CoreWindow sender, PointerEventArgs args)
+        {
+            gestureRecognizer.ProcessDownEvent(args.CurrentPoint);
+        }
+
+        void OnPointerMoved(CoreWindow sender, PointerEventArgs args)
+        {
+            gestureRecognizer.ProcessMoveEvents(args.GetIntermediatePoints());
+        }
+
+        void OnPointerReleased(CoreWindow sender, PointerEventArgs args)
+        {
+            gestureRecognizer.ProcessUpEvent(args.CurrentPoint);
         }
 
         /// <summary>
@@ -92,19 +123,11 @@ namespace Project2
             keyboardState = keyboardManager.GetState();
             mouseState = mouseManager.GetState();
             pointerState = pointerManager.GetState();
+            
+              
+            //mouseClick = mouseState.LeftButton.Pressed && !prevMouseState.LeftButton.Pressed;
+            //mouseHeld = mouseState.LeftButton.Pressed && prevMouseState.LeftButton.Pressed;
 
-            pointerClick = mouseState.LeftButton.Pressed && !prevMouseState.LeftButton.Pressed;
-            pointerHeld = mouseState.LeftButton.Pressed && prevMouseState.LeftButton.Pressed;
-
-            if (pointerState.Points.Count > 0)
-            {
-                pointerClick |= true;
-                //pointerState.Points[0].Position;
-            }
-            else
-            {
-                pointerClick |= false;
-            }
             if (accelerometer != null) {
                 accelerometerReading = accelerometer.GetCurrentReading();
                 
@@ -123,6 +146,15 @@ namespace Project2
         }
 
         /// <summary>
+        /// Get the raw pointer state;
+        /// </summary>
+        /// <returns></returns>
+        public PointerState PointerState()
+        {
+            return this.pointerState;
+        }
+
+        /// <summary>
         /// Get the raw mouse state;
         /// </summary>
         /// <returns></returns>
@@ -132,7 +164,7 @@ namespace Project2
 
         public Boolean SingleClick()
         {
-            return pointerClick;
+            return mouseClick;
         }
 
         /// <summary>

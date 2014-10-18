@@ -17,6 +17,11 @@ using SharpDX.Toolkit.Graphics;
 using SingleBodyConstraints = Jitter.Dynamics.Constraints.SingleBody;
 using SharpDX.Toolkit.Input;
 
+using Windows.Devices.Sensors;
+using Windows.UI.Input;
+using Windows.UI.Core;
+
+
 
 namespace Project2
 {
@@ -35,7 +40,11 @@ namespace Project2
         protected Project2Game game;
         public JitterWorld World;
 
-        private MouseState mouseState;
+        // Store information for drag and drop
+        JVector hitPoint, hitNormal;
+        SingleBodyConstraints.PointOnPoint grabConstraint;
+        RigidBody grabBody;
+        float hitDistance = 100.0f;
 
         public int accuracy { get; set; }
         // collision system used by world (or on its own)
@@ -50,19 +59,8 @@ namespace Project2
             // gravity defaults to -9.8 m.s^-2
             // World.Gravity = new JVector(0f, -20, 0);
             accuracy = 1;   // lower this for higher FPS (accuracy = 1 still seems to work okay, it's just not ideal)
+
         }
-
-        #region update - global variables
-        // Hold previous input states.
-        MouseState mousePreviousState = new MouseState();
-
-        // Store information for drag and drop
-        JVector hitPoint, hitNormal;
-        SingleBodyConstraints.PointOnPoint grabConstraint;
-        RigidBody grabBody;
-        float hitDistance = 100.0f;
-        int scrollWheel = 0;
-        #endregion
 
         /// <summary>
         /// This method is automagically called as part of GameSystem to update the physics simulation.
@@ -72,51 +70,7 @@ namespace Project2
         /// <param name="time"></param>
         override public void Update(GameTime time)
         {
-            HandlePicking();
-            
             World.Step((float)time.TotalGameTime.TotalSeconds, false, (float)Game.TargetElapsedTime.TotalSeconds / accuracy, accuracy);
-        }
-
-        private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
-        {
-            if (body.IsStatic) return false;
-            else return true;
-        }
-
-
-        private void HandlePicking()
-        {
-            if (game.inputManager.pointerClick)
-            {
-                var ray = RayTo(game.inputManager.MousePosition()); // shoot a ray from point in camera's view into scene
-
-                float fraction; // represents distance ray travelled before colliding
-
-                bool result = World.CollisionSystem.Raycast(toJVector(ray.Position), toJVector(ray.Direction), RaycastCallback, out grabBody, out hitNormal, out fraction);
-                if (result)
-                {
-                    hitPoint = toJVector(ray.Position + fraction * (ray.Direction));
-                    //System.Diagnostics.Debug.WriteLine("Hitpoint: " + hitPoint);
-                    if (!grabBody.IsStatic)
-                    {
-                        grabBody.ApplyImpulse(hitNormal * -10f, JVector.Zero); // invert the normal vector to create a repulsion
-                    }
-                    // leftover cruft from example code
-                    /*if (grabConstraint != null) World.RemoveConstraint(grabConstraint);
-
-                    JVector lanchor = hitPoint - grabBody.Position;
-                    lanchor = JVector.Transform(lanchor, JMatrix.Transpose(grabBody.Orientation));
-
-                    grabConstraint = new SingleBodyConstraints.PointOnPoint(grabBody, lanchor);
-                    grabConstraint.Softness = 0.01f;
-                    grabConstraint.BiasFactor = 0.1f;
-
-                    World.AddConstraint(grabConstraint);
-                    hitDistance = (toVector3(hitPoint) - game.camera.position).Length();
-                    scrollWheel = mouseState.WheelDelta;
-                    grabConstraint.Anchor = hitPoint;*/
-                }
-            }
         }
 
         /// <summary>
@@ -130,7 +84,7 @@ namespace Project2
 
             // need to convert normalised screen coordinates back into pixel units
             // mousepos = mousepos [0..1, 0..1] * screensize[0..1024, 0..768]
-            mousePos *= new Vector2(game.GraphicsDevice.BackBuffer.Width, game.GraphicsDevice.BackBuffer.Height);
+            //mousePos *= new Vector2(game.GraphicsDevice.BackBuffer.Width, game.GraphicsDevice.BackBuffer.Height);
 
             // represents extruded screenspace
             Vector3 nearSource = new Vector3(mousePos.X, mousePos.Y, 0);
@@ -142,7 +96,7 @@ namespace Project2
             Vector3 nearPoint = game.GraphicsDevice.Viewport.Unproject(nearSource, game.camera.projection, game.camera.view, world);
             Vector3 farPoint = game.GraphicsDevice.Viewport.Unproject(farSource, game.camera.projection, game.camera.view, world);
 
-            Vector3 direction = farPoint - nearPoint;
+            Vector3 direction = Vector3.Normalize(farPoint - nearPoint);
             return new Ray(nearPoint, direction);
         }
 
@@ -297,6 +251,128 @@ namespace Project2
         internal void RemoveBody(GameObjects.Abstract.PhysicsDescription physicsDescription)
         {
             World.RemoveBody(physicsDescription.RigidBody);
+        }
+
+        public void Tapped(GestureRecognizer sender, TappedEventArgs args)
+        {
+        }
+
+        /// <summary>
+        /// Handle initial starting movement of touch/mouse pointer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
+        {
+            Vector2 location = new Vector2((float)args.Position.X, (float)args.Position.Y);
+            HandleGrabBody(location);
+        }
+
+        /// <summary>
+        /// Handle touch/mouse manipulation updated
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        public void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
+        {
+
+            hitDistance += 0.01f;
+
+            Vector2 location = new Vector2((float)args.Position.X, (float)args.Position.Y);
+
+            if (grabBody != null)
+            { //if we already have a grabbody....
+                HandleMoveGrabBody(location);
+            }
+            else
+            {//...or if we pick one up on our swiping journey
+                HandleGrabBody(location);
+            }
+        }
+
+        /// <summary>
+        /// Releases physics body (if applicable) on release of pointer, either mouse button up or removal of touch input
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        public void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
+        {
+            if (grabConstraint != null)
+            {
+                World.RemoveConstraint(grabConstraint);
+            }
+            grabBody = null;
+            grabConstraint = null;
+        }
+
+        /// <summary>
+        /// Searches for physics objects to "grab" based on in input location.
+        /// </summary>
+        /// <param name="location"></param>
+        private void HandleGrabBody(Vector2 location)
+        {
+            Ray ray = RayTo(location);
+
+            float rayLength = 100f;
+
+            float fraction; // represents distance ray travelled before colliding
+
+            bool result = World.CollisionSystem.Raycast(toJVector(ray.Position), toJVector(ray.Direction) * rayLength, RaycastCallback, out grabBody, out hitNormal, out fraction);
+
+            if (result)
+            {
+                hitPoint = toJVector(ray.Position + fraction * (ray.Direction * rayLength));
+
+                if (grabConstraint != null)
+                {
+                    World.RemoveConstraint(grabConstraint);
+                }
+
+                JVector lanchor = hitPoint - grabBody.Position;
+                lanchor = JVector.Transform(lanchor, JMatrix.Transpose(grabBody.Orientation));
+
+                grabConstraint = new SingleBodyConstraints.PointOnPoint(grabBody, lanchor);
+                grabConstraint.Softness = 0.01f;
+                grabConstraint.BiasFactor = 0.1f;
+
+                World.AddConstraint(grabConstraint);
+                hitDistance = (toVector3(hitPoint) - ray.Position).Length();
+                grabConstraint.Anchor = hitPoint;
+
+            }
+        }
+        
+        /// <summary>
+        /// Moves physics body based on input (touch or mouse) movement location.
+        /// </summary>
+        /// <param name="location"></param>
+        private void HandleMoveGrabBody(Vector2 location)
+        {
+            Ray ray = RayTo(location);
+
+            grabConstraint.Anchor = toJVector(ray.Position + ray.Direction * hitDistance);
+            grabBody.IsActive = true;
+
+            /*
+            if (!grabBody.IsStatic)
+            {
+                grabBody.LinearVelocity *= 0.98f;
+                grabBody.AngularVelocity *= 0.98f;
+            }
+            */
+        }
+
+        /// <summary>
+        /// Callback for Jitter Raycast method to check if an encountered physics object is static or not
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="normal"></param>
+        /// <param name="fraction"></param>
+        /// <returns></returns>
+        private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
+        {
+            if (body.IsStatic) return false;
+            else return true;
         }
     }
 }
