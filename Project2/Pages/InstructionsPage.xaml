@@ -45,5 +45,74 @@
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
+
+
+
+        <FlipView HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" >
+            <FlipViewItem Height="519">
+                <Grid Margin="0,0,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
+                        <Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="You play as a lone ball. (with some edgy backstory or something, idk..)"/>
+                    </TextBlock>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Assets/Logo.png"/>
+                </Grid>
+            </FlipViewItem>
+
+            <FlipViewItem Height="519">
+                <Grid Margin="0,0,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
+                        <Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Collect &lt;insert boid name here&gt;s by rolling close to them to have them join your party."/>
+                    </TextBlock>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Content/Terrain/heightmap.jpg"/>
+                </Grid>
+            </FlipViewItem>
+
+            <FlipViewItem Height="519">
+                <Grid Margin="0,0,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
+                        <Run FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Guide your flock to the endzone in a safe and timely manner to achieve the highest score."/>
+                    </TextBlock>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Assets/Logo.png"/>
+                </Grid>
+            </FlipViewItem>
+
+            <FlipViewItem Height="519">
+                <Grid Margin="0,0,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
+                        <Run FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Use the mouse or touch-screen to fling enemies away to protect your flock. Activate physics elements of the environment by interacting with them in a similar manner."/>
+                    </TextBlock>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Assets/Logo.png"/>
+                </Grid>
+            </FlipViewItem>
+            <FlipViewItem Height="519">
+                <Grid Margin="0,0,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
+                        <Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Use the accelerometer, keyboard or on-screen controls to influence the direction in which you roll across the landscape."/>
+                    </TextBlock>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Assets/Logo.png"/>
+                </Grid>
+            </FlipViewItem>
+
+        </FlipView>
     </Grid>
 </Page>
