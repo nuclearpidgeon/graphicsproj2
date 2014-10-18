@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Project2.GameSystems;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -214,7 +214,9 @@ namespace Project2
                     (float)accelerometerReading.AccelerationX * -1, //this is due to RH matrix stuff
                     0f,
                     (float)accelerometerReading.AccelerationY
-                    );
+                    )
+                    * (float)PersistentStateManager.accelSensitivity; // apply accelerometer sensitivity scaling
+
             }
             //Debug.WriteLine(v);
             return v;

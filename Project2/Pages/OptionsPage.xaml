@@ -72,7 +72,7 @@
                 </Grid.ColumnDefinitions>
                 <!-- Row 4 & 5 -->
                 <TextBlock Text="Accelerometer Sensitivity" FontSize="24"  FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="5" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center"/>
-                <Slider x:Name="accelSensitiveSlider" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="2" Minimum="0.2" LargeChange="0.1" SmallChange="0.05" StepFrequency="0.05" TickFrequency="3"/>
+                <Slider x:Name="accelSensitiveSlider" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="2" Minimum="0.2" LargeChange="0.1" SmallChange="0.05" StepFrequency="0.05" TickFrequency="0.2" Value="1" TickPlacement="Inline"/>
                 <!-- Row 4 & 5 -->
                 <TextBlock Text="Physics Accuracy" FontSize="24"  FontWeight="Bold" Grid.Row="2" Grid.ColumnSpan="5" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center"/>
                 <Slider x:Name="accelPhysAccuracySlider" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="5" Width="700" Maximum="10" LargeChange="1" SmallChange="1" StepFrequency="1" TickFrequency="1" Value="1"/>
@@ -89,8 +89,8 @@
                 <!-- Row 6 & 7, Checkboxes -->
                 <TextBlock Text="Misc" FontSize="24" FontWeight="Bold" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="1" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <CheckBox x:Name="cboxMultithreadingPhysics" Content="Physics Multithreading" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300"  />
-                <CheckBox x:Name="cboxDebugRender" Content="Debug Renderer" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300" />
-                <CheckBox x:Name="cboxDynamicTimestep" Content="Dynamic Timestep" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300" />
+                <CheckBox x:Name="cboxDebugRender" Content="Debug Renderer" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300" IsChecked="False" />
+                <CheckBox x:Name="cboxDynamicTimestep" Content="Dynamic Timestep" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="1" FontSize="24" HorizontalAlignment="Right" Width="300" IsChecked="False" />
                 
             </Grid>
         </Canvas>

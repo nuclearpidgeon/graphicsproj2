@@ -78,6 +78,8 @@ namespace Project2
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
 
+            this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
+
         }
 
         protected override void LoadContent()
