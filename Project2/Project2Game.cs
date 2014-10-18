@@ -25,6 +25,10 @@ using Project2.GameSystems;
 using Project2.GameObjects;
 using Project2.GameObjects.Abstract;
 
+using Windows.Devices.Sensors;
+using Windows.UI.Input;
+using Windows.UI.Core;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -96,7 +100,7 @@ namespace Project2
 
             playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
 
-            //gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 14f), false));
+            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
             gameObjects.Add(playerBall);
             //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
             foreach (var levelPiece in level.levelPieces)
@@ -162,6 +166,12 @@ namespace Project2
             this.GameSystems.Add(physics);
             this.GameSystems.Add(inputManager);
 
+            // Initialise event handling.
+            inputManager.gestureRecognizer.Tapped += Tapped;
+            inputManager.gestureRecognizer.ManipulationStarted += OnManipulationStarted;
+            inputManager.gestureRecognizer.ManipulationUpdated += OnManipulationUpdated;
+            inputManager.gestureRecognizer.ManipulationCompleted += OnManipulationCompleted;
+            inputManager.gestureRecognizer.Holding += OnHolding;
 
             base.Initialize();
         }
@@ -212,6 +222,8 @@ namespace Project2
                 gameObjects.Add(playerBall);
             }
             
+            
+            
             // Handle base.Update
             base.Update(gameTime);
         }
@@ -229,6 +241,32 @@ namespace Project2
             base.OnExiting(sender, args);
         }
 
+        #region touch input event handlers for this context
+        public void Tapped(GestureRecognizer sender, TappedEventArgs args)
+        {
+            physics.Tapped(sender, args);
+        }
+
+        public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
+        {
+            physics.OnManipulationStarted(sender, args);
+        }
+
+        public void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
+        {
+            physics.OnManipulationUpdated(sender, args);
+        }
+
+        public void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
+        {
+            physics.OnManipulationCompleted(sender, args);
+        }
+
+        public void OnHolding(GestureRecognizer sender, HoldingEventArgs args)
+        {
+            //physics.OnHolding(sender, args);
+        }
+        #endregion
 
         protected override void Draw(GameTime gameTime)
         {

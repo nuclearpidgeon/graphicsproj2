@@ -50,9 +50,9 @@ namespace Project2.Pages
         public MenuMainPage()
         {
             this.InitializeComponent();
-           // this.navigationHelper = new NavigationHelper(this);
-           // this.navigationHelper.LoadState += navigationHelper_LoadState;
-           // this.navigationHelper.SaveState += navigationHelper_SaveState;
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += navigationHelper_LoadState;
+            this.navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
         /// <summary>
