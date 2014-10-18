@@ -112,8 +112,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
+    <Compile Include="GameObjects\BasicLevel.cs" />
+    <Compile Include="GameObjects\BasicLevelPlane.cs" />
+    <Compile Include="GameObjects\Boids\Boid.cs" />
+    <Compile Include="GameObjects\Box.cs" />
     <Compile Include="GameObjects\Monkey.cs" />
     <Compile Include="GameSystems\Camera.cs" />
+    <Compile Include="GameSystems\PersistentStateManager.cs" />
     <Compile Include="GameSystems\ThirdPersonCamera.cs" />
     <Compile Include="GameSystems\ControllableCamera.cs" />
     <Compile Include="GameObjects\Abstract\ColoredGameObject.cs" />
@@ -129,8 +134,20 @@
     <Compile Include="GameSystems\GameState.cs" />
     <Compile Include="GameSystems\GameStateManager.cs" />
     <Compile Include="GameSystems\InputManager.cs" />
-    <Compile Include="Pages\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Pages\CreditsPage.xaml.cs">
+      <DependentUpon>CreditsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GamePage.xaml.cs">
+      <DependentUpon>GamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\InstructionsPage.xaml.cs">
+      <DependentUpon>InstructionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MenuMainPage.xaml.cs">
+      <DependentUpon>MenuMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MenuWrapper.xaml.cs">
+      <DependentUpon>MenuWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\OptionsPage.xaml.cs">
       <DependentUpon>OptionsPage.xaml</DependentUpon>
@@ -143,6 +160,12 @@
     <Compile Include="VertexPositionNormalColor.cs" />
     <ToolkitModel Include="Content\Models\monkey.fbx" />
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
+    <None Include="Content\Shaders\BlurCray.dgsl" />
+    <None Include="Content\Shaders\EdgeFucker.dgsl" />
+    <None Include="Content\Shaders\GreyScale.dgsl" />
+    <None Include="Content\Shaders\Invertbw.dgsl" />
+    <None Include="Content\Shaders\Phong.dgsl" />
+    <None Include="Content\Shaders\Shader1.dgsl" />
     <None Include="Project2_StoreKey.pfx" />
     <None Include="Project2_TemporaryKey.pfx" />
     <None Include="SigningKey.snk" />
@@ -157,16 +180,24 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <ToolkitFont Include="Content\CourierNew10.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitFont>
     <Content Include="Content\Models\duckCM.dds" />
     <Content Include="Content\Models\head.dds" />
     <Content Include="Content\Models\jacket.dds" />
     <Content Include="Content\Models\pants.dds" />
     <Content Include="Content\Models\upBodyC.dds" />
+    <Content Include="Content\Shaders\BlurCray.hlsl" />
+    <Content Include="Content\Shaders\EdgeFucker.hlsl" />
+    <Content Include="Content\Shaders\GreyScale.hlsl" />
+    <Content Include="Content\Shaders\Invertbw.hlsl" />
+    <ToolkitFxc Include="Content\Shaders\Phong.fx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitFxc>
+    <Content Include="Content\Shaders\Phong.hlsl" />
     <Content Include="Content\Terrain\heightmap.jpg" />
     <None Include="Package.StoreAssociation.xml" />
-    <ToolkitFont Include="Content\CourierNew10.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </ToolkitFont>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -177,7 +208,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MainPage.xaml">
+    <Page Include="Pages\CreditsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\InstructionsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MenuMainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MenuWrapper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

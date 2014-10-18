@@ -29,6 +29,7 @@ float4 cameraPos;
 float4 lightAmbCol = float4(0.4f, 0.4f, 0.4f, 1.0f);
 float4 lightPntPos = float4(0.0f, 0.0f, -2.0f, 1.0f);
 float4 lightPntCol = float4(1.0f, 1.0f, 1.0f, 1.0f);
+float Time;
 float4x4 worldInvTrp;
 //
 
@@ -36,7 +37,7 @@ struct VS_IN
 {
 	float4 pos : SV_POSITION;
 	float4 nrm : NORMAL;
-	float4 col : COLOR;
+	//float4 col : COLOR;
 // Other vertex properties, e.g. texture co-ords, surface Kd, Ks, etc
 };
 
@@ -65,8 +66,7 @@ PS_IN VS( VS_IN input )
     output.pos = mul(viewPos, Projection);
 
 	// Just pass along the colour at the vertex
-	output.col = input.col;
-
+	output.col = float4(Time % 1.0f, Time % 2.0f, Time % 3.0f, 1.0);
 	return output;
 }
 

@@ -78,6 +78,7 @@ namespace Project2.GameObjects.Abstract
             basicEffect.Parameters["View"].SetValue(game.camera.view);
             basicEffect.Parameters["cameraPos"].SetValue(game.camera.position);
             basicEffect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
+            basicEffect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalMilliseconds);
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
             
