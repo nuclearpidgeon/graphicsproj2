@@ -31,6 +31,11 @@ namespace Project2.GameObjects.Abstract
         {
         }
 
+        protected GameObject(Project2Game game, Model model, Vector3 position, Vector3 scale)
+            : this(game, model, position, Vector3.Zero, scale)
+        {
+        }
+
         protected GameObject(Project2Game game, Model model, Vector3 position, Vector3 orientation, Vector3 scale)
         {
             this.game = game;
