@@ -63,7 +63,7 @@ namespace Project2
             mouseManager = new MouseManager(game);
             pointerManager = new PointerManager(game);
             keyMapping = new KeyMapping();
-           
+
             // get the accelerometer. Returns null if no accelerometer found
             accelerometer = Accelerometer.GetDefault();
             window = Window.Current.CoreWindow;
@@ -72,7 +72,7 @@ namespace Project2
             gestureRecognizer = new Windows.UI.Input.GestureRecognizer();
             gestureRecognizer.GestureSettings = GestureSettings.ManipulationTranslateX | 
                 GestureSettings.ManipulationTranslateY | GestureSettings.Tap;
-
+            
             // Register event handlers for pointer events
             window.PointerPressed += OnPointerPressed;
             window.PointerMoved += OnPointerMoved;
@@ -125,7 +125,7 @@ namespace Project2
             keyboardState = keyboardManager.GetState();
             mouseState = mouseManager.GetState();
             pointerState = pointerManager.GetState();
-            
+
               
             //mouseClick = mouseState.LeftButton.Pressed && !prevMouseState.LeftButton.Pressed;
             //mouseHeld = mouseState.LeftButton.Pressed && prevMouseState.LeftButton.Pressed;

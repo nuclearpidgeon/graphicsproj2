@@ -45,6 +45,23 @@
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
+        <Canvas HorizontalAlignment="Center" Height="Auto" Width="500"  Grid.Row="1" VerticalAlignment="Top" Margin="0,50,0,0">
+            <TextBlock Text="Programmers" FontSize="24" FontWeight="Bold"/>
+                <Grid HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Width="400" Height="300" Canvas.Left="250" >
+                    <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Lucas Berezy" FontSize="24"/>
+                    <TextBlock Grid.Row="1" Text="Lucas Cooper" FontSize="24"/>
+                    <TextBlock Grid.Row="2" Text="Stewart Webb" FontSize="24"/>
+                    <TextBlock Grid.Row="3" Text="Josh Brown" FontSize="24"/>
+                    <TextBlock Grid.Row="4" Text="Robin Thompson" FontSize="24"/>
+                </Grid>
+        </Canvas>
     </Grid>
 </Page>
 
