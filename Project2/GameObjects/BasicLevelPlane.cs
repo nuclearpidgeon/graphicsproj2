@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,7 +63,8 @@ namespace Project2.GameObjects
                 var zPos = i * 4;
                 var size = 4f;
                 walls.Add(
-                    new Box(game, game.models["box"], position + new Vector3(0f,yPos,zPos), new Vector3(size), true)
+                    new Box(game, game.models["box"], position + new Vector3(0f,yPos,zPos), new Vector3(size), new Vector3(10, 2, (float)Math.PI), true)
+                    
                 );
                 walls.Add(
                     new Box(game, game.models["box"], position + new Vector3(xSize, yPos, zPos), new Vector3(size), true)
