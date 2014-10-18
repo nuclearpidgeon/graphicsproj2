@@ -102,5 +102,10 @@ namespace Project2.Pages
         }
 
         #endregion
+
+        private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
