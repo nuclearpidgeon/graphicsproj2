@@ -11,8 +11,8 @@ namespace Project2.GameObjects.Boids
 {
     class NeutralBoid : Boid
     {
-        public NeutralBoid(Project2Game game, Model model, Vector3 position)
-            : base(game, model, position, Flock.BoidType.Neutral)
+        public NeutralBoid(Project2Game game, Flock flock, Model model, Vector3 position)
+            : base(game, flock, model, position, Flock.BoidType.Neutral)
         {
 
         }

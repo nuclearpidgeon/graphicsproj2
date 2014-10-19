@@ -12,13 +12,16 @@ using SharpDX.Toolkit.Graphics;
 
 namespace Project2.GameObjects.Boids
 {
-    abstract class Boid : PhysicsObject
+    public abstract class Boid : PhysicsObject
     {
-        private Flock.BoidType boidType;
-        public Boid(Project2Game game, Model model, Vector3 position, Flock.BoidType boidType)
+        public Flock.BoidType boidType;
+        public Flock flock;
+
+        public Boid(Project2Game game, Flock flock, Model model, Vector3 position, Flock.BoidType boidType)
             : base(game, model, position, GeneratePhysicsDescription(position, model, false))
         {
             this.boidType = boidType;
+            this.flock = flock;
         }
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)

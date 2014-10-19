@@ -59,6 +59,14 @@ namespace Project2.Levels
                     flock.AddBoid(Flock.BoidType.Friendly, getStartPosition() + new Vector3((float)((size / 2.0 - i) * 4), 10f, (float)(size / 2.0 - j) * 4));
                 }
             }
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    flock.AddBoid(Flock.BoidType.Enemy, getStartPosition() + new Vector3((float)((size / 2.0 - i) * 4), 20f, (float)(size / 2.0 - j) * 4));
+                }
+            }
         }
     }
 }

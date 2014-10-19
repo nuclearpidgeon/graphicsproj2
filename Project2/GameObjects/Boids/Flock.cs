@@ -18,7 +18,7 @@ namespace Project2.GameObjects.Boids
             Neutral
         }
 
-        private List<Boid> boidList;
+        public List<Boid> boidList;
         public Project2Game game;
         public Flock(Project2Game game)
         {
@@ -31,15 +31,15 @@ namespace Project2.GameObjects.Boids
             switch (boidType)
             {
                 case BoidType.Friendly:
-                    boidList.Add(new FriendlyBoid(game, game.models["Sphere"], position));
+                    boidList.Add(new FriendlyBoid(game, this, game.models["Sphere"], position));
                     break;
 
                 case BoidType.Enemy:
-                    boidList.Add(new EnemyBoid(game, game.models["Teapot"], position));
+                    boidList.Add(new EnemyBoid(game, this, game.models["Teapot"], position));
                     break;
 
                 case BoidType.Neutral:
-                    boidList.Add(new NeutralBoid(game, game.models["Sphere"], position));
+                    boidList.Add(new NeutralBoid(game, this, game.models["Sphere"], position));
                     break;
             }
         }

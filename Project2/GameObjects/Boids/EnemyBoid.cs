@@ -11,8 +11,11 @@ namespace Project2.GameObjects.Boids
 {
     class EnemyBoid : Boid
     {
-        public EnemyBoid(Project2Game game, Model model, Vector3 position)
-            : base(game, model, position, Flock.BoidType.Enemy)
+        const double playerAvoidRadius = 20;
+        const double attackRadius = 20;
+
+        public EnemyBoid(Project2Game game, Flock flock, Model model, Vector3 position)
+            : base(game, flock, model, position, Flock.BoidType.Enemy)
         {
 
         }
@@ -20,13 +23,22 @@ namespace Project2.GameObjects.Boids
         public override void Update(GameTime gametime)
         {
             var dist_to_player = game.level.player.Position - this.Position;
-            var dir_to_player = Vector3.Zero;
-            if (dist_to_player.Length() < 20f)
+            if (dist_to_player.Length() < playerAvoidRadius)
             {
-                dir_to_player = -1 * Vector3.Normalize(dist_to_player); // avoid player
+                var dir_to_player =Vector3.Normalize(dist_to_player); // avoid player
+                this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * -0.3f);
             }
 
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.1f);
+            // attack friendly boids
+            foreach (var boid in flock.boidList.Where(b => b.boidType == Flock.BoidType.Friendly && b != this))
+            {
+                var distance = boid.Position - this.Position;
+                if (distance.Length() < attackRadius)
+                {
+                    this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(distance) * 0.001f);
+                }
+            }
+
 
             base.Update(gametime);
         }
