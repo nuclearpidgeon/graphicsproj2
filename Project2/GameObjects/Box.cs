@@ -19,9 +19,40 @@ namespace Project2.GameObjects
     public class Box : PhysicsObject
     {
         public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Boolean isStatic)
-            : base(game, model, position, size, GeneratePhysicsDescription(position, model, size, isStatic))
+            : base(game, model, position, Vector3.Zero, size, GeneratePhysicsDescription(position, model, size, isStatic))
         {
         }
+
+        public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Vector3 orientation, Boolean isStatic)
+            : base(game, model, position, orientation, size, GeneratePhysicsDescription(position, model, size, orientation, isStatic))
+        {
+        }
+
+        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Vector3 size, Vector3 orientation, bool isStatic)
+        {
+            var bounds = model.CalculateBounds();
+            var collisionShape = new BoxShape(PhysicsSystem.toJVector(size));//SphereShape(bounds.Radius);
+            var rigidBody = new RigidBody(collisionShape)
+            {
+                Position = PhysicsSystem.toJVector(position),
+                Orientation = PhysicsSystem.toJMatrix(Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z)),
+                IsStatic = isStatic,
+                EnableDebugDraw = true,
+                Mass = 600f
+            };
+
+            var description = new PhysicsDescription()
+            {
+                IsStatic = isStatic,
+                CollisionShape = collisionShape,
+                Debug = true,
+                RigidBody = rigidBody,
+                Position = position
+            };
+
+            return description;
+        }
+
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Vector3 size, Boolean isStatic)
         {
