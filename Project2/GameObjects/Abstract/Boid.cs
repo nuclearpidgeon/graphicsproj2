@@ -12,13 +12,13 @@ using SharpDX.Toolkit.Graphics;
 
 namespace Project2.GameObjects.Boids
 {
-    class Boid : PhysicsObject
+    abstract class Boid : PhysicsObject
     {
-
-        public Boid(Project2Game game, Model model, Vector3 position, Boolean isStatic)
-            : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
+        private Flock.BoidType boidType;
+        public Boid(Project2Game game, Model model, Vector3 position, Flock.BoidType boidType)
+            : base(game, model, position, GeneratePhysicsDescription(position, model, false))
         {
-
+            this.boidType = boidType;
         }
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
@@ -60,14 +60,6 @@ namespace Project2.GameObjects.Boids
             //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
             //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
 
-            var dist_to_player  = game.playerBall.Position - this.Position;
-            var dir_to_player = Vector3.Zero;
-            if (dist_to_player.Length() < 20f)
-            {
-                dir_to_player = Vector3.Normalize(dist_to_player);
-            }
-
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.1f);
             base.Update(gametime);
         }
 
