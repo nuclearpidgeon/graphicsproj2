@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
+﻿  // Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ using Project2.GameObjects.Abstract;
 using Windows.Devices.Sensors;
 using Windows.UI.Input;
 using Windows.UI.Core;
-
+using Project2.Levels;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -46,7 +46,7 @@ namespace Project2
         
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
-        private BasicLevel level;
+        public Level level;
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
@@ -62,9 +62,9 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
+        public PhysicsObject player;
         private bool paused = false;
 
-        public Monkey playerBall;
 
         public event EventHandler PauseRequest;
 
@@ -82,7 +82,7 @@ namespace Project2
 
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
-            
+
             this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
 
         }
@@ -105,33 +105,8 @@ namespace Project2
             }
             //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
-            level = new BasicLevel(this);
+            level = new TestLevel(this);
 
-            playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
-
-            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
-            gameObjects.Add(playerBall);
-            //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
-            foreach (var levelPiece in level.levelPieces)
-            {
-                gameObjects.AddRange(levelPiece.gameObjects);
-            }
-
-            int size = 3;
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    gameObjects.Add(
-                        new Project2.GameObjects.Boids.Boid(
-                            this, 
-                            models["Sphere"],
-                            level.getStartPosition() + new Vector3((float)((size / 2.0 - i) * 4), 10f, (float)(size / 2.0 - j) * 4),
-                            false
-                        )
-                    );
-                }
-            }
             //gameObjects.Add(new Project2.GameObjects.Monkey(this, Vector3.Zero, 7, 2, 15));
             //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
@@ -141,7 +116,7 @@ namespace Project2
             // Setup spritebatch for console
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
-            camera.SetFollowObject(playerBall);
+            camera.SetFollowObject(this.level.player);
 
             base.LoadContent();
         }
@@ -153,7 +128,7 @@ namespace Project2
             // Listen for the virtual graphics device so we can initialise the 
             // graphicsDeviceManagers' rendering variables
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
-
+            
             // Create automatic ball-following camera
             camera = new ThirdPersonCamera(this, new Vector3(0f, 20f, 0f), new Vector3(0f, 1f, 2f) * 25);
             //// Create keyboard/mouse-controlled camera
@@ -232,6 +207,7 @@ namespace Project2
             {
                 gameObjects[i].Update(gameTime);
             }
+            level.Update(gameTime);
 
             // Reset on escape key
             if (inputManager.IsKeyDown(Keys.Escape)) restartGame();
@@ -241,22 +217,17 @@ namespace Project2
         }
 
         public void restartGame()
-            {
-                // this is janky
-                playerBall.Destroy();
-                playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
-                this.camera.SetFollowObject(playerBall);
-                gameObjects.Add(playerBall);
+        {
+            level.ResetPlayer();
+        }
 
-            }
-            
         public void togglePaused()
         {
             paused = !paused;
             // Dispatch an event to pause
             EventHandler handler = PauseRequest;
-            if (handler != null) handler(this, null);
-
+            if (handler != null) handler(this, null);            
+            
         }
         /// <summary>
         /// Use this method body to do stuff while the game is exiting.
@@ -307,17 +278,17 @@ namespace Project2
             {
                 gameObjects[i].Draw(gameTime);
             }
-
+            level.Draw(gameTime);
             // Handle base.Draw
             base.Draw(gameTime);
             // SpriteBatch must be the last thing drawn, not super sure why yet.
             if (PersistentStateManager.debugRender && consoleFont != null)
             {
-                spriteBatch.Begin();
+            spriteBatch.Begin();
                 spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
                 spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
                 spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-                spriteBatch.End();
+            spriteBatch.End();
             }
 
 

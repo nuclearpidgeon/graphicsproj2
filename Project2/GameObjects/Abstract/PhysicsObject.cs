@@ -33,8 +33,8 @@ namespace Project2.GameObjects.Abstract
 
         }
 
-        protected PhysicsObject(Project2Game game, Model model, Vector3 position, Vector3 size, PhysicsDescription physicsDescription)
-            : base(game, model, position, size)
+        protected PhysicsObject(Project2Game game, Model model, Vector3 position, Vector3 orientation, Vector3 size, PhysicsDescription physicsDescription)
+            : base(game, model, position, orientation, size)
         {
             this.physicsDescription = physicsDescription;
             this.Position = physicsDescription.Position;
@@ -43,13 +43,12 @@ namespace Project2.GameObjects.Abstract
         }
 
         protected PhysicsObject(Project2Game game, Model model, Vector3 position, PhysicsDescription physicsDescription)
-            : this(game,model,position,Vector3.One,physicsDescription)
+            : this(game,model,position, Vector3.Zero, Vector3.One,physicsDescription)
         {
         }
 
         public void Destroy() {
             game.physics.RemoveBody(this.physicsDescription);
-            game.RemoveGameObject(this);
         }
      
 
