@@ -40,7 +40,7 @@ namespace Project2.GameObjects
             this.game = game;
             this.worldMatrix = Matrix.Identity;
             this.xSize = xSize;
-            this.ySize = ySize;
+            this.ySize = ySize; // this should be z size for consistency in 3D
             float frontHeight = 0f;
             float backHeight = 0f;
             if (slopeType == SlopeType.SlopeUp) { backHeight = slopeHeight; }
@@ -48,6 +48,21 @@ namespace Project2.GameObjects
             this.floor = new Terrain(game, position, xSize, ySize, frontHeight, backHeight);
             this.walls = new List<Box>();
             // Create boxes
+
+
+            // calculate the angle of gradient
+            var angle = (float)Math.Atan2(backHeight - frontHeight, xSize - 0); //y_2 - y_2 / x_2 - x_1 = gradient
+            var separation = xSize; // disatance between walls (default to tile width)
+            var wallWidth = 2.0f; // width of wall
+            var wallHeight = 4.0f; // height of wall
+            // vertical displacement of wall, offset so it sits on the ground
+            var heightDisplacement = Math.Abs((backHeight - frontHeight)/2.0f) + wallHeight / 2.0f;
+            // instantiate a wall for either side of the plane
+            walls.Add(new Box(game, game.models["box"], position + new Vector3(0f, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0), true));
+            walls.Add(new Box(game, game.models["box"], position + new Vector3(separation, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0), true));
+
+            
+            /*
             for (int i = 0; i < (ySize/4); i++)
             {
                 // Iterating over each box position
@@ -63,13 +78,13 @@ namespace Project2.GameObjects
                 var zPos = i * 4;
                 var size = 4f;
                 walls.Add(
-                    new Box(game, game.models["box"], position + new Vector3(0f,yPos,zPos), new Vector3(size), new Vector3(10, 2, (float)Math.PI), true)
+                    new Box(game, game.models["box"], position + new Vector3(0f, yPos, zPos), new Vector3(size), new Vector3(0, -angle, 0), true)
                     
                 );
                 walls.Add(
-                    new Box(game, game.models["box"], position + new Vector3(xSize, yPos, zPos), new Vector3(size), true)
+                    new Box(game, game.models["box"], position, new Vector3(1, 2, 3), new Vector3(0, -angle, 0), true)
                 );
-            }
+            }*/
             this.gameObjects = new List<GameObject>();
             this.gameObjects.Add(floor);
             this.gameObjects.AddRange(walls);
