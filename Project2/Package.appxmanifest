@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="65418LucasBerezy.Project2App" Publisher="CN=4C313793-6B08-405F-A557-ABEDA241F016" Version="1.1.0.4" />
+  <Identity Name="65418LucasBerezy.Project2App" Publisher="CN=4C313793-6B08-405F-A557-ABEDA241F016" Version="1.1.0.5" />
   <Properties>
     <DisplayName>Project2App</DisplayName>
     <PublisherDisplayName>Lucas Berezy</PublisherDisplayName>
