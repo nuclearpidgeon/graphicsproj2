@@ -63,6 +63,11 @@ namespace Project2
         public InputManager inputManager { private set; get; }
 
         public PhysicsObject player;
+        private bool paused = false;
+
+
+        public event EventHandler PauseRequest;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -77,6 +82,8 @@ namespace Project2
 
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
+
+            this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
 
         }
 
@@ -173,8 +180,20 @@ namespace Project2
             this.gameObjects.Remove(o);
         }
 
+        private void TestPause()
+        {
+            // Pause on spacekey
+            if (inputManager.PauseRequest()) togglePaused();
+        }
+
         protected override void Update(GameTime gameTime)
         {
+            TestPause();
+            if (paused)
+            {
+                inputManager.Update(gameTime);
+                return;
+            }
 
 
             // Get new mouse info
@@ -188,20 +207,28 @@ namespace Project2
             {
                 gameObjects[i].Update(gameTime);
             }
+            level.Update(gameTime);
 
             // Reset on escape key
-            if (inputManager.IsKeyDown(Keys.Escape))
-            {
-                level.ResetPlayer();
-            }
+            if (inputManager.IsKeyDown(Keys.Escape)) restartGame();
 
-            level.Update(gameTime);
-            
-            
             // Handle base.Update
             base.Update(gameTime);
         }
 
+        public void restartGame()
+        {
+            level.ResetPlayer();
+        }
+
+        public void togglePaused()
+        {
+            paused = !paused;
+            // Dispatch an event to pause
+            EventHandler handler = PauseRequest;
+            if (handler != null) handler(this, null);            
+            
+        }
         /// <summary>
         /// Use this method body to do stuff while the game is exiting.
         /// </summary>
@@ -263,6 +290,7 @@ namespace Project2
                 spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
             spriteBatch.End();
             }
+
 
         }
     }

@@ -10,13 +10,14 @@ namespace Project2.GameSystems
 
     class PersistentStateManager
     {
+        // Default options
         public static Quality textureQuality = Quality.High;
         public static Quality lightingQuality = Quality.High;
         public static double accelSensitivity = 1.0f;
         public static int physicsAccuracy = 1;
-        public static bool debugRender = false;
+        public static bool debugRender = true;
         public static bool physicsMultithreading = false;
-        public static bool dynamicTimestep = false;
+        public static bool dynamicTimestep = true;
 
     }
 }

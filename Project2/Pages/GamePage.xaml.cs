@@ -34,8 +34,35 @@ namespace Project2.Pages
             Window.Current.Activate();
 
             game = new Project2Game();
+            game.PauseRequest += game_PauseRequest;
             if(!game.IsRunning) game.Run(this);
         }
+
+        void game_PauseRequest(object sender, EventArgs e)
+        {
+            Visibility v = (pauseBar.IsSticky = pauseBar.IsOpen = !pauseBar.IsOpen) ? Visibility.Visible : Visibility.Collapsed;
+            pauseOverlay.Visibility = v;
+        }
+
+        private void unpauseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            game.togglePaused();
+        }
+
+        private void menuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Window.Current.Content = new MainPage();
+            Window.Current.Activate();
+        }
+
+        private void restartBtn_Click(object sender, RoutedEventArgs e)
+        {
+            game.restartGame();
+            game.togglePaused();
+        }
+
+
+
 
     }
 }

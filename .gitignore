@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Jitter/obj
+/Project2/bin
+/Project2/obj
+/Project2/Libraries/JitterPortable
