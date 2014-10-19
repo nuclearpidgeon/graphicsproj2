@@ -26,7 +26,7 @@ namespace Project2
 
         Vector2 lastMousePos;
 
-        private PhysicsObject followObject;
+        private GameObject followObject;
 
         public ThirdPersonCamera(Project2Game game, Vector3 position, Vector3 offset)
         {
@@ -45,7 +45,7 @@ namespace Project2
             );
         }
 
-        public void SetFollowObject(PhysicsObject toFollow)
+        public void SetFollowObject(GameObject toFollow)
         {
             this.followObject = toFollow;
         }

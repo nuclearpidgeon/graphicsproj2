@@ -112,10 +112,16 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
+    <Compile Include="GameObjects\Abstract\LevelPiece.cs" />
+    <Compile Include="GameObjects\Boids\EnemyBoid.cs" />
+    <Compile Include="GameObjects\Boids\Flock.cs" />
+    <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
+    <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameSystems\PersistentStateManager.cs" />
-    <Compile Include="GameObjects\BasicLevelPlane.cs" />
+    <Compile Include="GameObjects\LevelPieces\LevelPlane.cs" />
     <Compile Include="GameObjects\Box.cs" />
-    <Compile Include="GameObjects\BasicLevel.cs" />
+    <Compile Include="GameObjects\Level.cs" />
+    <Compile Include="Levels\TestLevel.cs" />
     <Compile Include="Pages\CreditsPage.xaml.cs">
       <DependentUpon>CreditsPage.xaml</DependentUpon>
     </Compile>
@@ -128,7 +134,7 @@
     <Compile Include="Pages\MenuMainPage.xaml.cs">
       <DependentUpon>MenuMainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameObjects\Boids\Boid.cs" />
+    <Compile Include="GameObjects\Abstract\Boid.cs" />
     <Compile Include="GameObjects\Monkey.cs" />
     <Compile Include="GameSystems\Camera.cs" />
     <Compile Include="GameSystems\ThirdPersonCamera.cs" />
@@ -268,7 +274,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scenes\" />
     <Folder Include="Shaders\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

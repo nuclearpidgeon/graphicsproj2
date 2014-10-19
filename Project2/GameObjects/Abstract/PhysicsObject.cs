@@ -49,7 +49,6 @@ namespace Project2.GameObjects.Abstract
 
         public void Destroy() {
             game.physics.RemoveBody(this.physicsDescription);
-            game.RemoveGameObject(this);
         }
      
 
