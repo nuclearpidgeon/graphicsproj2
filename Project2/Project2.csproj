@@ -131,6 +131,9 @@
     <Compile Include="Pages\InstructionsPage.xaml.cs">
       <DependentUpon>InstructionsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LevelSelect.xaml.cs">
+      <DependentUpon>LevelSelect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MenuMainPage.xaml.cs">
       <DependentUpon>MenuMainPage.xaml</DependentUpon>
     </Compile>
@@ -209,6 +212,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\InstructionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\LevelSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
