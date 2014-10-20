@@ -12,7 +12,6 @@ using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
 
 using Project2.GameObjects.Abstract;
-using Project2.GameObjects.LevelPieces;
 
 namespace Project2.GameObjects
 {
@@ -30,8 +29,8 @@ namespace Project2.GameObjects
         
         //private BasicEffect basicEffect;
 
-        public const int PreferedTileWidth = 64;
-        public const int PreferedTileHeight = 64;
+        public const int PreferedTileWidth = 72;
+        public const int PreferedTileHeight = 72;
 
         public Level(Project2Game game)
         {
