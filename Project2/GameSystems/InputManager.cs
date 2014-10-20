@@ -389,7 +389,7 @@ namespace Project2
 
             sprint_key = Keys.Shift; 
             jump_key = Keys.Space;
-            pause_key = Keys.Z;
+            pause_key = Keys.Escape;
         }
     }
 }

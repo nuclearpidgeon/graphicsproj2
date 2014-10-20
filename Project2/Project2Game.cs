@@ -213,7 +213,7 @@ namespace Project2
             level.Update(gameTime);
 
             // Reset on escape key
-            if (inputManager.IsKeyDown(Keys.Escape)) restartGame();
+            // if (inputManager.IsKeyDown(Keys.Escape)) restartGame();
 
             // Handle base.Update
             base.Update(gameTime);
