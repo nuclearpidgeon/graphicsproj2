@@ -63,6 +63,11 @@ namespace Project2.GameObjects.Abstract
             {
                 Destroy();
                 game.RemoveGameObject(this);
+                if (Object.ReferenceEquals(this, this.game.player))
+                {
+                    // this doesn't work
+                    game.level.ResetPlayer();
+                }
                 return;
             }
             // each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
