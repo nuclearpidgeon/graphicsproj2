@@ -229,6 +229,11 @@ namespace Project2
             if (handler != null) handler(this, null);            
             
         }
+
+        public bool isPaused()
+        {
+            return paused;
+        }
         /// <summary>
         /// Use this method body to do stuff while the game is exiting.
         /// </summary>

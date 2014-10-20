@@ -8,7 +8,7 @@
     mc:Ignorable="d"    
     d:DesignWidth="1280"
     d:DesignHeight="800">
-    <AppBar x:Name="pauseBar" Height="90" VerticalAlignment="Top" Canvas.ZIndex="1">
+    <AppBar x:Name="pauseBar" Height="90" VerticalAlignment="Top" Canvas.ZIndex="1" Opened="pauseBar_Opened">
         <StackPanel Orientation="Horizontal">
             <AppBarButton x:Name="menuBtn" Label="Menu" Icon="Back" Click="menuBtn_Click"/>
             <AppBarButton x:Name="unpauseBtn" Label="Unpause" Icon="Play" Click="unpauseBtn_Click"/>
