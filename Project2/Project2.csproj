@@ -183,6 +183,8 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Content\l1.png" />
+    <Content Include="Content\l2.png" />
     <Content Include="Content\Models\duckCM.dds" />
     <Content Include="Content\Models\head.dds" />
     <Content Include="Content\Models\jacket.dds" />
