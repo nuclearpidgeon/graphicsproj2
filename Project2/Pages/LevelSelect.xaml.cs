@@ -19,11 +19,9 @@ using Windows.UI.Xaml.Navigation;
 namespace Project2.Pages
 {
     /// <summary>
-    /// MenuMainPage - the page which contains all the elements of the Main menu,
-    /// providing buttons to move to other screens such as instructions and options,
-    /// but also to start the game
+    /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class MenuMainPage : Page
+    public sealed partial class LevelSelect : Page
     {
 
         private NavigationHelper navigationHelper;
@@ -47,7 +45,7 @@ namespace Project2.Pages
         }
 
 
-        public MenuMainPage()
+        public LevelSelect()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -95,43 +93,19 @@ namespace Project2.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-           // navigationHelper.OnNavigatedTo(e);
+            navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-           // navigationHelper.OnNavigatedFrom(e);
+            navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
 
-        #region MenuMainPage ButtonListeners
-        /// The methods provided in this section pertain to the actions
-        /// that occur on the press of the buttons in the Main menu.
-        /// They simply delegate to a staticly-defined function, but pass
-        /// the reference to the next page as the argument.
-
-        private void Click_Play(object sender, RoutedEventArgs e)
+        private void Level1_Click(object sender, RoutedEventArgs e)
         {
-            App.MoveToScreen(typeof(LevelSelect));
-        }
-        private void Click_Instructions(object sender, RoutedEventArgs e)
-        {
-            App.MoveToScreen(typeof(InstructionsPage));
-        }
-        private void Click_Options(object sender, RoutedEventArgs e)
-        {
-            App.MoveToScreen(typeof(OptionsPage));
-        }
-        private void Click_Credits(object sender, RoutedEventArgs e)
-        {
-            App.MoveToScreen(typeof(CreditsPage));
-        }
-        #endregion
-
-        private void pageTitle_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-
+            App.MoveToScreen(typeof(GamePage));
         }
     }
 }
