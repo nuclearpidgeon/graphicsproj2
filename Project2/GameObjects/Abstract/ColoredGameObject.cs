@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SharpDX;
-using SharpDX.Toolkit;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using Project2.GameObjects.Abstract;
+//using SharpDX;
+//using SharpDX.Toolkit;
 
-namespace Project2
-{
-    using SharpDX.Toolkit.Graphics;
-    abstract public class ColoredGameObject : GameObject
-    {
-        public Buffer<VertexPositionNormalColor> vertices;
+//namespace Project2
+//{
+//    using SharpDX.Toolkit.Graphics;
+//    abstract public class ColoredGameObject : GameObject
+//    {
+//        public Buffer<VertexPositionNormalColor> vertices;
 
-        public ColoredGameObject(Project2Game game)
-            : base(game)
-        {
+//        public ColoredGameObject(Project2Game game)
+//            : base(game)
+//        {
 
-        }
-    }
-}
+//        }
+//    }
+//}

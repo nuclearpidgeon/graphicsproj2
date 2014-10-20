@@ -14,8 +14,11 @@
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>Project2_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Project2_StoreKey.pfx</PackageCertificateKeyFile>
     <NuGetPackageImportStamp>3ff7a2bd</NuGetPackageImportStamp>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>D3B2E89E37F0E59FEC3A12F462DFA3B60D05C0A2</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -27,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -107,21 +111,53 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <ToolkitModel Include="GameObjects\Torus.cs" />
-    <Compile Include="Camera.cs" />
+    <ToolkitModel Include="Content\Models\Dice.fbx" />
+    <Compile Include="GameObjects\Abstract\LevelPiece.cs" />
+    <Compile Include="GameObjects\Abstract\PhysicsPuzzle.cs" />
+    <Compile Include="GameObjects\Boids\EnemyBoid.cs" />
+    <Compile Include="GameObjects\Boids\Flock.cs" />
+    <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
+    <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
+    <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
+    <Compile Include="GameObjects\PhysicsPuzzles\SeeSaw.cs" />
+    <Compile Include="GameSystems\PersistentStateManager.cs" />
+    <Compile Include="GameObjects\LevelPieces\LevelPlane.cs" />
+    <Compile Include="GameObjects\Box.cs" />
+    <Compile Include="GameObjects\Level.cs" />
+    <Compile Include="Levels\TestLevel.cs" />
+    <Compile Include="Pages\CreditsPage.xaml.cs">
+      <DependentUpon>CreditsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GamePage.xaml.cs">
+      <DependentUpon>GamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\InstructionsPage.xaml.cs">
+      <DependentUpon>InstructionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MenuMainPage.xaml.cs">
+      <DependentUpon>MenuMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GameObjects\Abstract\Boid.cs" />
+    <Compile Include="GameObjects\Monkey.cs" />
+    <Compile Include="GameSystems\Camera.cs" />
+    <Compile Include="GameSystems\ThirdPersonCamera.cs" />
+    <Compile Include="GameSystems\ControllableCamera.cs" />
     <Compile Include="GameObjects\Abstract\ColoredGameObject.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="GameObjects\Cube.cs" />
+    <Compile Include="GameObjects\Ball.cs" />
+    <Compile Include="GameObjects\TestObject.cs" />
     <Compile Include="GameSystems\DebugDrawer.cs" />
     <Compile Include="GameObjects\Abstract\GameObject.cs" />
     <Compile Include="GameSystems\GameState.cs" />
     <Compile Include="GameSystems\GameStateManager.cs" />
     <Compile Include="GameSystems\InputManager.cs" />
-    <Compile Include="Pages\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Pages\MenuWrapper.xaml.cs">
+      <DependentUpon>MenuWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\OptionsPage.xaml.cs">
       <DependentUpon>OptionsPage.xaml</DependentUpon>
@@ -132,6 +168,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Terrain.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
+    <ToolkitModel Include="Content\Models\monkey.fbx" />
+    <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
+    <None Include="Project2_StoreKey.pfx" />
+    <None Include="Project2_TemporaryKey.pfx" />
+    <None Include="SigningKey.snk" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -143,6 +184,13 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Content\Models\duckCM.dds" />
+    <Content Include="Content\Models\head.dds" />
+    <Content Include="Content\Models\jacket.dds" />
+    <Content Include="Content\Models\pants.dds" />
+    <Content Include="Content\Models\upBodyC.dds" />
+    <Content Include="Content\Terrain\heightmap.jpg" />
+    <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ToolkitFont>
@@ -156,7 +204,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MainPage.xaml">
+    <Page Include="Pages\CreditsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\InstructionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MenuMainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MenuWrapper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -200,13 +264,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\sphere.obj" />
-    <None Include="Content\torus.fbx" />
-    <ToolkitModel Include="Content\box.x" />
+    <ToolkitModel Include="Content\Models\box.x">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ToolkitModel>
+    <ToolkitModel Include="Content\Models\Car.x" />
+    <ToolkitModel Include="Content\Models\duck.dae" />
+    <ToolkitModel Include="Content\Models\dude.fbx" />
+    <ToolkitModel Include="Content\Models\Happy.x" />
+    <ToolkitModel Include="Content\Models\Knot.x" />
+    <ToolkitModel Include="Content\Models\Skull.x" />
+    <ToolkitModel Include="Content\Models\Sphere.x" />
+    <ToolkitModel Include="Content\Models\Teapot.x" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scenes\" />
     <Folder Include="Shaders\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
@@ -214,6 +285,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SigningKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <Import Project="..\packages\SharpDX.2.6.2\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.2\build\SharpDX.targets')" />

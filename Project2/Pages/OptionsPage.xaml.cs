@@ -16,16 +16,19 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Split Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234234
+using Project2.GameSystems;
 
 namespace Project2
 {
+
+    
     /// <summary>
     /// A page that displays a group title, a list of items within the group, and details for
     /// the currently selected item.
     /// </summary>
     public sealed partial class OptionsPage : Page
     {
+
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
@@ -55,15 +58,11 @@ namespace Project2
             this.navigationHelper.LoadState += navigationHelper_LoadState;
             this.navigationHelper.SaveState += navigationHelper_SaveState;
 
-            // Setup the logical page navigation components that allow
-            // the page to only show one pane at a time.
-            this.navigationHelper.GoBackCommand = new Project2.Common.RelayCommand(() => this.GoBack(), () => this.CanGoBack());
-            this.itemListView.SelectionChanged += itemListView_SelectionChanged;
-
             // Start listening for Window size changes 
             // to change from showing two panes to showing a single pane
             Window.Current.SizeChanged += Window_SizeChanged;
-            this.InvalidateVisualState();
+
+            initView();
         }
 
         void itemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -157,99 +156,117 @@ namespace Project2
         /// <param name="e">Event data that describes the new size of the Window</param>
         private void Window_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
-            this.InvalidateVisualState();
-        }
-
-        /// <summary>
-        /// Invoked when an item within the list is selected.
-        /// </summary>
-        /// <param name="sender">The GridView displaying the selected item.</param>
-        /// <param name="e">Event data that describes how the selection was changed.</param>
-        private void ItemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Invalidate the view state when logical page navigation is in effect, as a change
-            // in selection may cause a corresponding change in the current logical page.  When
-            // an item is selected this has the effect of changing from displaying the item list
-            // to showing the selected item's details.  When the selection is cleared this has the
-            // opposite effect.
-            if (this.UsingLogicalPageNavigation()) this.InvalidateVisualState();
         }
 
         private bool CanGoBack()
         {
-            if (this.UsingLogicalPageNavigation() && this.itemListView.SelectedItem != null)
-            {
-                return true;
-            }
-            else
-            {
-                return this.navigationHelper.CanGoBack();
-            }
+           return this.navigationHelper.CanGoBack();
         }
         private void GoBack()
         {
-            if (this.UsingLogicalPageNavigation() && this.itemListView.SelectedItem != null)
-            {
-                // When logical page navigation is in effect and there's a selected item that
-                // item's details are currently displayed.  Clearing the selection will return to
-                // the item list.  From the user's point of view this is a logical backward
-                // navigation.
-                this.itemListView.SelectedItem = null;
-            }
-            else
-            {
-                this.navigationHelper.GoBack();
-            }
-        }
-
-        private void InvalidateVisualState()
-        {
-            var visualState = DetermineVisualState();
-            VisualStateManager.GoToState(this, visualState, false);
-            this.navigationHelper.GoBackCommand.RaiseCanExecuteChanged();
-        }
-
-        /// <summary>
-        /// Invoked to determine the name of the visual state that corresponds to an application
-        /// view state.
-        /// </summary>
-        /// <returns>The name of the desired visual state.  This is the same as the name of the
-        /// view state except when there is a selected item in portrait and snapped views where
-        /// this additional logical page is represented by adding a suffix of _Detail.</returns>
-        private string DetermineVisualState()
-        {
-            if (!UsingLogicalPageNavigation())
-                return "PrimaryView";
-
-            // Update the back button's enabled state when the view state changes
-            var logicalPageBack = this.UsingLogicalPageNavigation() && this.itemListView.SelectedItem != null;
-
-            return logicalPageBack ? "SinglePane_Detail" : "SinglePane";
+           this.navigationHelper.GoBack();
         }
 
         #endregion
 
-        #region NavigationHelper registration
-
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// 
-        /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
-        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void initView()
         {
-            navigationHelper.OnNavigatedTo(e);
+            accelSensitiveSlider.Value = PersistentStateManager.accelSensitivity;
+            accelSensitiveSlider.ValueChanged += AccelerometerSensitiveChanged;
+
+            accelPhysAccuracySlider.Value = PersistentStateManager.physicsAccuracy;
+            accelPhysAccuracySlider.ValueChanged += PhysicsAccuracyChanged;
+
+            cboxMultithreadingPhysics.IsChecked = PersistentStateManager.physicsMultithreading;
+            cboxMultithreadingPhysics.Checked += cboxMultithreadingPhysicsChecked;
+            cboxMultithreadingPhysics.Unchecked += cboxMultithreadingPhysicsChecked;
+
+            cboxDebugRender.IsChecked = PersistentStateManager.debugRender;
+            cboxDebugRender.Checked += cboxDebugRenderChecked;
+            cboxDebugRender.Unchecked += cboxDebugRenderChecked;
+
+            cboxDynamicTimestep.IsChecked = PersistentStateManager.dynamicTimestep;
+            cboxDynamicTimestep.Checked += cboxDynamicTimestepChecked;
+            cboxDynamicTimestep.Unchecked += cboxDynamicTimestepChecked;
+
+            UpdateButtons();
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        private void cboxMultithreadingPhysicsChecked(object sender, RoutedEventArgs e)
         {
-            navigationHelper.OnNavigatedFrom(e);
+            PersistentStateManager.physicsMultithreading = cboxMultithreadingPhysics.IsChecked.Value;
         }
 
-        #endregion
+
+        private void cboxDebugRenderChecked(object sender, RoutedEventArgs e)
+        {
+            PersistentStateManager.debugRender = cboxDebugRender.IsChecked.Value;
+        }
+
+
+        private void cboxDynamicTimestepChecked(object sender, RoutedEventArgs e)
+        {
+            PersistentStateManager.dynamicTimestep = cboxDynamicTimestep.IsChecked.Value;
+        }
+
+        private void TextureHighClick(object sender, RoutedEventArgs e)
+        {
+            SetTextureQuality(Quality.High);
+        }
+        private void TextureMediumClick(object sender, RoutedEventArgs e)
+        {
+            SetTextureQuality(Quality.Medium);
+        }
+        private void TextureLowClick(object sender, RoutedEventArgs e)
+        {
+            SetTextureQuality(Quality.Low);
+        }
+
+        private void SetTextureQuality(Quality q)
+        {
+            PersistentStateManager.textureQuality = q;
+            UpdateButtons();
+        }
+        private void UpdateButtons()
+        {
+            Dictionary<Quality, Button> qualityDict = new Dictionary<Quality, Button>() { { Quality.Low, txture_low_btn }, { Quality.Medium, txture_med_btn }, { Quality.High, txture_high_btn } };
+            foreach (KeyValuePair<Quality, Button> entry in qualityDict) entry.Value.IsEnabled = true;
+            qualityDict[PersistentStateManager.textureQuality].IsEnabled = false;
+
+            Dictionary<Quality, Button> lightingDict = new Dictionary<Quality, Button>() { { Quality.Low, lighting_low_btn }, { Quality.Medium, lighting_med_btn }, { Quality.High, lighting_high_btn } };
+            foreach (KeyValuePair<Quality, Button> entry in lightingDict) entry.Value.IsEnabled = true;
+            lightingDict[PersistentStateManager.lightingQuality].IsEnabled = false;
+        }
+
+        private void LightingHighClick(object sender, RoutedEventArgs e)
+        {
+            SetLightingQuality(Quality.High);
+        }
+        private void LightingMediumClick(object sender, RoutedEventArgs e)
+        {
+            SetLightingQuality(Quality.Medium);
+        }
+        private void LightingLowClick(object sender, RoutedEventArgs e)
+        {
+            SetLightingQuality(Quality.Low);
+        }
+
+        private void SetLightingQuality(Quality q)
+        {
+            PersistentStateManager.lightingQuality = q;
+            UpdateButtons();
+        }
+        
+        private void AccelerometerSensitiveChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            PersistentStateManager.accelSensitivity = e.NewValue;
+        }
+        private void PhysicsAccuracyChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            int newVal = (int)e.NewValue;
+            if (newVal == 0) newVal = 1;
+            ((Slider)sender).Value = newVal;
+            PersistentStateManager.physicsAccuracy = newVal;
+        }
     }
 }

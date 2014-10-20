@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
+﻿  // Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,19 @@
 using System;
 using System.Collections.Generic;
 
+using Project2.GameSystems;
+using Project2.GameObjects;
+using Project2.GameObjects.Abstract;
+
+using Windows.Devices.Sensors;
+using Windows.UI.Input;
+using Windows.UI.Core;
+using Project2.Levels;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
+
+using Project2.GameSystems;
 
 namespace Project2
 {
@@ -33,10 +43,14 @@ namespace Project2
 
     public class Project2Game : Game
     {
+        
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
+        public Level level;
+        public Dictionary<String, Model> models; 
 
-        public Camera camera { private set; get; }
+        public ThirdPersonCamera camera { private set; get; }
+        //public ControllableCamera camera { private set; get; }
 
         private MouseManager mouseManager;
         public MouseState mouseState;
@@ -47,6 +61,13 @@ namespace Project2
         public PhysicsSystem physics { private set; get; }
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
+
+        public PhysicsObject player;
+        private bool paused = false;
+
+
+        public event EventHandler PauseRequest;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
@@ -60,26 +81,44 @@ namespace Project2
             Content.RootDirectory = "Content";
 
             gameObjects = new List<GameObject>();
+            models = new Dictionary<string, Model>();
+
+            this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
+
         }
 
         protected override void LoadContent()
         {
+            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere", "monkey", "bigmonkey" })
+            {
+                try
+                {
+                    var model = Content.Load<Model>("Models\\" + modelName);
+                    BasicEffect.EnableDefaultLighting(model, false);
+                    models.Add(modelName, model);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                    //throw;
+                }
+            }
+            //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
-            gameObjects.Add(new Cube(this, new Vector3(10f, 1f, 10f), Vector3.Zero, false));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.5f, 2f, 0f), true));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 10f, 0f), true));
-            gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0.3f, 11f, 0f), true));
-            gameObjects.Add(new Ball(this, new Vector3(0f, 10f, 0f), Vector3.One, Vector3.Zero));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(0f, 12f, 0.2f), true));
-            //gameObjects.Add(new Cube(this, new Vector3(1, 1f, 1), new Vector3(3f, 1f, 0.2f), true));
-            //Model model2 = Content.Load<Model>("torus.fbx");
+            level = new TestLevel(this);
+
+            //gameObjects.Add(new Project2.GameObjects.Monkey(this, Vector3.Zero, 7, 2, 15));
+            //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
             // Load font for console
-            //consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
+            consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
-            // Setup spritebatch
+            // Setup spritebatch for console
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
+            camera.position = level.getCameraStartPosition();
+            camera.offset = level.getCameraOffset();
+            camera.SetFollowObject(this.level.player);
 
             base.LoadContent();
         }
@@ -87,15 +126,16 @@ namespace Project2
         protected override void Initialize()
         {
             Window.Title = "Project 2";
-            graphicsDeviceManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
-            graphicsDeviceManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
-            graphicsDeviceManager.ApplyChanges();
-            // Create camera
-            camera = new Camera(
-                this,
-                new Vector3(0, 15, -15),
-                new Vector3(0, 0, 0)
-            );
+
+            // Listen for the virtual graphics device so we can initialise the 
+            // graphicsDeviceManagers' rendering variables
+            graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
+            
+            // Create automatic ball-following camera
+            camera = new ThirdPersonCamera(this, Vector3.Zero, Vector3.Zero);
+            /// NOTE that camera position gets overidden in LoadContent()
+            //// Create keyboard/mouse-controlled camera
+            //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
             // Create some GameSystems
             inputManager = new InputManager(this);
@@ -113,13 +153,50 @@ namespace Project2
             this.GameSystems.Add(physics);
             this.GameSystems.Add(inputManager);
 
+            // Initialise event handling.
+            inputManager.gestureRecognizer.Tapped += Tapped;
+            inputManager.gestureRecognizer.ManipulationStarted += OnManipulationStarted;
+            inputManager.gestureRecognizer.ManipulationUpdated += OnManipulationUpdated;
+            inputManager.gestureRecognizer.ManipulationCompleted += OnManipulationCompleted;
+            inputManager.gestureRecognizer.Holding += OnHolding;
 
             base.Initialize();
         }
 
+        /// <summary>
+        /// When the virtual graphics device is created, we need to grab its viewport dimensions to
+        /// pass into the graphicsManager's PreferredBackBuffer Width and Height variables. This data is not
+        /// available until the device has been initialised.
+        /// </summary>
+        /// <param name="sender">The object which dispatched the event.</param>
+        /// <param name="e">Additional data stored in the event</param>
+        void OnDeviceCreated(object sender, EventArgs e)
+        {
+            graphicsDeviceManager.PreferredBackBufferWidth = (int)GraphicsDevice.Viewport.Width;
+            graphicsDeviceManager.PreferredBackBufferHeight = (int)GraphicsDevice.Viewport.Height;
+            graphicsDeviceManager.ApplyChanges();
+
+        }
+
+        public void RemoveGameObject(GameObject o)
+        {
+            this.gameObjects.Remove(o);
+        }
+
+        private void TestPause()
+        {
+            // Pause on spacekey
+            if (inputManager.PauseRequest()) togglePaused();
+        }
 
         protected override void Update(GameTime gameTime)
         {
+            TestPause();
+            if (paused)
+            {
+                inputManager.Update(gameTime);
+                return;
+            }
 
 
             // Get new mouse info
@@ -128,23 +205,33 @@ namespace Project2
             // Update camera
             camera.Update(gameTime);
 
-            // Update the basic model
+            // Update the game objects
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Update(gameTime);
             }
+            level.Update(gameTime);
 
-            // Quit on escape key
-            if (inputManager.IsKeyDown(Keys.Escape))
-            {
-                this.Exit();
-            }
-
+            // Reset on escape key
+            // if (inputManager.IsKeyDown(Keys.Escape)) restartGame();
 
             // Handle base.Update
             base.Update(gameTime);
         }
 
+        public void restartGame()
+        {
+            level.ResetPlayer();
+        }
+
+        public void togglePaused()
+        {
+            paused = !paused;
+            // Dispatch an event to pause
+            EventHandler handler = PauseRequest;
+            if (handler != null) handler(this, null);            
+            
+        }
         /// <summary>
         /// Use this method body to do stuff while the game is exiting.
         /// </summary>
@@ -158,26 +245,55 @@ namespace Project2
             base.OnExiting(sender, args);
         }
 
+        #region touch input event handlers for this context
+        public void Tapped(GestureRecognizer sender, TappedEventArgs args)
+        {
+            physics.Tapped(sender, args);
+        }
+
+        public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
+        {
+            physics.OnManipulationStarted(sender, args);
+        }
+
+        public void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
+        {
+            physics.OnManipulationUpdated(sender, args);
+        }
+
+        public void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
+        {
+            physics.OnManipulationCompleted(sender, args);
+        }
+
+        public void OnHolding(GestureRecognizer sender, HoldingEventArgs args)
+        {
+            //physics.OnHolding(sender, args);
+        }
+        #endregion
 
         protected override void Draw(GameTime gameTime)
         {
             // Clears the screen with the Color.CornflowerBlue
-            GraphicsDevice.Clear(new Color(0.1f));
+            GraphicsDevice.Clear(new Color(0.5f));
 
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Draw(gameTime);
             }
-
+            level.Draw(gameTime);
             // Handle base.Draw
             base.Draw(gameTime);
-
             // SpriteBatch must be the last thing drawn, not super sure why yet.
-            //spriteBatch.Begin();
-            //spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
-            //spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
-            //spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-            //spriteBatch.End();
+            if (PersistentStateManager.debugRender && consoleFont != null)
+            {
+            spriteBatch.Begin();
+                spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
+                spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+                spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            spriteBatch.End();
+            }
+
 
         }
     }

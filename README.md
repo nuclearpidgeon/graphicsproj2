@@ -93,11 +93,11 @@ Our project idea is to develop a game similar to the classic Lemmings, adapted f
 * - [x] Implement free looking camera
 * - [x] Physics system implementation
 * - [ ] Flocking behaviour (3 basic boid flock qualities)
-* - [ ] Render simple primitives (cubes, spheres, etc) for testing interoperability of all components
+* - [X] Render simple primitives (cubes, spheres, etc) for testing interoperability of all components
 
 ####Milestone 1
 * - [ ] Level design
-* - [ ] Basic XAML interface to start game, show about page, settings
+* - [X] Basic XAML interface to start game, show about page, settings
 
 ####Milestone 2
 * - [ ] Level tiling from pool of level components
