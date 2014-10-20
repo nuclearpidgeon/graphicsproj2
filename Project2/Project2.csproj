@@ -118,6 +118,7 @@
     <Compile Include="GameObjects\Boids\Flock.cs" />
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
+    <Compile Include="GameObjects\Brick.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\SeeSaw.cs" />
     <Compile Include="GameSystems\PersistentStateManager.cs" />

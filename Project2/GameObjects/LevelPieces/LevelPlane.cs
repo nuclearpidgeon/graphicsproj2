@@ -41,7 +41,7 @@ namespace Project2.GameObjects.LevelPieces
 
             if (slopeType == SlopeType.Flat)
             {
-                this.physicsPuzzles.Add(new PhysicsPuzzles.SeeSaw(game, this, new Vector3(32, 0, 32)));
+                //this.physicsPuzzles.Add(new PhysicsPuzzles.SeeSaw(game, this, new Vector3(32, 0, 32)));
             }
             // add floor
             AddChild(new Terrain(game, position, xSize, ySize, frontHeight, backHeight));

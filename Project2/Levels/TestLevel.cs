@@ -76,10 +76,10 @@ namespace Project2.Levels
                     BrickWall newBrickWall = new BrickWall(
                         this.game,
                         newPlane, //can probably refactor this reference out through a proper 'add physics puzzle method
-                        Vector3.Zero,
-                        3,
-                        3,
-                        false);
+                        new Vector3(1f,0f,1f)*8f,
+                        4,
+                        4,
+                        true);
                     newPlane.physicsPuzzles.Add(newBrickWall);
                 }
             }

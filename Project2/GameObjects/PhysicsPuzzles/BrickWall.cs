@@ -17,14 +17,25 @@ namespace Project2.GameObjects.PhysicsPuzzles
         {
             for (int i = 0; i < width; i++)
             {
-                Box newBox = new Box(
-                    game,
-                    game.models["box"],
-                    this.originPosition + new Vector3(0f,2f*i,0f),
-                    new Vector3(1f),
-                    false
-                );
-                this.AddChild(newBox);
+                for (int j = 0; j < height; j++)
+                {
+                    float sizeScaler = 4f;
+                    Vector3 brickPosition = this.originPosition + offset + new Vector3(2f * i, 1f * j, 0f) * (sizeScaler);
+                    brickPosition.Y += sizeScaler/2f; //push all bricks off the ground
+                    if (interleaved) {
+                        if (j % 2 == 1) {
+                            brickPosition.X += sizeScaler;
+                        }
+                    }
+                    Brick newBrick = new Brick(
+                        game,
+                        game.models["box"],
+                        brickPosition,
+                        new Vector3(2f, 1f, 1f) * sizeScaler,
+                        false
+                    );
+                    this.AddChild(newBrick);
+                }
             }
         }
     }
