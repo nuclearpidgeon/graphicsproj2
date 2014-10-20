@@ -8,7 +8,7 @@
     mc:Ignorable="d"    
     d:DesignWidth="1280"
     d:DesignHeight="800">
-    <AppBar x:Name="pauseBar" Height="90" VerticalAlignment="Top" Canvas.ZIndex="1">
+    <AppBar x:Name="pauseBar" Height="90" VerticalAlignment="Top" Canvas.ZIndex="1" Opened="pauseBar_Opened">
         <StackPanel Orientation="Horizontal">
             <AppBarButton x:Name="menuBtn" Label="Menu" Icon="Back" Click="menuBtn_Click"/>
             <AppBarButton x:Name="unpauseBtn" Label="Unpause" Icon="Play" Click="unpauseBtn_Click"/>
@@ -21,4 +21,6 @@
         </Viewbox>
         <TextBlock Text="Paused" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF1F1F1" ></TextBlock>
     </Grid>
+    <TextBlock x:Name="scoreTxt" HorizontalAlignment="Left" Margin="1092,720,0,0" TextWrapping="Wrap" Text="Score: 0" VerticalAlignment="Top" Foreground="#FFB90000" FontSize="40" Visibility="Collapsed" />
+
 </SwapChainBackgroundPanel>
