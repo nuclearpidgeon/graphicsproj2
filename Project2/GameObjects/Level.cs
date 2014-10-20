@@ -93,9 +93,19 @@ namespace Project2.GameObjects
             //}
         }
 
-        public Vector3 getStartPosition()
+        public virtual Vector3 getStartPosition()
         {
             return new Vector3(((float)PreferedTileWidth)/2.0f, 10.0f, ((float)PreferedTileHeight)/2.0f);
+        }
+
+        public virtual Vector3 getCameraStartPosition()
+        {
+            return new Vector3(0f, 1f, 2f) * 25;
+        }
+
+        public virtual Vector3 getCameraOffset()
+        {
+            return new Vector3(0f, 1f, 2f) * 25;
         }
 
         // stub methods from IDrawable and IUpdateable

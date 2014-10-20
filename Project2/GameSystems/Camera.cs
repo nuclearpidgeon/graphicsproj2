@@ -13,12 +13,13 @@ namespace Project2.GameSystems
 {
     public abstract class Camera : IUpdateable
     {
-        public Matrix view { get; private set; }
-        public Matrix projection { get; private set; }
+        public Project2Game game;
+        public Matrix view { get; protected set; }
+        public Matrix projection { get; protected set; }
 
-        public Vector3 position { get; private set; }
-        public Vector3 direction { get; private set; }
-        public Vector3 movement { get; private set; }
+        public Vector3 position { get; set; }
+        public Vector3 direction { get; protected set; }
+        public Vector3 movement { get; protected set; }
 
         public abstract void Update(GameTime gameTime);
 

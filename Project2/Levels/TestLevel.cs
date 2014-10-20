@@ -84,7 +84,6 @@ namespace Project2.Levels
                 }
             }
 
-
             // Create boids
 
             int flockSquareSize = 3;
@@ -106,6 +105,15 @@ namespace Project2.Levels
             }
 
 
+        }
+
+        public override Vector3 getCameraStartPosition() {
+            return new Vector3(0f, 20f, 0f);
+        }
+
+        public override Vector3 getCameraOffset()
+        {
+            return new Vector3(0f, 1f, 2f) * 45;
         }
     }
 }

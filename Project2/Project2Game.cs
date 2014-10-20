@@ -116,6 +116,8 @@ namespace Project2
             // Setup spritebatch for console
             spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
+            camera.position = level.getCameraStartPosition();
+            camera.offset = level.getCameraOffset();
             camera.SetFollowObject(this.level.player);
 
             base.LoadContent();
@@ -130,7 +132,8 @@ namespace Project2
             graphicsDeviceManager.DeviceCreated += OnDeviceCreated;
             
             // Create automatic ball-following camera
-            camera = new ThirdPersonCamera(this, new Vector3(0f, 20f, 0f), new Vector3(0f, 1f, 2f) * 45);
+            camera = new ThirdPersonCamera(this, Vector3.Zero, Vector3.Zero);
+            /// NOTE that camera position gets overidden in LoadContent()
             //// Create keyboard/mouse-controlled camera
             //camera = new ControllableCamera(this, new Vector3(0f, 30f, 0f), new Vector3(0f, 1f, 1f) * 35);
 
