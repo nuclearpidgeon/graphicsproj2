@@ -104,6 +104,8 @@ namespace Project2.Levels
                     flock.AddBoid(Flock.BoidType.Enemy, getStartPosition() + new Vector3((float)((flockSquareSize / 2.0 - i) * 4), 20f, (float)(flockSquareSize / 2.0 - j) * 4));
                 }
             }
+
+
         }
     }
 }

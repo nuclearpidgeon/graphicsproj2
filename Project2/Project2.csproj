@@ -119,6 +119,7 @@
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
+    <Compile Include="GameObjects\PhysicsPuzzles\SeeSaw.cs" />
     <Compile Include="GameSystems\PersistentStateManager.cs" />
     <Compile Include="GameObjects\LevelPieces\LevelPlane.cs" />
     <Compile Include="GameObjects\Box.cs" />
