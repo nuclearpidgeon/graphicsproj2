@@ -71,15 +71,21 @@ namespace Project2.Levels
                 );
                 LevelPieces.Add(newPlane);
                 // Add a brick wall every 2nd flat plane
-                if (i % 8 == 2)
+                if (i % 4 == 2)
                 {
+                    Vector3 brickwallOffset = new Vector3(1f,0f,1f)*8f;
+                    bool interleave = false;
+                    if (i % 8 == 6) { 
+                        brickwallOffset += new Vector3(1f, 0f, 1f) * 10;
+                        interleave = true;
+                    }
                     BrickWall newBrickWall = new BrickWall(
                         this.game,
                         newPlane, //can probably refactor this reference out through a proper 'add physics puzzle method
-                        new Vector3(1f,0f,1f)*8f,
+                        brickwallOffset,
                         4,
                         4,
-                        true);
+                        interleave);
                     newPlane.physicsPuzzles.Add(newBrickWall);
                 }
             }
@@ -111,9 +117,10 @@ namespace Project2.Levels
             return new Vector3(0f, 20f, 0f);
         }
 
-        public override Vector3 getCameraOffset()
-        {
-            return new Vector3(0f, 1f, 2f) * 45;
-        }
+        // uncomment for better overview
+        //public override Vector3 getCameraOffset()
+        //{
+        //    return new Vector3(0f, 1f, 2f) * 45;
+        //}
     }
 }
