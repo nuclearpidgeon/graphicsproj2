@@ -57,7 +57,7 @@ namespace Project2.GameObjects.Boids
             if (dist_to_player.Length() < playerRadius)
             {
                 var dir_to_player = Vector3.Normalize(dist_to_player);
-                this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.1f);
+                this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.17f);
             }
 
 
