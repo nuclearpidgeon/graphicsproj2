@@ -81,7 +81,13 @@ namespace Project2.Pages
                 unpauseBtn.Label = "Pause";
                 unpauseBtn.Icon = new SymbolIcon(Symbol.Pause);
             }
+            updateScore();
 
+        }
+
+        private void updateScore()
+        {
+            scoreTxt.Text = "lo";
         }
 
 
