@@ -15,7 +15,7 @@ using SharpDX.Toolkit;
 
 namespace Project2.Levels
 {
-    class TestLevel : Level
+    public class TestLevel : Level
     {
         public TestLevel(Project2Game game) : base(game)
         {

@@ -40,7 +40,6 @@ namespace Project2.GameObjects
             flock = new Flock(this.game);
             player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition(), false);
             ChildObjects.Add(player);
-
         }
 
         public abstract void BuildLevel();
@@ -56,17 +55,44 @@ namespace Project2.GameObjects
 
         public void Update(GameTime gameTime)
         {
+            // This feels janky, maybe it should be a class attribute? Will get updated a lot though?
+            List<GameObject> garbageList = new List<GameObject>();
+
             flock.Update(gameTime);
+            
             foreach (var childObject in ChildObjects)
             {
                 childObject.Update(gameTime);
+                if (childObject.Position.Y < -75)
+                {
+                    // Kill Kill Kill
+                    if (childObject is PhysicsObject)
+                    {
+                        PhysicsObject physicsObject = (PhysicsObject)childObject;
+                        physicsObject.Destroy();
+                    }
+                    // Can't remove object inside foreach. Need to delete outside the loop
+                    garbageList.Add(childObject);
+                }
+            }
+            // Cleanup
+            foreach (GameObject obj in garbageList)
+            {
+                ChildObjects.Remove(obj);
+                if (player == obj)
+                {
+                    ResetPlayer();
+                }
             }
             foreach (var lp in LevelPieces)
             {
                 lp.Update(gameTime);
             }
-
-            
+            // Check for player death
+            if (player.Position.Y < -75)
+            {
+                ResetPlayer();
+            }
         }
 
         public void Draw(GameTime gameTime)
