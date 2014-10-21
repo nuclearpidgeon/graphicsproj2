@@ -16,22 +16,12 @@ namespace Project2
 {
     public class ThirdPersonCamera : Camera
     {
-        public Project2Game game;
-        public Matrix view { get; set; }
-        public Matrix projection;
-
-        public Vector3 position { get; private set; }
-        public Vector3 direction { get; private set; }
-        public Vector3 offset { get; private set; }
-
-        Vector2 lastMousePos;
+        public Vector3 offset { get; set; }
 
         private GameObject followObject;
 
         public ThirdPersonCamera(Project2Game game, Vector3 position, Vector3 offset)
         {
-           
-
             this.game = game;
             this.position = position;
             this.offset = offset;

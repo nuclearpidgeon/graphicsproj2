@@ -39,6 +39,10 @@ namespace Project2.GameObjects.LevelPieces
             AddChild(new Box(game, game.models["box"], position + new Vector3(0f, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0), true));
             AddChild(new Box(game, game.models["box"], position + new Vector3(separation, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0), true));
 
+            if (slopeType == SlopeType.Flat)
+            {
+                //this.physicsPuzzles.Add(new PhysicsPuzzles.SeeSaw(game, this, new Vector3(32, 0, 32)));
+            }
             // add floor
             AddChild(new Terrain(game, position, xSize, ySize, frontHeight, backHeight));
 

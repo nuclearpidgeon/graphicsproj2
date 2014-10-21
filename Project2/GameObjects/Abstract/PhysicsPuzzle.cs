@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using SharpDX;
 using SharpDX.Toolkit;
 using Project2.GameObjects.LevelPieces;
 
-
 namespace Project2.GameObjects.Abstract
 {
-    public abstract class LevelPiece: IUpdateable, IDrawable
+    public abstract class PhysicsPuzzle : IUpdateable, IDrawable
     {
         public Game game; // parent game
-        public Level level; // parent level
-        public Vector3 OriginPosition;
-        public List<PhysicsPuzzle> physicsPuzzles = new List<PhysicsPuzzle>();
+        public LevelPiece levelPiece; // parent level piece
+        public Vector3 originPosition;
+
         private List<GameObject> childObjects = new List<GameObject>();
 
-        public LevelPiece(Game game, Level level, Vector3 originPosition)
-        {
+        public PhysicsPuzzle(Game game, LevelPiece levelPiece, Vector3 offset ) {
             this.game = game;
-            this.level = level;
-            this.OriginPosition = originPosition;
+            this.levelPiece = levelPiece;
+            this.originPosition = levelPiece.OriginPosition += offset;
         }
 
         public void AddChild(GameObject o)
@@ -41,19 +40,11 @@ namespace Project2.GameObjects.Abstract
             {
                 o.Update(gameTime);
             }
-            foreach (var o in physicsPuzzles)
-            {
-                o.Update(gameTime);
-            }
         }
 
         public void Draw(GameTime gameTime)
         {
             foreach (var o in childObjects)
-            {
-                o.Draw(gameTime);
-            }
-            foreach (var o in physicsPuzzles)
             {
                 o.Draw(gameTime);
             }

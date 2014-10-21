@@ -14,14 +14,6 @@ namespace Project2
 {
     public class ControllableCamera : Camera
     {
-        public Project2Game game;
-        public Matrix view { get; set; }
-        public Matrix projection;
-
-        public Vector3 position { get; private set; }
-        public Vector3 direction { get; private set; }
-        public Vector3 movement { get; private set; }
-
         Vector2 lastMousePos;
 
         public ControllableCamera(Project2Game game, Vector3 position, Vector3 target)
