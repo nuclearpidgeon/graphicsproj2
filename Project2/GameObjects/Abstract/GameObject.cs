@@ -89,51 +89,12 @@ namespace Project2.GameObjects.Abstract
             }
         }
 
-
-        public bool BeginDraw()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int DrawOrder
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public event EventHandler<EventArgs> DrawOrderChanged;
-
-        public void EndDraw()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Visible
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public event EventHandler<EventArgs> VisibleChanged;
-
         public virtual void Update(GameTime gametime)
         {
             // get matricies from camera
             basicEffect.View = game.camera.view;
             basicEffect.Projection = game.camera.projection;
         }
-
-        public bool Enabled
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public event EventHandler<EventArgs> EnabledChanged;
-
-        public int UpdateOrder
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public event EventHandler<EventArgs> UpdateOrderChanged;
 
         public virtual void SetScale(Vector3 scale)
         {
@@ -168,5 +129,46 @@ namespace Project2.GameObjects.Abstract
             // multiply in S R T order (Scale, Rotation, Translation)
             worldMatrix = scaleMatrix*orientationMatrix*positionMatrix;
         }
+
+        #region interface_junk
+        public bool BeginDraw()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DrawOrder
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+
+        public void EndDraw()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Visible
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public event EventHandler<EventArgs> VisibleChanged;
+
+
+        public bool Enabled
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public event EventHandler<EventArgs> EnabledChanged;
+
+        public int UpdateOrder
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public event EventHandler<EventArgs> UpdateOrderChanged;
+        #endregion
     }
 }
