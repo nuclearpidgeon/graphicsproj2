@@ -119,9 +119,6 @@
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\Brick.cs" />
-    <Compile Include="GameObjects\DiamondSquareTerrain.cs" />
-    <Compile Include="GameObjects\TexturedHeightMapTerrain.cs" />
-    <Compile Include="GameObjects\FlatTerrain.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\SeeSaw.cs" />
     <Compile Include="GameSystems\PersistentStateManager.cs" />
@@ -172,7 +169,7 @@
     <Compile Include="GameSystems\PhysicsSystem.cs" />
     <Compile Include="Project2Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameObjects\Abstract\Terrain.cs" />
+    <Compile Include="GameObjects\Terrain.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
     <ToolkitModel Include="Content\Models\monkey.fbx" />
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />

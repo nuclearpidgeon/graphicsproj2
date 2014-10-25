@@ -11,12 +11,10 @@ using Project2.GameObjects.PhysicsPuzzles;
 
 using SharpDX;
 using SharpDX.Toolkit;
-using SharpDX.Toolkit.Content;
 
 
 namespace Project2.Levels
 {
-    using SharpDX.Toolkit.Graphics;
     public class TestLevel : Level
     {
         public TestLevel(Project2Game game) : base(game)
@@ -28,38 +26,8 @@ namespace Project2.Levels
         {
             // Create all the level planes
 
-            LevelPieces.AddRange(GenerateRampLevel());
-
-            // Create a ramp terrain underneath
-            
-            ChildObjects.Add(new Project2.GameObjects.DiamondSquareTerrain(this.game, new Vector3(-50f), 7, 2.0, 15.0));
-
-            // Create boids
-
-            int flockSquareSize = 3;
-            // Friendlies
-            for (int i = 0; i < flockSquareSize; i++)
-            {
-                for (int j = 0; j < flockSquareSize; j++)
-                {
-                    flock.AddBoid(Flock.BoidType.Friendly, getStartPosition() + new Vector3((float)((flockSquareSize / 2.0 - i) * 4), 10f, (float)(flockSquareSize / 2.0 - j) * 4));
-                }
-            }
-            // Enemies
-            for (int i = 0; i < flockSquareSize; i++)
-            {
-                for (int j = 0; j < flockSquareSize; j++)
-                {
-                    flock.AddBoid(Flock.BoidType.Enemy, getStartPosition() + new Vector3((float)((flockSquareSize / 2.0 - i) * 4), 20f, (float)(flockSquareSize / 2.0 - j) * 4));
-                }
-            }
-
-
-        }
-
-        private List<LevelPlane> GenerateRampLevel(int slopeHeight = 24, int levelLength = 10)
-        {
-            List<LevelPlane> rampLevelPieces = new List<LevelPlane>(levelLength);
+            int slopeHeight = 24;
+            int levelLength = 10;
 
             for (int i = 0; i < levelLength; i++)
             {
@@ -87,29 +55,27 @@ namespace Project2.Levels
                         slopeType = LevelPlane.SlopeType.Flat;
                         break;
                 }
-                // Make the piece
+                // Add the piece
                 LevelPlane newPlane = new LevelPlane(
-                    this.game,
-                    this,
+                    this.game, 
+                    this, 
                     new Vector3(
-                        0f,
-                        yHeight,
+                        0f, 
+                        yHeight, 
                         (float)PreferedTileHeight * i
-                    ),
-                    slopeType,
-                    (float)slopeHeight,
-                    PreferedTileWidth,
+                    ), 
+                    slopeType, 
+                    (float)slopeHeight, 
+                    PreferedTileWidth, 
                     PreferedTileHeight
                 );
-                // ... and add it.
-                rampLevelPieces.Add(newPlane);
+                LevelPieces.Add(newPlane);
                 // Add a brick wall every 2nd flat plane
                 if (i % 4 == 2)
                 {
-                    Vector3 brickwallOffset = new Vector3(1f, 0f, 1f) * 8f;
+                    Vector3 brickwallOffset = new Vector3(1f,0f,1f)*8f;
                     bool interleave = false;
-                    if (i % 8 == 6)
-                    {
+                    if (i % 8 == 6) { 
                         brickwallOffset += new Vector3(1f, 0f, 1f) * 10;
                         interleave = true;
                     }
@@ -124,7 +90,27 @@ namespace Project2.Levels
                 }
             }
 
-            return rampLevelPieces;
+            // Create boids
+
+            int flockSquareSize = 3;
+            // Friendlies
+            for (int i = 0; i < flockSquareSize; i++)
+            {
+                for (int j = 0; j < flockSquareSize; j++)
+                {
+                    flock.AddBoid(Flock.BoidType.Friendly, getStartPosition() + new Vector3((float)((flockSquareSize / 2.0 - i) * 4), 10f, (float)(flockSquareSize / 2.0 - j) * 4));
+                }
+            }
+            // Enemies
+            for (int i = 0; i < flockSquareSize; i++)
+            {
+                for (int j = 0; j < flockSquareSize; j++)
+                {
+                    flock.AddBoid(Flock.BoidType.Enemy, getStartPosition() + new Vector3((float)((flockSquareSize / 2.0 - i) * 4), 20f, (float)(flockSquareSize / 2.0 - j) * 4));
+                }
+            }
+
+
         }
 
         public override Vector3 getCameraStartPosition() {
