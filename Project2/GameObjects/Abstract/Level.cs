@@ -29,8 +29,8 @@ namespace Project2.GameObjects
         
         //private BasicEffect basicEffect;
 
-        public const int PreferedTileWidth = 72;
-        public const int PreferedTileHeight = 72;
+        public const int PreferedTileWidth = 128;
+        public const int PreferedTileHeight = 128;
 
         public Level(Project2Game game)
         {

@@ -27,7 +27,7 @@ namespace Project2.Levels
             // Create all the level planes
 
             int slopeHeight = 24;
-            int levelLength = 10;
+            int levelLength = 7;
 
             for (int i = 0; i < levelLength; i++)
             {
@@ -92,7 +92,7 @@ namespace Project2.Levels
 
             // Create boids
 
-            int flockSquareSize = 3;
+            int flockSquareSize = 5;
             // Friendlies
             for (int i = 0; i < flockSquareSize; i++)
             {
@@ -106,7 +106,7 @@ namespace Project2.Levels
             {
                 for (int j = 0; j < flockSquareSize; j++)
                 {
-                    flock.AddBoid(Flock.BoidType.Enemy, getStartPosition() + new Vector3((float)((flockSquareSize / 2.0 - i) * 4), 20f, (float)(flockSquareSize / 2.0 - j) * 4));
+                    flock.AddBoid(Flock.BoidType.Enemy, getStartPosition() + new Vector3((float)((flockSquareSize / 2.0 - i) * 6), 20f, (float)(flockSquareSize / 2.0 - j) * 6));
                 }
             }
 
@@ -118,9 +118,9 @@ namespace Project2.Levels
         }
 
         // uncomment for better overview
-        //public override Vector3 getCameraOffset()
-        //{
-        //    return new Vector3(0f, 1f, 2f) * 45;
-        //}
+        public override Vector3 getCameraOffset()
+        {
+            return new Vector3(0f, 1f, 1f) * 55;
+        }
     }
 }
