@@ -40,13 +40,13 @@ namespace Project2.Pages
 
         void game_PauseRequest(object sender, EventArgs e)
         {
-            Visibility v = (pauseBar.IsSticky = pauseBar.IsOpen = !pauseBar.IsOpen) ? Visibility.Visible : Visibility.Collapsed;
-            pauseOverlay.Visibility = v;
+            updatePauseBtn();
         }
 
         private void unpauseBtn_Click(object sender, RoutedEventArgs e)
         {
             game.togglePaused();
+            updatePauseBtn();
         }
 
         private void menuBtn_Click(object sender, RoutedEventArgs e)
@@ -58,7 +58,36 @@ namespace Project2.Pages
         private void restartBtn_Click(object sender, RoutedEventArgs e)
         {
             game.restartGame();
-            game.togglePaused();
+            if(game.isPaused()) game.togglePaused();
+            updatePauseBtn();
+        }
+
+        private void pauseBar_Opened(object sender, object e)
+        {
+            updatePauseBtn();
+        }
+        private void updatePauseBtn()
+        {
+            bool paused = game.isPaused();
+            if (paused)
+            {
+                pauseBar.IsSticky = pauseBar.IsOpen = true;
+                unpauseBtn.Label = "Unpause";
+                unpauseBtn.Icon = new SymbolIcon(Symbol.Play);
+            }
+            else
+            {
+                pauseBar.IsSticky = false;
+                unpauseBtn.Label = "Pause";
+                unpauseBtn.Icon = new SymbolIcon(Symbol.Pause);
+            }
+            updateScore();
+
+        }
+
+        private void updateScore()
+        {
+            scoreTxt.Text = "lo";
         }
 
 

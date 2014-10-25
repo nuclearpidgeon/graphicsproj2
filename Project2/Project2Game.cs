@@ -62,9 +62,7 @@ namespace Project2
         public DebugDrawer debugDrawer;
         public InputManager inputManager { private set; get; }
 
-        public PhysicsObject player;
         private bool paused = false;
-
 
         public event EventHandler PauseRequest;
 
@@ -192,12 +190,10 @@ namespace Project2
         protected override void Update(GameTime gameTime)
         {
             TestPause();
-            if (paused)
-            {
+            if (paused) {
                 inputManager.Update(gameTime);
                 return;
             }
-
 
             // Get new mouse info
             mouseState = inputManager.MouseState();
@@ -210,6 +206,8 @@ namespace Project2
             {
                 gameObjects[i].Update(gameTime);
             }
+
+            // Update the level
             level.Update(gameTime);
 
             // Reset on escape key
@@ -231,6 +229,11 @@ namespace Project2
             EventHandler handler = PauseRequest;
             if (handler != null) handler(this, null);            
             
+        }
+
+        public bool isPaused()
+        {
+            return paused;
         }
         /// <summary>
         /// Use this method body to do stuff while the game is exiting.
