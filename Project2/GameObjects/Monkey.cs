@@ -19,10 +19,11 @@ namespace Project2.GameObjects
 {
     public class Monkey : PhysicsObject
     {
+        private Effect effect;
         public Monkey(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
         {
-
+            effect = game.Content.Load<Effect>("Shaders\\Rainbow");
         }
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
@@ -75,7 +76,31 @@ namespace Project2.GameObjects
             //basicEffect.Projection = game.camera.projection;
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
-            base.Draw(gametime);
+            effect.Parameters["World"].SetValue(this.worldMatrix);
+            effect.Parameters["Projection"].SetValue(game.camera.projection);
+            effect.Parameters["View"].SetValue(game.camera.view);
+            effect.Parameters["cameraPos"].SetValue(game.camera.position);
+            effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
+            effect.Parameters["Time"].SetValue(gametime.TotalGameTime.TotalSeconds);
+
+            //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, effect);
+
+            foreach (var pass in this.effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                if (model != null)
+                {
+                    //model.Draw(game.GraphicsDevice, Matrix.Identity, Matrix.Identity, Matrix.Identity, basicEffect);
+                    foreach (ModelMesh mesh in model.Meshes)
+                    {
+                        foreach (ModelMeshPart part in mesh.MeshParts)
+                        {
+                            part.Effect = effect;
+                            part.Draw(game.GraphicsDevice);
+                        }
+                    }
+                }
+            }
         }
     }
 }
