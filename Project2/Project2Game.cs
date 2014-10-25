@@ -80,7 +80,7 @@ namespace Project2
 
         protected override void LoadContent()
         {
-            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere", "monkey", "bigmonkey", "dude" })
+            foreach (var modelName in new List<String> { "Teapot", "box", "Sphere", "monkey", "bigmonkey", "dude", "Crate_Barrel", "RockA-1" })
             {
                 try
                 {
@@ -99,9 +99,11 @@ namespace Project2
             level = new BasicLevel(this);
             
             playerBall = new GameObjects.Monkey(this, models["bigmonkey"], level.getStartPosition(), false);
+            //var testthing = new GameObjects.TestObject(this, models["dude"], level.getStartPosition() + new Vector3(2, 0, 0), false);
             
-            gameObjects.Add(new GameObjects.TestObject(this, models["Teapot"], new Vector3(14f, 3f, 26f), false));
+            //gameObjects.Add(new GameObjects.TestObject(this, models["RockA-1"], new Vector3(14f, 3f, 26f), false));
             gameObjects.Add(playerBall);
+            //gameObjects.Add(testthing);
             //gameObjects.Add(new Project2.GameObjects.Terrain(this, new Vector3(-50f), 7, 2, 15));
             foreach (var levelPiece in level.levelPieces)
             {
@@ -116,7 +118,7 @@ namespace Project2
                     gameObjects.Add(
                         new Project2.GameObjects.Boids.Boid(
                             this, 
-                            models["dude"],
+                            models["RockA-1"],
                             level.getStartPosition() + new Vector3((float)((size / 2.0 - i) * 4), 10f, (float)(size / 2.0 - j) * 4),
                             false
                         )

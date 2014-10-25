@@ -13,6 +13,7 @@ using SharpDX.Toolkit.Graphics;
 using Jitter;
 using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
+using SharpDX.Direct3D11;
 
 namespace Project2.GameObjects
 {
@@ -21,6 +22,7 @@ namespace Project2.GameObjects
         public TestObject(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
         {
+            this.basicEffect = game.Content.Load<Effect>("Shaders/BlurCray");
 
         }
 
@@ -70,7 +72,51 @@ namespace Project2.GameObjects
             //basicEffect.Projection = game.camera.projection;
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
-            base.Draw(gametime);
+            // Lights
+            basicEffect.ConstantBuffers[1].Set(0, new Color4(0.8f, 0.8f, 0.8f, 1.0f)); // Ambient light
+            basicEffect.ConstantBuffers[1].IsDirty = true;
+
+            // Object
+            basicEffect.ConstantBuffers[2].Set(0, positionMatrix); // LocalToWorld
+            basicEffect.ConstantBuffers[2].Set(1, game.camera.projection); // LocalToProjected
+            basicEffect.ConstantBuffers[2].Set(2, worldMatrix); // WorldToLocal
+            basicEffect.ConstantBuffers[2].Set(3, game.camera.view); // WorldToview
+            basicEffect.ConstantBuffers[2].Set(4, Matrix.Identity); // UVTransform
+            basicEffect.ConstantBuffers[2].Set(5, game.camera.position); // EyePosition
+            basicEffect.ConstantBuffers[2].IsDirty = true;
+
+            // Materials
+            basicEffect.ConstantBuffers[0].Set(0, new Color4(0.2f, 0.2f, 0.2f, 1.0f)); // Ambient
+            basicEffect.ConstantBuffers[0].Set(1, new Color4(0.6f, 0.2f, 0.2f, 1.0f)); // Diffuse
+            basicEffect.ConstantBuffers[0].Set(2, new Color4(0.2f, 0.6f, 0.2f, 1.0f)); // Specular
+            basicEffect.ConstantBuffers[0].Set(4, 1.0f); // Specular power
+            basicEffect.ConstantBuffers[0].IsDirty = true;
+
+            // Misc vars
+            /*basicEffect.ConstantBuffers[3].Set(0, game.GraphicsDevice.Viewport.Width); // Viewport height
+            basicEffect.ConstantBuffers[3].Set(1, game.GraphicsDevice.Viewport.Height); // Viewport width
+            basicEffect.ConstantBuffers[3].Set(2, gametime.TotalGameTime.TotalSeconds); // Elapsed time in seconds
+            basicEffect.ConstantBuffers[3].IsDirty = true;*/
+
+            basicEffect.Parameters["SamplerState"].SetResource(game.GraphicsDevice.SamplerStates.PointClamp);
+            basicEffect.Parameters["Texture1"].SetResource(game.Content.Load<Texture>("Models\\Rocks_Brown_D"));
+
+            foreach (var pass in this.basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                if (model != null)
+                {
+                    //model.Draw(game.GraphicsDevice, Matrix.Identity, Matrix.Identity, Matrix.Identity, basicEffect);
+                    foreach (ModelMesh mesh in model.Meshes)
+                    {
+                        foreach (ModelMeshPart part in mesh.MeshParts)
+                        {
+                            part.Effect = basicEffect;
+                            part.Draw(game.GraphicsDevice);
+                        }
+                    }
+                }
+            }
         }
     }
 }

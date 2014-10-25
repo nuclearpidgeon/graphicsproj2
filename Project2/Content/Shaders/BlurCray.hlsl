@@ -60,7 +60,6 @@ struct A2V
     float4 pos : POSITION0;
     float3 normal : NORMAL0;
     float4 tangent : TANGENT0;
-    float4 color : COLOR0;
     float2 uv : TEXCOORD0;
 };
 
@@ -347,7 +346,7 @@ V2P VS(A2V vertex)
 	V2P output = (V2P)0;
 
 	output.pos = vertex.pos;
-	output.diffuse = vertex.color;
+	output.diffuse = float4(0.4, 0.4, 0.4, 1.0);
 	output.uv = vertex.uv;
 	output.tangent = vertex.tangent;
 	output.normal = vertex.normal;

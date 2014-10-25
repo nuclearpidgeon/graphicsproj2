@@ -160,6 +160,12 @@
     <Compile Include="VertexPositionNormalColor.cs" />
     <ToolkitModel Include="Content\Models\monkey.fbx" />
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
+    <ToolkitModel Include="Content\Models\Crate_Barrel.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitModel>
+    <ToolkitModel Include="Content\Models\RockA-1.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitModel>
     <None Include="Content\Shaders\BlurCray.dgsl" />
     <None Include="Content\Shaders\EdgeFucker.dgsl" />
     <None Include="Content\Shaders\GreyScale.dgsl" />
@@ -183,13 +189,32 @@
     <ToolkitFont Include="Content\CourierNew10.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitFont>
+    <ToolkitTexture Include="Content\Models\Crate_Barrel_D.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitTexture>
+    <ToolkitTexture Include="Content\Models\Crate_Barrel_N.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitTexture>
     <Content Include="Content\Models\duckCM.dds" />
     <Content Include="Content\Models\head.dds" />
     <Content Include="Content\Models\jacket.dds" />
     <Content Include="Content\Models\pants.dds" />
+    <ToolkitTexture Include="Content\Models\Rocks_Brown_D.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitTexture>
+    <ToolkitTexture Include="Content\Models\Rocks_N.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitTexture>
     <Content Include="Content\Models\upBodyC.dds" />
-    <Content Include="Content\Shaders\BlurCray.hlsl" />
-    <Content Include="Content\Shaders\EdgeFucker.hlsl" />
+    <ToolkitFxc Include="Content\Shaders\BlurCray.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitFxc>
+    <ToolkitFxc Include="Content\Shaders\EdgeFucker.hlsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitFxc>
+    <ToolkitFxc Include="Content\Shaders\Cel.fx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </ToolkitFxc>
     <Content Include="Content\Shaders\GreyScale.hlsl" />
     <Content Include="Content\Shaders\Invertbw.hlsl" />
     <ToolkitFxc Include="Content\Shaders\Phong.fx">

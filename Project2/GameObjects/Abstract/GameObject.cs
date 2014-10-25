@@ -64,7 +64,7 @@ namespace Project2.GameObjects.Abstract
 
         public virtual void LoadContent()
         {
-            this.basicEffect = game.Content.Load<Effect>("Shaders/Phong");
+            this.basicEffect = game.Content.Load<Effect>("Shaders/Cel");
         }
 
         public virtual void Draw(GameTime gametime)
@@ -78,7 +78,7 @@ namespace Project2.GameObjects.Abstract
             basicEffect.Parameters["View"].SetValue(game.camera.view);
             basicEffect.Parameters["cameraPos"].SetValue(game.camera.position);
             basicEffect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
-            basicEffect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
+            //basicEffect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
             
@@ -104,7 +104,7 @@ namespace Project2.GameObjects.Abstract
                             basicEffect.ConstantBuffers[2].Set(1, game.camera.projection); // LocalToProjected
                             basicEffect.ConstantBuffers[2].Set(2, worldMatrix); // WorldToLocal
                             basicEffect.ConstantBuffers[2].Set(3, game.camera.view); // WorldToview
-                            //basicEffect.ConstantBuffers[2].Set(4, ); // UVTransform
+                            //basicEffect.ConstantBuffers[2].Set(4, Matrix.Identity); // UVTransform
                             basicEffect.ConstantBuffers[2].Set(5, game.camera.position); // EyePosition
                             basicEffect.ConstantBuffers[2].IsDirty = true;
 
