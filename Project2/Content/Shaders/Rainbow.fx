@@ -75,9 +75,9 @@ float4 PS( PS_IN input ) : SV_Target
 	float3 interpNormal = normalize(input.wnrm);
 
 	float4 col = float4(0, 0, 0, 1.0f);
-	col.r = 0.5f + (Time % 1.0f) / 2.0f;
-	col.g = 0.5f + (Time % 2.0f) / 4.0f;
-	col.b = 0.5f + (Time % 3.0f) / 6.0f;
+	col.r = (Time % 1.0f);
+	col.g = (Time % 2.0f) / 2.0f;
+	col.b = (Time % 3.0f) / 3.0f;
 
 
 	// Task 4 Edit Your Shader to Work With 3 Lights

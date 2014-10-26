@@ -81,7 +81,7 @@ namespace Project2.GameObjects
             effect.Parameters["View"].SetValue(game.camera.view);
             effect.Parameters["cameraPos"].SetValue(game.camera.position);
             effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
-            effect.Parameters["Time"].SetValue(gametime.TotalGameTime.TotalSeconds);
+            effect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, effect);
 
