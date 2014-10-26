@@ -35,6 +35,7 @@ namespace Project2.GameObjects
                 IsStatic = isStatic,
                 EnableDebugDraw = true,
                 Mass = 20f,
+                Tag = "player"
             };
 
             var description = new PhysicsDescription()
