@@ -23,7 +23,7 @@ namespace Project2.GameObjects
         public Monkey(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
         {
-            effect = game.Content.Load<Effect>("Shaders\\Cel");
+            effect = game.Content.Load<Effect>("Shaders\\Rainbow");
         }
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
@@ -81,7 +81,7 @@ namespace Project2.GameObjects
             effect.Parameters["View"].SetValue(game.camera.view);
             effect.Parameters["cameraPos"].SetValue(game.camera.position);
             effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
-            //effect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
+            effect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, effect);
 

@@ -30,6 +30,7 @@ float4 cameraPos;
 float4 lightAmbCol = float4(0.4f, 0.4f, 0.4f, 1.0f);
 float4 lightPntPos = float4(0.0f, 0.0f, -2.0f, 1.0f);
 float4 lightPntCol = float4(0.8f, 0.8f, 0.8f, 1.0f);
+float4 objectCol;
 //float Time;
 float4x4 worldInvTrp;
 //
@@ -67,7 +68,7 @@ PS_IN VS( VS_IN input )
     output.pos = mul(viewPos, Projection);
 
 	// Make things grey because our models don't have colours.
-	output.col = float4(0.5f, 0.5f, 0.5f, 1.0f);
+	output.col = objectCol;
 	return output;
 }
 
