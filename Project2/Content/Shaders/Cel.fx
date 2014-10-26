@@ -87,7 +87,7 @@ float4 PS( PS_IN input ) : SV_Target
 	// Calculate diffuse RBG reflections
 	float fAtt = 1;
 	float Kd = 1;
-	float3 L = normalize(lightPntPos.xyz - input.wpos.xyz);
+	float3 L = normalize(lightPntPos.xyz);
 	float LdotN = saturate(dot(L,interpNormal.xyz));
 	float3 dif = fAtt*lightPntCol.rgb*Kd*input.col.rgb*LdotN;
 
