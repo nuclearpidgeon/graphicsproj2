@@ -45,7 +45,7 @@ struct VS_IN
 struct PS_IN
 {
 	float4 pos : SV_POSITION; //Position in camera co-ords
-	//float4 col : COLOR;
+	float4 col : COLOR;
 	float4 wpos : TEXCOORD0; //Position in world co-ords
 	float3 wnrm : TEXCOORD1; //Normal in world co-ords 
 };
@@ -66,6 +66,11 @@ PS_IN VS( VS_IN input )
 	float4 viewPos = mul(output.wpos, View);
     output.pos = mul(viewPos, Projection);
 
+	output.col = float4(0, 0, 0, 1.0f);
+	output.col.r = (Time % 1.0f);
+	output.col.g = (Time % 2.0f) / 2.0f;
+	output.col.b = (Time % 3.0f) / 3.0f;
+
 	return output;
 }
 
@@ -74,25 +79,19 @@ float4 PS( PS_IN input ) : SV_Target
 	// Our interpolated normal might not be of length 1
 	float3 interpNormal = normalize(input.wnrm);
 
-	float4 col = float4(0, 0, 0, 1.0f);
-	col.r = (Time % 1.0f);
-	col.g = (Time % 2.0f) / 2.0f;
-	col.b = (Time % 3.0f) / 3.0f;
-
-
 	// Task 4 Edit Your Shader to Work With 3 Lights
 	// Be careful about shader operations 
 	
 	// Calculate ambient RGB intensities
 	float Ka = 1;
-	float3 amb = col.rgb*lightAmbCol.rgb*Ka;
+	float3 amb = input.col.rgb*lightAmbCol.rgb*Ka;
 
 	// Calculate diffuse RBG reflections
 	float fAtt = 1;
 	float Kd = 1;
 	float3 L = normalize(lightPntPos);
 	float LdotN = saturate(dot(L,interpNormal.xyz));
-	float3 dif = fAtt*lightPntCol.rgb*Kd*col.rgb*LdotN;
+	float3 dif = fAtt*lightPntCol.rgb*Kd*input.col.rgb*LdotN;
 
 	// Calculate specular reflections
 	float Ks = 1;
@@ -104,7 +103,7 @@ float4 PS( PS_IN input ) : SV_Target
 	// Combine reflection components
 	float4 returnCol = float4(0.0f,0.0f,0.0f,0.0f);
 	returnCol.rgb = amb.rgb+dif.rgb+spe.rgb;
-	returnCol.a = col.a;
+	returnCol.a = input.col.a;
 
 	return returnCol;
 }
