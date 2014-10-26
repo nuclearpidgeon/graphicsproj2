@@ -29,7 +29,7 @@ float4x4 Projection;
 float4 cameraPos;
 float4 lightAmbCol = float4(0.4f, 0.4f, 0.4f, 1.0f);
 float4 lightPntPos = float4(0.0f, 0.0f, -2.0f, 1.0f);
-float4 lightPntCol = float4(1.0f, 1.0f, 1.0f, 1.0f);
+float4 lightPntCol = float4(0.8f, 0.8f, 0.8f, 1.0f);
 //float Time;
 float4x4 worldInvTrp;
 //
@@ -66,7 +66,7 @@ PS_IN VS( VS_IN input )
 	float4 viewPos = mul(output.wpos, View);
     output.pos = mul(viewPos, Projection);
 
-	// Just pass along the colour at the vertex
+	// Make things grey because our models don't have colours.
 	output.col = float4(0.5f, 0.5f, 0.5f, 1.0f);
 	return output;
 }
@@ -85,9 +85,10 @@ float4 PS( PS_IN input ) : SV_Target
 	float3 amb = input.col.rgb*lightAmbCol.rgb*Ka;
 
 	// Calculate diffuse RBG reflections
-	float fAtt = 1;
+	float fAtt = 0.8;
 	float Kd = 1;
-	float3 L = normalize(lightPntPos.xyz);
+	// Relative light position rather than absolute
+	float3 L = normalize(lightPntPos);
 	float LdotN = saturate(dot(L,interpNormal.xyz));
 	float3 dif = fAtt*lightPntCol.rgb*Kd*input.col.rgb*LdotN;
 
@@ -95,24 +96,16 @@ float4 PS( PS_IN input ) : SV_Target
 	float Ks = 1;
 	float specN = 5; // Numbers>>1 give more mirror-like highlights
 	float3 V = normalize(cameraPos.xyz - input.wpos.xyz);
-	float3 R = normalize(2*LdotN*interpNormal.xyz - L.xyz);
-	//float3 R = normalize(0.5*(L.xyz+V.xyz)); //Blinn-Phong equivalent
+	float3 R = normalize(0.5*(L.xyz+V.xyz));
 	float3 spe = fAtt*lightPntCol.rgb*Ks*pow(saturate(dot(V,R)),specN);
 
 	// Combine reflection components
 	float4 returnCol = float4(0.0f,0.0f,0.0f,0.0f);
 	returnCol.rgb = amb.rgb+dif.rgb+spe.rgb;
 	returnCol.a = input.col.a;
-
-	if (length(returnCol.rgb) < 0.3){
-		returnCol.rgb = normalize(returnCol.rgb) * 0.1f;
-	}
-	else if (length(returnCol.rgb) < 0.7f){
-		returnCol.rgb = normalize(returnCol.rgb) * 0.6f;
-	}
-	else {
-		returnCol.rgb = normalize(returnCol.rgb) * 0.9f;
-	}
+	
+	// Quantise output into five lighting levels
+	returnCol.rgb = normalize(returnCol.rgb) * 0.2 * floor(5 * length(returnCol.rgb));
 
 	return returnCol;
 }

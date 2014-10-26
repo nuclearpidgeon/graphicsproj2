@@ -38,8 +38,6 @@ struct VS_IN
 {
 	float4 pos : SV_POSITION;
 	float4 nrm : NORMAL;
-	//float4 col : COLOR;
-// Other vertex properties, e.g. texture co-ords, surface Kd, Ks, etc
 };
 
 struct PS_IN
@@ -66,6 +64,7 @@ PS_IN VS( VS_IN input )
 	float4 viewPos = mul(output.wpos, View);
     output.pos = mul(viewPos, Projection);
 
+	// Make the rainbow color effect using a bunch of modulus and division.
 	output.col = float4(0, 0, 0, 1.0f);
 	output.col.r = (Time % 1.0f);
 	output.col.g = (Time % 2.0f) / 2.0f;
@@ -89,6 +88,7 @@ float4 PS( PS_IN input ) : SV_Target
 	// Calculate diffuse RBG reflections
 	float fAtt = 1;
 	float Kd = 1;
+	// Use relative light rather than point light (we're essentially hacking in directional lighting)
 	float3 L = normalize(lightPntPos);
 	float LdotN = saturate(dot(L,interpNormal.xyz));
 	float3 dif = fAtt*lightPntCol.rgb*Kd*input.col.rgb*LdotN;
