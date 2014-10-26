@@ -30,7 +30,7 @@ float4 cameraPos;
 float4 lightAmbCol = float4(0.4f, 0.4f, 0.4f, 1.0f);
 float4 lightPntPos = float4(0.0f, 0.0f, -2.0f, 1.0f);
 float4 lightPntCol = float4(0.8f, 0.8f, 0.8f, 1.0f);
-float4 objectCol;
+float4 objectCol = float4(0.5f, 0.5f, 0.5f, 1.0f);
 float quant = 5.0f;
 //float Time;
 float4x4 worldInvTrp;

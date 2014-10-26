@@ -81,7 +81,12 @@ namespace Project2.GameObjects
             effect.Parameters["View"].SetValue(game.camera.view);
             effect.Parameters["cameraPos"].SetValue(game.camera.position);
             effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
+            // For Rainbow (required)
             effect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
+
+            // For Cel (both optional)
+            //effect.Parameters["objectCol"].SetValue<Color4>(new Color4(0.5f, 0.5f, 0.5f, 1.0f));
+            //effect.Parameters["quant"].SetValue<float>(3.0f);
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, effect);
 
