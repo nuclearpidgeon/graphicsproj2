@@ -31,6 +31,7 @@ float4 lightAmbCol = float4(0.4f, 0.4f, 0.4f, 1.0f);
 float4 lightPntPos = float4(0.0f, 0.0f, -2.0f, 1.0f);
 float4 lightPntCol = float4(0.8f, 0.8f, 0.8f, 1.0f);
 float4 objectCol;
+float quant = 5.0f;
 //float Time;
 float4x4 worldInvTrp;
 //
@@ -105,8 +106,8 @@ float4 PS( PS_IN input ) : SV_Target
 	returnCol.rgb = amb.rgb+dif.rgb+spe.rgb;
 	returnCol.a = input.col.a;
 	
-	// Quantise output into five lighting levels
-	returnCol.rgb = normalize(returnCol.rgb) * 0.2 * floor(5 * length(returnCol.rgb));
+	// Quantise output into lighting levels
+	returnCol.rgb = normalize(returnCol.rgb) * (1.0f/quant) * floor(quant * length(returnCol.rgb));
 
 	return returnCol;
 }
