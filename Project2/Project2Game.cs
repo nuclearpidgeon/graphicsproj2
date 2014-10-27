@@ -47,6 +47,7 @@ namespace Project2
         private GraphicsDeviceManager graphicsDeviceManager;
         private List<GameObject> gameObjects;
         public Level level;
+        public Double Score;
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
@@ -80,7 +81,7 @@ namespace Project2
 
             gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
-
+            Score = 0;
             this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
 
         }

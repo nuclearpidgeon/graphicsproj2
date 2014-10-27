@@ -93,9 +93,12 @@ namespace Project2.Levels
                 }
 
             }
-            var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * ( 1)));
-            LevelPieces.Add(endZone);
-            this.endGoal = endZone.endGoal;
+
+            // Add the mandatory end-zone piece containing an end goal object
+            // place tile behind start tile for testing
+            var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * -1));
+            LevelPieces.Add(endZone); // add the piece
+            this.endGoal = endZone.endGoal; // set the level's endGoal object for collision detection use
 
             // Create boids
 
