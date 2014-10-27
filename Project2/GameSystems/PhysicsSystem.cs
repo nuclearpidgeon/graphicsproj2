@@ -368,7 +368,7 @@ namespace Project2
         }
 
         /// <summary>
-        /// Callback for Jitter Raycast method to check if an encountered physics object is static or not
+        /// Callback for Jitter Raycast method to check if an encountered physics object is static or the player (don't pick up if so..)
         /// </summary>
         /// <param name="body"></param>
         /// <param name="normal"></param>
@@ -376,7 +376,14 @@ namespace Project2
         /// <returns></returns>
         private bool RaycastCallback(RigidBody body, JVector normal, float fraction)
         {
-            if (body.IsStatic) return false;
+            if (body.IsStatic) 
+            {
+                return false;
+            }
+            else if ((String)body.Tag == "player") 
+            {
+                return false;
+            }
             else return true;
         }
         #endregion
