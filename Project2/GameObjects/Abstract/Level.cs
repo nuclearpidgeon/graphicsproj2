@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Jitter;
 using Project2.GameObjects.Boids;
 using Project2.GameObjects.LevelPieces;
 using SharpDX;
@@ -20,6 +21,7 @@ namespace Project2.GameObjects
     {
         public Project2Game game;
         public PhysicsObject player;
+        public PhysicsObject endGoal;
         //private Matrix worldMatrix;
 
         public List<LevelPiece> LevelPieces;
@@ -37,7 +39,8 @@ namespace Project2.GameObjects
             this.game = game;
             LevelPieces = new List<LevelPiece>();
             ChildObjects = new List<GameObject>();
-            flock = new Flock(this.game);
+            flock = new Flock(this.game, this);
+            
             player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition(), false);
             ChildObjects.Add(player);
         }

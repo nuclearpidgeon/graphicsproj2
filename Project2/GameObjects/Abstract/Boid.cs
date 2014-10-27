@@ -22,6 +22,25 @@ namespace Project2.GameObjects.Boids
         {
             this.boidType = boidType;
             this.flock = flock;
+            this.game.physics.World.Events.BodiesBeginCollide += HandleCollision;
+        }
+
+        virtual public void HandleCollision(RigidBody rigidBody1, RigidBody rigidBody2)
+        {
+            RigidBody other;
+            var self = this.physicsDescription.RigidBody;
+            if (rigidBody1 == self)
+                other = rigidBody2;
+            else if (rigidBody2 == self)
+                other = rigidBody1;
+            else return;
+
+            if (other == this.flock.level.endGoal.physicsDescription.RigidBody) // we've collided with the end zone
+            {
+                //this.Destroy(); // remove self
+                // add to score
+                this.flock.level.ResetPlayer();
+            }
         }
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)

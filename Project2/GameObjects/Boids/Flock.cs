@@ -20,9 +20,12 @@ namespace Project2.GameObjects.Boids
 
         public List<Boid> boidList;
         public Project2Game game;
-        public Flock(Project2Game game)
+        public Level level;
+
+        public Flock(Project2Game game, Level level)
         {
             this.game = game;
+            this.level = level;
             boidList = new List<Boid>();
         }
 

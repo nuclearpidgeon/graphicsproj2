@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Jitter.Dynamics;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -21,6 +22,7 @@ namespace Project2.GameObjects.Boids
         {
 
         }
+
 
         public override void Update(GameTime gametime)
         {

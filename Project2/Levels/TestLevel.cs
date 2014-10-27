@@ -55,6 +55,9 @@ namespace Project2.Levels
                         slopeType = LevelPlane.SlopeType.Flat;
                         break;
                 }
+
+                LevelPieces.Add(new LevelPlane(this.game, this, new Vector3(0f, yHeight, (float)PreferedTileHeight * i), slopeType, (float)slopeHeight, PreferedTileWidth, PreferedTileHeight));
+
                 // Add the piece
                 LevelPlane newPlane = new LevelPlane(
                     this.game, 
@@ -88,7 +91,11 @@ namespace Project2.Levels
                         interleave);
                     newPlane.physicsPuzzles.Add(newBrickWall);
                 }
+
             }
+            var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * ( 1)));
+            LevelPieces.Add(endZone);
+            this.endGoal = endZone.endGoal;
 
             // Create boids
 
