@@ -29,7 +29,7 @@ namespace Project2.GameObjects
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
         {
             var bounds = model.CalculateBounds();
-            var collisionShape = new SphereShape(bounds.Radius);
+            var collisionShape = new SphereShape(bounds.Radius*3);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(position),
@@ -96,15 +96,7 @@ namespace Project2.GameObjects
                 pass.Apply();
                 if (model != null)
                 {
-                    //model.Draw(game.GraphicsDevice, Matrix.Identity, Matrix.Identity, Matrix.Identity, basicEffect);
-                    foreach (ModelMesh mesh in model.Meshes)
-                    {
-                        foreach (ModelMeshPart part in mesh.MeshParts)
-                        {
-                            part.Effect = effect;
-                            part.Draw(game.GraphicsDevice);
-                        }
-                    }
+                    model.Draw(game.GraphicsDevice, worldMatrix, game.camera.view, game.camera.projection, effect);
                 }
             }
         }
