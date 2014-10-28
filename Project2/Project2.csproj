@@ -184,12 +184,6 @@
     </ToolkitModel>
     <None Include="Content\Models\sphere.obj" />
     <None Include="Content\Models\torus.fbx" />
-    <None Include="Content\Shaders\BlurCray.dgsl" />
-    <None Include="Content\Shaders\EdgeFucker.dgsl" />
-    <None Include="Content\Shaders\GreyScale.dgsl" />
-    <None Include="Content\Shaders\Invertbw.dgsl" />
-    <None Include="Content\Shaders\Phong.dgsl" />
-    <None Include="Content\Shaders\Shader1.dgsl" />
     <None Include="Project2_StoreKey.pfx" />
     <None Include="Project2_TemporaryKey.pfx" />
     <None Include="SigningKey.snk" />
@@ -223,17 +217,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitTexture>
     <Content Include="Content\Models\upBodyC.dds" />
-    <Content Include="Content\Shaders\BlurCray.hlsl" />
     <ToolkitFxc Include="Content\Shaders\Cel.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitFxc>
-    <Content Include="Content\Shaders\EdgeFucker.hlsl" />
-    <Content Include="Content\Shaders\GreyScale.hlsl" />
-    <Content Include="Content\Shaders\Invertbw.hlsl" />
     <ToolkitFxc Include="Content\Shaders\Rainbow.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitFxc>
-    <Content Include="Content\Shaders\Phong.hlsl" />
     <Content Include="Content\Terrain\heightmap.jpg" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">
