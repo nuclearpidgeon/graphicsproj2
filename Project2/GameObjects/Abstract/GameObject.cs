@@ -8,53 +8,97 @@ namespace Project2.GameObjects.Abstract
 {
     public abstract class GameObject : IUpdateable, IDrawable
     {
+        protected Project2Game game; 
+        
         protected BasicEffect basicEffect;
-        protected BoundingSphere boundingSphere;
-        protected Project2Game game;
         protected VertexInputLayout inputLayout;
 
-        protected Model model;
-        protected Matrix orientationMatrix;
-        protected Matrix positionMatrix;
-        protected Matrix scaleMatrix;
-        protected Matrix worldMatrix;
+        private Vector3 position;
+        private Matrix orientationMatrix;
+        private Matrix positionMatrix;
+        private Matrix scaleMatrix;
+        private Matrix worldMatrix;
+        protected Matrix WorldMatrix
+        {
+            get { return worldMatrix; }
+            private set { worldMatrix = value; }
+        }
 
-        public Vector3 Position { get; set; }
-
+        public Vector3 Position 
+        {
+            get { return position; }
+            set
+            {
+                position = value;
+                positionMatrix = Matrix.Translation(value);
+            } 
+        }
+        protected Matrix OrientationMatrix
+        {
+            get { return orientationMatrix; }
+            set
+            {
+                orientationMatrix = value;
+                UpdateWorldMatrix();
+            }
+        }
+        protected Matrix PositionMatrix
+        {
+            get { return positionMatrix; }
+            private set
+            {
+                positionMatrix = value;
+                UpdateWorldMatrix();
+            }
+        }
+        protected Matrix ScaleMatrix
+        {
+            get { return scaleMatrix; }
+            private set
+            {
+                scaleMatrix = value;
+                UpdateWorldMatrix();
+            }
+        }
+        
+        #region extra constructors
+        /// <summary>
+        /// Create new GameObject with default orientation and size.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="position"></param>
         protected GameObject(Project2Game game, Vector3 position)
-            : this(game, null, position, Vector3.Zero, Vector3.One)
+            : this(game, position, Vector3.Zero, Vector3.One)
         {
         }
 
-        protected GameObject(Project2Game game, Model model, Vector3 position)
-            : this(game, model, position, Vector3.Zero, Vector3.One)
+        /// <summary>
+        /// Create a new GameObject with default orientation.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="position"></param>
+        /// <param name="scale"></param>
+        protected GameObject(Project2Game game, Vector3 position, Vector3 scale)
+            : this(game, position, Vector3.Zero, scale)
         {
         }
+        #endregion
 
-        protected GameObject(Project2Game game, Model model, Vector3 position, Vector3 scale)
-            : this(game, model, position, Vector3.Zero, scale)
-        {
-        }
-
-        protected GameObject(Project2Game game, Model model, Vector3 position, Vector3 orientation, Vector3 scale)
+        protected GameObject(Project2Game game, Vector3 position, Vector3 orientation, Vector3 scale)
         {
             this.game = game;
-            scaleMatrix = Matrix.Identity;
-            positionMatrix = Matrix.Identity;
-            orientationMatrix = Matrix.Identity;
-            worldMatrix = Matrix.Identity;
+            
+            // Just in case...?
+            WorldMatrix = Matrix.Identity;
 
+            // scaleMatrix = Matrix.Identity;
             this.SetScale(scale);
-            this.SetPosition(position);
-            this.SetOrientation(Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z));
+            // positionMatrix = Matrix.Identity;
+            Position = position;
+            
+            orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
 
-            this.model = model;
-            if (model != null)
-            {
-                boundingSphere = model.CalculateBounds();
-            }
             // Setup rendering effect
-           
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
                 VertexColorEnabled = false,
@@ -70,26 +114,53 @@ namespace Project2.GameObjects.Abstract
         {
         }
 
+        /// <summary>
+        /// Sets up basicEffect parameters for drawing
+        /// </summary>
+        /// <param name="gametime"></param>
         public virtual void Draw(GameTime gametime)
         {
             basicEffect.CurrentTechnique.Passes[0].Apply();
-            basicEffect.World = this.worldMatrix;
+            basicEffect.World = this.WorldMatrix;
             basicEffect.View = game.camera.view;
             basicEffect.Projection = game.camera.projection;
 
-            //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
-            
-            foreach (var pass in this.basicEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-                if (model != null)
-                {
-                    model.Draw(game.GraphicsDevice, worldMatrix, game.camera.view, game.camera.projection, basicEffect);
-                }
-            }
+            // Actual drawing logic is implemented in subclasses.
         }
 
+        public virtual void Update(GameTime gametime)
+        {
+            // get matricies from camera
+            basicEffect.View = game.camera.view;
+            basicEffect.Projection = game.camera.projection;
+        }
 
+        /// <summary>
+        /// Set object's scale matrix from a Vector input
+        /// </summary>
+        /// <param name="scale">Vector to use for scaling matrix</param>
+        public void SetScale(Vector3 scale)
+        {
+            scaleMatrix = Matrix.Scaling(scale);
+        }
+
+        /// <summary>
+        /// Set object's orientation matrix from a Vector input
+        /// </summary>
+        /// <param name="orientation">Vector to use for orientation matrix</param>
+        public void SetOrientation(Vector3 orientation)
+        { 
+            this.orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z)
+                                        * Matrix.Identity * (float)(2 * Math.PI);
+        }
+
+        protected void UpdateWorldMatrix()
+        {
+            // multiply in S R T order (Scale, Rotation, Translation)
+            WorldMatrix = scaleMatrix*orientationMatrix*positionMatrix;
+        }
+
+        #region unimplemented-inteface stuff
         public bool BeginDraw()
         {
             throw new NotImplementedException();
@@ -114,13 +185,6 @@ namespace Project2.GameObjects.Abstract
 
         public event EventHandler<EventArgs> VisibleChanged;
 
-        public virtual void Update(GameTime gametime)
-        {
-            // get matricies from camera
-            basicEffect.View = game.camera.view;
-            basicEffect.Projection = game.camera.projection;
-        }
-
         public bool Enabled
         {
             get { throw new NotImplementedException(); }
@@ -134,39 +198,6 @@ namespace Project2.GameObjects.Abstract
         }
 
         public event EventHandler<EventArgs> UpdateOrderChanged;
-
-        public virtual void SetScale(Vector3 scale)
-        {
-            scaleMatrix = Matrix.Scaling(scale);
-            CalculateWorldMatrix();
-        }
-
-        public virtual void SetPosition(Vector3 position)
-        {
-            this.Position = position;
-            positionMatrix = Matrix.Translation(position);
-            CalculateWorldMatrix();
-        }
-
-        public virtual void SetOrientation(Vector3 orientation)
-        {
-           
-            this.orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
-            this.orientationMatrix *= Matrix.Identity * (float)(2 * Math.PI);
-            CalculateWorldMatrix();
-        }
-
-        public virtual void SetOrientation(Matrix orientation)
-        {
-            this.orientationMatrix = orientation;
-            //this.orientationMatrix *= Matrix.Identity * (float)(2 * Math.PI);
-            CalculateWorldMatrix();
-        }
-
-        protected void CalculateWorldMatrix()
-        {
-            // multiply in S R T order (Scale, Rotation, Translation)
-            worldMatrix = scaleMatrix*orientationMatrix*positionMatrix;
-        }
+        #endregion
     }
 }

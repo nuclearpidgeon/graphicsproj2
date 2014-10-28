@@ -75,13 +75,14 @@ namespace Project2.GameObjects
             //basicEffect.World = this.worldMatrix;
             //basicEffect.View = game.camera.view;
             //basicEffect.Projection = game.camera.projection;
-
+            //
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
-            effect.Parameters["World"].SetValue(this.worldMatrix);
+
+            effect.Parameters["World"].SetValue(this.WorldMatrix);
             effect.Parameters["Projection"].SetValue(game.camera.projection);
             effect.Parameters["View"].SetValue(game.camera.view);
             effect.Parameters["cameraPos"].SetValue(game.camera.position);
-            effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
+            effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.WorldMatrix)));
             // For Rainbow (required)
             effect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
 
@@ -94,9 +95,9 @@ namespace Project2.GameObjects
             foreach (var pass in this.effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                if (model != null)
+                if (this.model != null)
                 {
-                    model.Draw(game.GraphicsDevice, worldMatrix, game.camera.view, game.camera.projection, effect);
+                    this.model.Draw(game.GraphicsDevice, WorldMatrix, game.camera.view, game.camera.projection, effect);
                 }
             }
         }

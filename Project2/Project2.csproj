@@ -113,6 +113,7 @@
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
     <Compile Include="GameObjects\Abstract\LevelPiece.cs" />
+    <Compile Include="GameObjects\Abstract\ModelGameObject.cs" />
     <Compile Include="GameObjects\Abstract\PhysicsPuzzle.cs" />
     <Compile Include="GameObjects\Boids\EnemyBoid.cs" />
     <Compile Include="GameObjects\Boids\Flock.cs" />
