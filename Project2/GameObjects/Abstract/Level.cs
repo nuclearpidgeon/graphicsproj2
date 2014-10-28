@@ -20,8 +20,8 @@ namespace Project2.GameObjects
     abstract public class Level : IUpdateable, IDrawable
     {
         public Project2Game game;
-        public PhysicsObject player;
-        public PhysicsObject endGoal;
+        public ModelPhysicsObject player;
+        public ModelPhysicsObject endGoal;
         //private Matrix worldMatrix;
 
         public List<LevelPiece> LevelPieces;
@@ -69,9 +69,9 @@ namespace Project2.GameObjects
                 if (childObject.Position.Y < -75)
                 {
                     // Kill Kill Kill
-                    if (childObject is PhysicsObject)
+                    if (childObject is ModelPhysicsObject)
                     {
-                        PhysicsObject physicsObject = (PhysicsObject)childObject;
+                        ModelPhysicsObject physicsObject = (ModelPhysicsObject)childObject;
                         physicsObject.Destroy();
                     }
                     // Can't remove object inside foreach. Need to delete outside the loop

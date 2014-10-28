@@ -26,7 +26,7 @@ namespace Project2.GameObjects.Boids
             if (dist_to_player.Length() < playerAvoidRadius)
             {
                 var dir_to_player =Vector3.Normalize(dist_to_player); // avoid player
-                this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * -0.3f);
+                this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * -0.3f);
             }
 
             // attack friendly boids
@@ -35,7 +35,7 @@ namespace Project2.GameObjects.Boids
                 var distance = boid.Position - this.Position;
                 if (distance.Length() < attackRadius)
                 {
-                    this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(distance) * 0.001f);
+                    this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(distance) * 0.001f);
                 }
             }
 

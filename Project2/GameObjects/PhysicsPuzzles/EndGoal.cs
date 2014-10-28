@@ -15,7 +15,7 @@ namespace Project2.GameObjects.PhysicsPuzzles
 {
     class EndGoal : PhysicsPuzzle
     {
-        public PhysicsObject obelisk;
+        public ModelPhysicsObject obelisk;
         public EndGoal(Project2Game game, LevelPiece levelPiece, Vector3 offset) : base(game, levelPiece, offset)
         {
             // place obelisk

@@ -112,6 +112,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
+    <Compile Include="GameObjects\Abstract\IPhysicsObject.cs" />
     <Compile Include="GameObjects\Abstract\LevelPiece.cs" />
     <Compile Include="GameObjects\Abstract\ModelGameObject.cs" />
     <Compile Include="GameObjects\Abstract\PhysicsPuzzle.cs" />

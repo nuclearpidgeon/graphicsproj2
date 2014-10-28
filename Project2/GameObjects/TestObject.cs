@@ -16,7 +16,7 @@ using Jitter.Dynamics;
 
 namespace Project2.GameObjects
 {
-    class TestObject : PhysicsObject
+    class TestObject : ModelPhysicsObject
     {
         public TestObject(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))

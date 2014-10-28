@@ -12,7 +12,7 @@ using Project2.GameObjects.Abstract;
 
 namespace Project2.GameObjects
 {
-    class Terrain : PhysicsObject
+    class Terrain : ModelPhysicsObject
     {
         public float[,] TerrainData;
         private int terrainWidth;

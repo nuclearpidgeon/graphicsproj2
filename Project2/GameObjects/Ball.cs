@@ -16,7 +16,7 @@ using Jitter.Dynamics;
 
 namespace Project2.GameObjects
 {
-    public class Ball : PhysicsObject
+    public class Ball : ModelPhysicsObject
     {
         public Ball(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
@@ -61,8 +61,8 @@ namespace Project2.GameObjects
             //// each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             //this.SetPosition(pos);
             //this.SetOrientation(orientation);
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 400f), PhysicsSystem.toJVector(Vector3.Zero));
 
             base.Update(gametime);
         }

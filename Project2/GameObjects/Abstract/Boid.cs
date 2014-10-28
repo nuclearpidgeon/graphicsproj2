@@ -13,7 +13,7 @@ using SharpDX.Toolkit.Graphics;
 
 namespace Project2.GameObjects.Boids
 {
-    public abstract class Boid : PhysicsObject
+    public abstract class Boid : ModelPhysicsObject
     {
         public Flock.BoidType boidType;
         public Flock flock;
@@ -41,14 +41,14 @@ namespace Project2.GameObjects.Boids
         {
             // work out which, if any, of the collided bodies is this object, and name them semantically
             RigidBody other;
-            var self = this.physicsDescription.RigidBody;
+            var self = this.PhysicsDescription.RigidBody;
             if (body1 == self)
                 other = body2;
             else if (body2 == self)
                 other = body1;
             else return;
 
-            if (other == this.flock.level.endGoal.physicsDescription.RigidBody) // we've collided with the end zone
+            if (other == this.flock.level.endGoal.PhysicsDescription.RigidBody) // we've collided with the end zone
             {
                 // be careful of what you modify in this handler as it may be called during an Update()
                 // attempting to modify any list (such as destroying game objects, etc) will cause an exception

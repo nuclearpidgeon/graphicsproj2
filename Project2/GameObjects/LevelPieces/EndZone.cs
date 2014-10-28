@@ -14,7 +14,7 @@ namespace Project2.GameObjects.LevelPieces
     /// </summary>
     class EndZone : LevelPlane
     {
-        public PhysicsObject endGoal;
+        public ModelPhysicsObject endGoal;
         public EndZone(Project2Game game, Level level, Vector3 position)
             : base(game, level, position, SlopeType.Flat)
         {

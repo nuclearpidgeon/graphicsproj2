@@ -17,7 +17,7 @@ using Jitter.LinearMath;
 
 namespace Project2.GameObjects
 {
-    public class Monkey : PhysicsObject
+    public class Monkey : ModelPhysicsObject
     {
         private Effect effect;
         public Monkey(Project2Game game, Model model, Vector3 position, Boolean isStatic)
@@ -63,8 +63,8 @@ namespace Project2.GameObjects
             //// each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             //this.SetPosition(pos);
             //this.SetOrientation(orientation);
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
-            this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
 
             base.Update(gametime);
         }

@@ -33,10 +33,10 @@ namespace Project2.GameObjects.PhysicsPuzzles
                     new Vector3(50f, 1f, 40f),
                     false
                 );
-            seeSawPlatform.physicsDescription.RigidBody.Mass = 50f;
+            seeSawPlatform.PhysicsDescription.RigidBody.Mass = 50f;
             //var constraint = new Jitter.Dynamics.Joints.HingeJoint(game.physics.World, seeSawbase.physicsDescription.RigidBody, seeSawPlatform.physicsDescription.RigidBody, PhysicsSystem.toJVector(this.originPosition + new Vector3(0f, baseHeight, 0f)), Jitter.LinearMath.JVector.Right);
             //constraint.PointOnPointConstraint1.Softness = 0.001f;
-            var constraint = new Jitter.Dynamics.Constraints.PointOnPoint(seeSawbase.physicsDescription.RigidBody, seeSawPlatform.physicsDescription.RigidBody, PhysicsSystem.toJVector(originPosition + new Vector3(0, 0.5f * baseHeight, 0)));
+            var constraint = new Jitter.Dynamics.Constraints.PointOnPoint(seeSawbase.PhysicsDescription.RigidBody, seeSawPlatform.PhysicsDescription.RigidBody, PhysicsSystem.toJVector(originPosition + new Vector3(0, 0.5f * baseHeight, 0)));
             constraint.BiasFactor = 100f;
             //constraint.Softness = 0.001f;
             //game.physics.World.AddConstraint(constraint);
