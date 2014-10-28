@@ -19,16 +19,17 @@ namespace Project2.GameObjects
 {
     public class Monkey : PhysicsObject
     {
+        private Effect effect;
         public Monkey(Project2Game game, Model model, Vector3 position, Boolean isStatic)
             : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
         {
-
+            effect = game.Content.Load<Effect>("Shaders\\Rainbow");
         }
 
         private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
         {
             var bounds = model.CalculateBounds();
-            var collisionShape = new SphereShape(bounds.Radius);
+            var collisionShape = new SphereShape(bounds.Radius*3);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(position),
@@ -76,7 +77,28 @@ namespace Project2.GameObjects
             //basicEffect.Projection = game.camera.projection;
 
             //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, basicEffect);
-            base.Draw(gametime);
+            effect.Parameters["World"].SetValue(this.worldMatrix);
+            effect.Parameters["Projection"].SetValue(game.camera.projection);
+            effect.Parameters["View"].SetValue(game.camera.view);
+            effect.Parameters["cameraPos"].SetValue(game.camera.position);
+            effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.worldMatrix)));
+            // For Rainbow (required)
+            effect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
+
+            // For Cel (both optional)
+            //effect.Parameters["objectCol"].SetValue<Color4>(new Color4(0.5f, 0.5f, 0.5f, 1.0f));
+            //effect.Parameters["quant"].SetValue<float>(3.0f);
+
+            //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, effect);
+
+            foreach (var pass in this.effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                if (model != null)
+                {
+                    model.Draw(game.GraphicsDevice, worldMatrix, game.camera.view, game.camera.projection, effect);
+                }
+            }
         }
     }
 }
