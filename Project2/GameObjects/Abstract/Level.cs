@@ -41,7 +41,7 @@ namespace Project2.GameObjects
             ChildObjects = new List<GameObject>();
             flock = new Flock(this.game, this);
             
-            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition(), false);
+            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition());
             ChildObjects.Add(player);
         }
 
@@ -51,7 +51,7 @@ namespace Project2.GameObjects
         {
             ChildObjects.Remove(player);
             player.Destroy();
-            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition(), false);
+            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition());
             ChildObjects.Add(player);
             game.camera.SetFollowObject(player);
         }

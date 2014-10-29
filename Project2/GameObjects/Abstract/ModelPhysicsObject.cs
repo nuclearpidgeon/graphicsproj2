@@ -36,7 +36,19 @@ namespace Project2.GameObjects.Abstract
             game.physics.AddBody(PhysicsDescription);
         }
 
-        protected abstract RigidBody GeneratePhysicsDescription();
+        protected virtual RigidBody GeneratePhysicsDescription()
+        {
+            BoundingSphere bounds = model.CalculateBounds();
+            Shape collisionShape = new SphereShape(bounds.Radius * 3);
+            var rigidBody = new RigidBody(collisionShape)
+            {
+                Position = PhysicsSystem.toJVector(Position),
+                IsStatic = false,
+                EnableDebugDraw = true,
+            };
+
+            return rigidBody;
+        }
 
         public void Destroy() {
             game.physics.RemoveBody(this.PhysicsDescription);

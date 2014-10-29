@@ -116,11 +116,13 @@
     <Compile Include="GameObjects\Abstract\LevelPiece.cs" />
     <Compile Include="GameObjects\Abstract\ModelGameObject.cs" />
     <Compile Include="GameObjects\Abstract\PhysicsPuzzle.cs" />
+    <Compile Include="GameObjects\Abstract\Terrain.cs" />
     <Compile Include="GameObjects\Boids\EnemyBoid.cs" />
     <Compile Include="GameObjects\Boids\Flock.cs" />
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\FlatTerrain.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
     <Compile Include="GameObjects\LevelPieces\EndZone.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\EndGoal.cs" />
@@ -168,11 +170,10 @@
     <Compile Include="Pages\OptionsPage.xaml.cs">
       <DependentUpon>OptionsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameObjects\Abstract\PhysicsObject.cs" />
+    <Compile Include="GameObjects\Abstract\ModelPhysicsObject.cs" />
     <Compile Include="GameSystems\PhysicsSystem.cs" />
     <Compile Include="Project2Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameObjects\Terrain.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
     <ToolkitModel Include="Content\Models\monkey.fbx" />
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />

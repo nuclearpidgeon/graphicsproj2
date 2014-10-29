@@ -25,23 +25,8 @@ namespace Project2.GameObjects
         {
             // Load custom rainbox monkey effect
             effect = game.Content.Load<Effect>("Shaders\\Rainbow");
-        }
-
-        protected override RigidBody GeneratePhysicsDescription()
-        {
-            BoundingSphere bounds = model.CalculateBounds();
-            Shape collisionShape = new SphereShape(bounds.Radius * 3);
-            var rigidBody = new RigidBody(collisionShape)
-            {
-                Position = PhysicsSystem.toJVector(Position),
-                IsStatic = false,
-                EnableDebugDraw = true,
-                Mass = 20f,
-                Tag = "player"
-            };
-                        
-            return rigidBody;
-;
+            PhysicsDescription.Mass = 20f;
+            PhysicsDescription.Tag = "player";
         }
 
         public override void Update(GameTime gametime)

@@ -34,13 +34,13 @@ namespace Project2.GameObjects.Boids
                 var distance = boid.Position - this.Position;
                 if (distance.Length() < selfRadius)
                 {
-                    this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(distance) * -0.01f);
+                    this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(distance) * -0.01f);
 
                 }
                 boid_centroid += distance;
 
             }
-            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(Vector3.Normalize(boid_centroid)) * 0.05f);
+            this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(Vector3.Normalize(boid_centroid)) * 0.05f);
 
             // avoid enemy boids
             foreach (var boid in flock.boidList.Where(b => b.boidType == Flock.BoidType.Enemy && b != this))
@@ -48,18 +48,18 @@ namespace Project2.GameObjects.Boids
                 var distance = boid.Position - this.Position;
                 if (distance.Length() < enemyRadius)
                 {
-                    this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(distance) * -0.2f);
+                    this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(distance) * -0.2f);
                 }
                 boid_centroid += distance;
 
             }
-            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(Vector3.Normalize(boid_centroid)) * 0.05f);
+            this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(Vector3.Normalize(boid_centroid)) * 0.05f);
 
 
             if (dist_to_player.Length() < playerRadius)
             {
                 var dir_to_player = Vector3.Normalize(dist_to_player);
-                this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.17f);
+                this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.17f);
             }
 
 
