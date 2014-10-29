@@ -114,7 +114,7 @@ technique Lighting
 {
     pass Pass1
     {
-		Profile = 10.0; //changed from 11.0
+		Profile = 10; //changed from 11.0
         VertexShader = VS;
         PixelShader = PS;
     }

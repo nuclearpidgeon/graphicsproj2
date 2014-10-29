@@ -135,8 +135,7 @@ namespace Project2.GameObjects
 
         public List<INode> Children
         {
-            get { return Children; }
-            set { Children = value; }
+            get; set;
         }
 
 

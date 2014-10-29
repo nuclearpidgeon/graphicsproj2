@@ -71,14 +71,14 @@ namespace Project2.GameObjects.Boids
 
         public INode Parent
         {
-            get { return Parent; }
-            set { Parent = value; }
+            get;
+            set;
         }
 
         public List<INode> Children
         {
-            get { return Children; }
-            set { Children = value; }
+            get;
+            set;
         }
 
 
