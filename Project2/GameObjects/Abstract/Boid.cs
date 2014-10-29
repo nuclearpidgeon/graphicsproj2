@@ -55,7 +55,7 @@ namespace Project2.GameObjects.Boids
                 //this.Destroy(); // remove self (this causes an exception)
 
                 // add to score
-                this.game.Score += 10; // this doesn't
+                this.game.incScore(10); // this doesn't
                 self.ApplyImpulse(new JVector(0,1,0) * 7f, JVector.Zero); // this doesn't
             }
         }

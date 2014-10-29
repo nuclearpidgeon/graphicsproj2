@@ -119,6 +119,7 @@
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\Events\ScoreUpdatedEvent.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
     <Compile Include="GameObjects\LevelPieces\EndZone.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\EndGoal.cs" />

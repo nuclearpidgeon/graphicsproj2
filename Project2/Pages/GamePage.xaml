@@ -21,6 +21,6 @@
         </Viewbox>
         <TextBlock Text="Paused" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFF1F1F1" ></TextBlock>
     </Grid>
-    <TextBlock x:Name="scoreTxt" HorizontalAlignment="Left" Margin="1092,720,0,0" TextWrapping="Wrap" Text="Score: 0" VerticalAlignment="Top" Foreground="#FFB90000" FontSize="40" Visibility="Collapsed" />
+    <TextBlock x:Name="scoreTxt" HorizontalAlignment="Right" Margin="0,720,50,0" TextWrapping="Wrap" Text="Score: 0" VerticalAlignment="Top" Foreground="#FFB90000" FontSize="40" TextAlignment="Right" />
 
 </SwapChainBackgroundPanel>
