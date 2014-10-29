@@ -14,6 +14,8 @@ namespace Project2.GameObjects.Abstract
         protected VertexInputLayout inputLayout;
 
         private Vector3 position;
+        private Vector3 orientation;
+        private Vector3 scale;
         private Matrix orientationMatrix;
         private Matrix positionMatrix;
         private Matrix scaleMatrix;
@@ -30,9 +32,30 @@ namespace Project2.GameObjects.Abstract
             set
             {
                 position = value;
-                positionMatrix = Matrix.Translation(value);
+                positionMatrix = Matrix.Translation(position);
             } 
         }
+
+        public Vector3 Scale
+        {
+            get { return scale; }
+            set
+            {
+                scale = value;
+                scaleMatrix = Matrix.Scaling(scale);
+            }
+        }
+
+        public Vector3 Orientation
+        {
+            get { return orientation; }
+            set
+            {
+                orientation = value;
+                this.orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
+            }
+        }
+
         protected Matrix OrientationMatrix
         {
             get { return orientationMatrix; }
@@ -91,12 +114,9 @@ namespace Project2.GameObjects.Abstract
             // Just in case...?
             WorldMatrix = Matrix.Identity;
 
-            // scaleMatrix = Matrix.Identity;
-            this.SetScale(scale);
-            // positionMatrix = Matrix.Identity;
+            Scale = scale;
+            Orientation = orientation;
             Position = position;
-            
-            orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z);
 
             // Setup rendering effect
             basicEffect = new BasicEffect(game.GraphicsDevice)
@@ -133,25 +153,6 @@ namespace Project2.GameObjects.Abstract
             // get matricies from camera
             basicEffect.View = game.camera.view;
             basicEffect.Projection = game.camera.projection;
-        }
-
-        /// <summary>
-        /// Set object's scale matrix from a Vector input
-        /// </summary>
-        /// <param name="scale">Vector to use for scaling matrix</param>
-        public void SetScale(Vector3 scale)
-        {
-            scaleMatrix = Matrix.Scaling(scale);
-        }
-
-        /// <summary>
-        /// Set object's orientation matrix from a Vector input
-        /// </summary>
-        /// <param name="orientation">Vector to use for orientation matrix</param>
-        public void SetOrientation(Vector3 orientation)
-        { 
-            this.orientationMatrix = Matrix.RotationYawPitchRoll(orientation.X, orientation.Y, orientation.Z)
-                                        * Matrix.Identity * (float)(2 * Math.PI);
         }
 
         protected void UpdateWorldMatrix()

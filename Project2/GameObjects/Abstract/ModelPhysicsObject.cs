@@ -38,11 +38,12 @@ namespace Project2.GameObjects.Abstract
 
         protected virtual RigidBody GeneratePhysicsDescription()
         {
-            BoundingSphere bounds = model.CalculateBounds();
+            BoundingSphere bounds = model.CalculateBounds(WorldMatrix);
             Shape collisionShape = new SphereShape(bounds.Radius);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(Position),
+                Orientation = PhysicsSystem.toJMatrix(OrientationMatrix),
                 IsStatic = false,
                 EnableDebugDraw = true,
             };

@@ -20,7 +20,7 @@ namespace Project2.GameObjects.Abstract
             this.model = model;
             if (model != null)
             {
-                boundingSphere = model.CalculateBounds();
+                boundingSphere = model.CalculateBounds(WorldMatrix);
             }
         }
 

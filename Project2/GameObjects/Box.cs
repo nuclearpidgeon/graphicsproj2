@@ -27,9 +27,21 @@ namespace Project2.GameObjects
         public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Vector3 orientation)
             : base(game, model, position, orientation, size)
         {
-            this.PhysicsDescription.Mass = 600f;
+            
         }
 
+        protected override RigidBody GeneratePhysicsDescription()
+        {
+            Shape collisionShape = new BoxShape(Scale.X, Scale.Y, Scale.Z);
+            var rigidBody = new RigidBody(collisionShape)
+            {
+                Position = PhysicsSystem.toJVector(Position),
+                Orientation = PhysicsSystem.toJMatrix(OrientationMatrix),
+                IsStatic = true,
+                EnableDebugDraw = true,
+            };
 
+            return rigidBody;
+        }
     }
 }
