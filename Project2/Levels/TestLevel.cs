@@ -56,8 +56,6 @@ namespace Project2.Levels
                         break;
                 }
 
-                LevelPieces.Add(new LevelPlane(this.game, this, new Vector3(0f, yHeight, (float)PreferedTileHeight * i), slopeType, (float)slopeHeight, PreferedTileWidth, PreferedTileHeight));
-
                 // Add the piece
                 LevelPlane newPlane = new LevelPlane(
                     this.game, 
@@ -72,6 +70,7 @@ namespace Project2.Levels
                     PreferedTileWidth, 
                     PreferedTileHeight
                 );
+                
                 LevelPieces.Add(newPlane);
                 // Add a brick wall every 2nd flat plane
                 if (i % 4 == 2)

@@ -22,17 +22,16 @@ namespace Project2.GameObjects.PhysicsPuzzles
                     game,
                     game.models["box"],
                     this.originPosition + new Vector3(0f, 0.5f * baseHeight, 0f),
-                    new Vector3(30f, 3f, 1.5f),
-                    true
+                    new Vector3(30f, 3f, 1.5f)
                 );
-
+            seeSawbase.PhysicsDescription.IsStatic = true;
             Box seeSawPlatform= new Box(
                     game,
                     game.models["box"],
                     this.originPosition + new Vector3(0f, 2f * baseHeight, 0f),
-                    new Vector3(50f, 1f, 40f),
-                    false
+                    new Vector3(50f, 1f, 40f)
                 );
+            seeSawPlatform.PhysicsDescription.IsStatic = false;
             seeSawPlatform.PhysicsDescription.Mass = 50f;
             //var constraint = new Jitter.Dynamics.Joints.HingeJoint(game.physics.World, seeSawbase.physicsDescription.RigidBody, seeSawPlatform.physicsDescription.RigidBody, PhysicsSystem.toJVector(this.originPosition + new Vector3(0f, baseHeight, 0f)), Jitter.LinearMath.JVector.Right);
             //constraint.PointOnPointConstraint1.Softness = 0.001f;

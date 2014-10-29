@@ -32,22 +32,30 @@ namespace Project2.GameObjects
             this.yScale = yScale;
             this.frontHeight = frontHeight;
             this.backHeight = backHeight;
+            this.TerrainData = GenerateTerrainData();
+            this.PhysicsDescription = GeneratePhysicsDescription();
+            this.Position = PhysicsSystem.toVector3(PhysicsDescription.Position);
+
+            game.physics.AddBody(PhysicsDescription);
         }
         protected override RigidBody GeneratePhysicsDescription()
         {
-            float[,] terrainData = new float[,] { 
-                {frontHeight, backHeight} ,
-                {frontHeight, backHeight}
-            };
-            var collisionShape = new TerrainShape(terrainData, (float)xScale, (float)yScale);
+            var collisionShape = new TerrainShape(TerrainData, (float)xScale, (float)yScale);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(Position),
-                IsStatic = false,
+                IsStatic = true,
                 EnableDebugDraw = true,
             };
-
             return rigidBody;
+        }
+
+        protected override float[,] GenerateTerrainData()
+        {
+            return new float[,] { 
+                {frontHeight, backHeight} ,
+                {frontHeight, backHeight}
+            };
         }
     }
 }

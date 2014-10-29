@@ -39,7 +39,7 @@ namespace Project2.GameObjects.Abstract
         protected virtual RigidBody GeneratePhysicsDescription()
         {
             BoundingSphere bounds = model.CalculateBounds();
-            Shape collisionShape = new SphereShape(bounds.Radius * 3);
+            Shape collisionShape = new SphereShape(bounds.Radius);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(Position),

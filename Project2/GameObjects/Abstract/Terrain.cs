@@ -24,6 +24,7 @@ namespace Project2.GameObjects.Abstract
         protected Terrain(Project2Game game, Vector3 position)
             : base(game,position)
         {
+            this.TerrainData = GenerateTerrainData();
             this.PhysicsDescription = GeneratePhysicsDescription();
             this.Position = PhysicsSystem.toVector3(PhysicsDescription.Position);
 
@@ -31,6 +32,8 @@ namespace Project2.GameObjects.Abstract
         }
 
         protected abstract RigidBody GeneratePhysicsDescription();
+
+        protected abstract float[,] GenerateTerrainData();
 
         public override void Draw(SharpDX.Toolkit.GameTime gametime)
         {

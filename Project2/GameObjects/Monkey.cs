@@ -68,6 +68,10 @@ namespace Project2.GameObjects
                     this.model.Draw(game.GraphicsDevice, WorldMatrix, game.camera.view, game.camera.projection, effect);
                 }
             }
+            if (PhysicsDescription.EnableDebugDraw && PhysicsDescription != null)
+            {
+                PhysicsDescription.DebugDraw(game.debugDrawer);
+            }
         }
     }
 }

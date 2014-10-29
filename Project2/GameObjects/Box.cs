@@ -18,15 +18,16 @@ namespace Project2.GameObjects
 {
     public class Box : ModelPhysicsObject
     {
-        public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Boolean isStatic)
-            : base(game, model, position, Vector3.Zero, size)
+        public Box(Project2Game game, Model model, Vector3 position, Vector3 size)
+            : this(game, model, position, size, Vector3.Zero)
         {
-            this.PhysicsDescription.Mass = 600f;
+            
         }
 
-        public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Vector3 orientation, Boolean isStatic)
+        public Box(Project2Game game, Model model, Vector3 position, Vector3 size, Vector3 orientation)
             : base(game, model, position, orientation, size)
         {
+            this.PhysicsDescription.Mass = 600f;
         }
 
 

@@ -20,7 +20,8 @@ namespace Project2.GameObjects.PhysicsPuzzles
         {
             // place obelisk
             var scale = new Vector3(6, 15, 6);
-            obelisk = new Box(game, game.models["box"], offset + new Vector3(0, scale.Y * 0.5f, 0), scale, true);
+            obelisk = new Box(game, game.models["box"], offset + new Vector3(0, scale.Y * 0.5f, 0), scale);
+            obelisk.PhysicsDescription.IsStatic = true;
             this.AddChild(obelisk);
         }
     }

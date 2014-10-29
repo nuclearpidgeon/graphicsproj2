@@ -66,17 +66,17 @@ namespace Project2.GameObjects
             foreach (var childObject in ChildObjects)
             {
                 childObject.Update(gameTime);
-                if (childObject.Position.Y < -75)
-                {
-                    // Kill Kill Kill
-                    if (childObject is ModelPhysicsObject)
-                    {
-                        ModelPhysicsObject physicsObject = (ModelPhysicsObject)childObject;
-                        physicsObject.Destroy();
-                    }
-                    // Can't remove object inside foreach. Need to delete outside the loop
-                    garbageList.Add(childObject);
-                }
+                //if (childObject.Position.Y < -75)
+                //{
+                //    // Kill Kill Kill
+                //    if (childObject is ModelPhysicsObject)
+                //    {
+                //        ModelPhysicsObject physicsObject = (ModelPhysicsObject)childObject;
+                //        physicsObject.Destroy();
+                //    }
+                //    // Can't remove object inside foreach. Need to delete outside the loop
+                //    garbageList.Add(childObject);
+                //}
             }
             // Cleanup
             foreach (GameObject obj in garbageList)
@@ -94,7 +94,7 @@ namespace Project2.GameObjects
             // Check for player death
             if (player.Position.Y < -75)
             {
-                ResetPlayer();
+                //ResetPlayer();
             }
         }
 
