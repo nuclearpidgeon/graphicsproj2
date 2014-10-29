@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Project2.GameObjects.Interface;
 using SharpDX;
 using SharpDX.Toolkit;
 using Project2.GameObjects.LevelPieces;
 
 namespace Project2.GameObjects.Abstract
 {
-    public abstract class PhysicsPuzzle : IUpdateable, IDrawable
+    public abstract class PhysicsPuzzle : IUpdateable, IDrawable, INode
     {
         public Game game; // parent game
         public LevelPiece levelPiece; // parent level piece
         public Vector3 originPosition;
-
-        private List<GameObject> childObjects = new List<GameObject>();
 
         public PhysicsPuzzle(Game game, LevelPiece levelPiece, Vector3 offset ) {
             this.game = game;
@@ -24,19 +22,9 @@ namespace Project2.GameObjects.Abstract
             this.originPosition = levelPiece.OriginPosition += offset;
         }
 
-        public void AddChild(GameObject o)
-        {
-            this.childObjects.Add(o);
-        }
-
-        public void RemoveChild(GameObject o)
-        {
-            this.childObjects.Remove(o);
-        }
-
         public void Update(GameTime gameTime)
         {
-            foreach (var o in childObjects)
+            foreach (var o in Children)
             {
                 o.Update(gameTime);
             }
@@ -44,10 +32,33 @@ namespace Project2.GameObjects.Abstract
 
         public void Draw(GameTime gameTime)
         {
-            foreach (var o in childObjects)
+            foreach (var o in Children)
             {
                 o.Draw(gameTime);
             }
+        }
+
+        public INode Parent
+        {
+            get { return Parent; }
+            set { Parent = value; }
+        }
+
+        public List<INode> Children
+        {
+            get { return Children; }
+            set { Children = value; }
+        }
+
+        public void AddChild(INode childNode)
+        {
+            childNode.Parent = this;
+            Children.Add(childNode);
+        }
+
+        public void RemoveChild(INode childNode)
+        {
+            childNode.RemoveChild(childNode);
         }
 
         #region interface crap
@@ -89,5 +100,6 @@ namespace Project2.GameObjects.Abstract
 
         public event EventHandler<EventArgs> VisibleChanged;
         #endregion
+
     }
 }

@@ -30,16 +30,14 @@ namespace Project2.GameObjects.Boids
             }
 
             // attack friendly boids
-            foreach (var boid in flock.boidList.Where(b => b.boidType == Flock.BoidType.Friendly && b != this))
+            foreach (var boid in flock.Children.Where(b => ((Boid)b).boidType == Flock.BoidType.Friendly && b != this))
             {
-                var distance = boid.Position - this.Position;
+                var distance = ((Boid)boid).Position - this.Position;
                 if (distance.Length() < attackRadius)
                 {
                     this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(distance) * 0.001f);
                 }
             }
-
-
             base.Update(gametime);
         }
         public override void Draw(GameTime gametime)

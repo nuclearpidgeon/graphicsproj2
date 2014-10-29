@@ -20,7 +20,7 @@ namespace Project2.GameObjects.LevelPieces
         {
             var endPuzzle = new EndGoal(game, this,
                 position + new Vector3(Level.PreferedTileWidth/2.0f, 0, Level.PreferedTileHeight/2.0f));
-            this.physicsPuzzles.Add(endPuzzle);
+            AddChild(endPuzzle);
             this.endGoal = endPuzzle.obelisk;
         }
     }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Project2.GameObjects.Interface;
 using SharpDX;
 using SharpDX.Toolkit;
 
 namespace Project2.GameObjects.Boids
 {
-    public class Flock: IUpdateable, IDrawable
+    public class Flock: IUpdateable, IDrawable, INode
     {
 
         public enum BoidType
@@ -18,7 +19,6 @@ namespace Project2.GameObjects.Boids
             Neutral
         }
 
-        public List<Boid> boidList;
         public Project2Game game;
         public Level level;
 
@@ -26,41 +26,71 @@ namespace Project2.GameObjects.Boids
         {
             this.game = game;
             this.level = level;
-            boidList = new List<Boid>();
         }
 
         public void AddBoid(BoidType boidType, Vector3 position)
         {
+            Boid newBoid;
             switch (boidType)
             {
                 case BoidType.Friendly:
-                    boidList.Add(new FriendlyBoid(game, this, game.models["Sphere"], position));
+                    newBoid = new FriendlyBoid(game, this, game.models["Sphere"], position);
                     break;
 
                 case BoidType.Enemy:
-                    boidList.Add(new EnemyBoid(game, this, game.models["Teapot"], position));
+                    newBoid = new EnemyBoid(game, this, game.models["Teapot"], position);
                     break;
 
                 case BoidType.Neutral:
-                    boidList.Add(new NeutralBoid(game, this, game.models["Sphere"], position));
+                    newBoid = new NeutralBoid(game, this, game.models["Sphere"], position);
                     break;
+
+                default:
+                    newBoid = new NeutralBoid(game, this, game.models["Sphere"], position);
+                    break;
+
             }
+            AddChild(newBoid);
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach (var boid in boidList)
+            foreach (var o in Children)
             {
-                boid.Update(gameTime);
+                o.Update(gameTime);
             }
         }
 
         public void Draw(GameTime gameTime)
         {
-            foreach (var boid in boidList)
+            foreach (var o in Children)
             {
-                boid.Draw(gameTime);
+                o.Draw(gameTime);
             }
+        }
+
+        public INode Parent
+        {
+            get { return Parent; }
+            set { Parent = value; }
+        }
+
+        public List<INode> Children
+        {
+            get { return Children; }
+            set { Children = value; }
+        }
+
+
+        public void AddChild(INode childNode)
+        {
+            childNode.Parent = this;
+            Children.Add(childNode);
+        }
+
+        public void RemoveChild(INode childNode)
+        {
+            childNode.RemoveChild(childNode);
         }
 
         #region interface crap

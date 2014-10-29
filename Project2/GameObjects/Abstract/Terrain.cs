@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Project2.GameObjects.Interface;
 using SharpDX;
 using SharpDX.Toolkit;
 
@@ -10,11 +10,14 @@ namespace Project2.GameObjects.Abstract
 {
     abstract class Terrain : GameObject, IPhysicsObject
     {
+
+        
         public float[,] TerrainData;
         protected int terrainWidth;
         protected int terrainHeight;
         protected float maxHeight = 0;
         protected float minHeight = 0;
+        
 
         private int[] indices_list;
         private VertexPositionNormalColor[] vertex_list;
@@ -46,7 +49,13 @@ namespace Project2.GameObjects.Abstract
 
         public void Destroy()
         {
-            throw new NotImplementedException();
+            this.Parent.RemoveChild(this);
+        }
+
+        public bool ToDestroy
+        {
+            get { return ToDestroy; }
+            set { ToDestroy = value; }
         }
     }
 }

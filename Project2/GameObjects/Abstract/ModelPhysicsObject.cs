@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
+using Project2.GameObjects.Interface;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -12,6 +14,7 @@ namespace Project2.GameObjects.Abstract
     public abstract class ModelPhysicsObject : ModelGameObject, IPhysicsObject
     {
         public RigidBody PhysicsDescription { get; set; }
+        public Boolean ToDestroy { get; set; }
 
         #region extra constructors
         /// <summary>
@@ -34,6 +37,7 @@ namespace Project2.GameObjects.Abstract
             this.Position = PhysicsSystem.toVector3(PhysicsDescription.Position);
 
             game.physics.AddBody(PhysicsDescription);
+            ToDestroy = false;
         }
 
         protected virtual RigidBody GeneratePhysicsDescription()
@@ -53,10 +57,16 @@ namespace Project2.GameObjects.Abstract
 
         public void Destroy() {
             game.physics.RemoveBody(this.PhysicsDescription);
+            
         }     
 
         public override void Update(GameTime gametime)
         {
+            if (ToDestroy) // handle out-of-sync called (i.e. event handled) object destruction in next game engine step
+            {
+                Destroy();
+            }
+
             // Update the GameObject position and orientation post physics simulation
             // NB: each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
             this.Position = PhysicsSystem.toVector3(this.PhysicsDescription.Position);
@@ -70,7 +80,10 @@ namespace Project2.GameObjects.Abstract
             {
                 PhysicsDescription.DebugDraw(game.debugDrawer);
             }
+
+            
             base.Draw(gametime);
         }
+
     }
 }

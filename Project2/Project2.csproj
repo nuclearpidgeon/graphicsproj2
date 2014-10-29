@@ -112,7 +112,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
-    <Compile Include="GameObjects\Abstract\IPhysicsObject.cs" />
     <Compile Include="GameObjects\Abstract\LevelPiece.cs" />
     <Compile Include="GameObjects\Abstract\ModelGameObject.cs" />
     <Compile Include="GameObjects\Abstract\PhysicsPuzzle.cs" />
@@ -123,6 +122,8 @@
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\Brick.cs" />
     <Compile Include="GameObjects\FlatTerrain.cs" />
+    <Compile Include="GameObjects\Interface\INode.cs" />
+    <Compile Include="GameObjects\Interface\IPhysicsObject.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
     <Compile Include="GameObjects\LevelPieces\EndZone.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\EndGoal.cs" />

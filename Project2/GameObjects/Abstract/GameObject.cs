@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using Jitter.LinearMath;
+using Project2.GameObjects.Interface;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
 namespace Project2.GameObjects.Abstract
 {
-    public abstract class GameObject : IUpdateable, IDrawable
+    public abstract class GameObject : IUpdateable, IDrawable, INode
     {
         protected Project2Game game; 
         
@@ -20,6 +22,7 @@ namespace Project2.GameObjects.Abstract
         private Matrix positionMatrix;
         private Matrix scaleMatrix;
         private Matrix worldMatrix;
+
         protected Matrix WorldMatrix
         {
             get { return worldMatrix; }
@@ -200,5 +203,29 @@ namespace Project2.GameObjects.Abstract
 
         public event EventHandler<EventArgs> UpdateOrderChanged;
         #endregion
+
+        public INode Parent
+        {
+            get { return Parent; }
+            set { Parent = value; }
+        }
+
+        public List<INode> Children
+        {
+            get { return Children; }
+            set { Children = value; }
+        }
+
+
+        public void AddChild(INode childNode)
+        {
+            childNode.Parent = this;
+            Children.Add(childNode);
+        }
+
+        public void RemoveChild(INode childNode)
+        {
+            childNode.RemoveChild(childNode);
+        }
     }
 }

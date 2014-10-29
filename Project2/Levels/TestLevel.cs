@@ -71,7 +71,7 @@ namespace Project2.Levels
                     PreferedTileHeight
                 );
                 
-                LevelPieces.Add(newPlane);
+                AddChild(newPlane);
                 // Add a brick wall every 2nd flat plane
                 if (i % 4 == 2)
                 {
@@ -88,7 +88,7 @@ namespace Project2.Levels
                         4,
                         4,
                         interleave);
-                    newPlane.physicsPuzzles.Add(newBrickWall);
+                    newPlane.AddChild(newBrickWall);
                 }
 
             }
@@ -96,7 +96,7 @@ namespace Project2.Levels
             // Add the mandatory end-zone piece containing an end goal object
             // place tile behind start tile for testing
             var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * -1));
-            LevelPieces.Add(endZone); // add the piece
+            AddChild(endZone); // add the piece
             this.endGoal = endZone.endGoal; // set the level's endGoal object for collision detection use
 
             // Create boids
