@@ -18,6 +18,7 @@ namespace Project2.GameObjects.Abstract
 
         public PhysicsPuzzle(Game game, LevelPiece levelPiece, Vector3 offset ) {
             this.game = game;
+            Children = new List<INode>();
             this.levelPiece = levelPiece;
             this.originPosition = levelPiece.OriginPosition += offset;
         }
@@ -44,11 +45,7 @@ namespace Project2.GameObjects.Abstract
             set;
         }
 
-        public List<INode> Children
-        {
-            get;
-            set;
-        }
+        public List<INode> Children { get; set; }
 
         public void AddChild(INode childNode)
         {

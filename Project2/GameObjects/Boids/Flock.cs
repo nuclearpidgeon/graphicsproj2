@@ -24,6 +24,7 @@ namespace Project2.GameObjects.Boids
 
         public Flock(Project2Game game, Level level)
         {
+            Children = new List<INode>();
             this.game = game;
             this.level = level;
         }
@@ -75,11 +76,7 @@ namespace Project2.GameObjects.Boids
             set;
         }
 
-        public List<INode> Children
-        {
-            get;
-            set;
-        }
+        public List<INode> Children { get; set; }
 
 
         public void AddChild(INode childNode)

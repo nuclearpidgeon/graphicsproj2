@@ -19,6 +19,7 @@ namespace Project2.GameObjects.Abstract
 
         public LevelPiece(Game game, Level level, Vector3 originPosition)
         {
+            Children = new List<INode>();
             this.game = game;
             this.level = level;
             this.OriginPosition = originPosition;
@@ -46,11 +47,7 @@ namespace Project2.GameObjects.Abstract
             set;
         }
 
-        public List<INode> Children
-        {
-            get;
-            set;
-        }
+        public List<INode> Children { get; set; }
 
         public void AddChild(INode childNode)
         {

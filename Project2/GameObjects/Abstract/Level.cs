@@ -35,7 +35,7 @@ namespace Project2.GameObjects
         public Level(Project2Game game)
         {
             this.game = game;
-
+            Children = new List<INode>();
 
             player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition());
             AddChild(player);

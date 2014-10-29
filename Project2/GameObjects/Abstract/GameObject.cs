@@ -113,7 +113,7 @@ namespace Project2.GameObjects.Abstract
         protected GameObject(Project2Game game, Vector3 position, Vector3 orientation, Vector3 scale)
         {
             this.game = game;
-            
+            Children = new List<INode>();
             // Just in case...?
             WorldMatrix = Matrix.Identity;
 
@@ -210,11 +210,7 @@ namespace Project2.GameObjects.Abstract
             set;
         }
 
-        public List<INode> Children
-        {
-            get;
-            set;
-        }
+        public List<INode> Children { get; set; }
 
 
         public void AddChild(INode childNode)

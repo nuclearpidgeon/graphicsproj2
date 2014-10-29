@@ -45,7 +45,6 @@ namespace Project2
     {
         
         private GraphicsDeviceManager graphicsDeviceManager;
-        private List<GameObject> gameObjects;
         public Level level;
         public Double Score;
         public Dictionary<String, Model> models; 
@@ -79,7 +78,6 @@ namespace Project2
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
 
-            gameObjects = new List<GameObject>();
             models = new Dictionary<string, Model>();
             Score = 0;
             this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
@@ -106,8 +104,6 @@ namespace Project2
 
             level = new TestLevel(this);
 
-            //gameObjects.Add(new Project2.GameObjects.Monkey(this, Vector3.Zero, 7, 2, 15));
-            //gameObjects.Add(new Terrain(this, new Vector3(0f, 255f, 0f), heightmap, 5.0));
 
             // Load font for console
             consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
@@ -177,10 +173,6 @@ namespace Project2
 
         }
 
-        public void RemoveGameObject(GameObject o)
-        {
-            this.gameObjects.Remove(o);
-        }
 
         private void TestPause()
         {
@@ -202,11 +194,6 @@ namespace Project2
             // Update camera
             camera.Update(gameTime);
 
-            // Update the game objects
-            for (int i = 0; i < gameObjects.Count; i++)
-            {
-                gameObjects[i].Update(gameTime);
-            }
 
             // Update the level
             level.Update(gameTime);
@@ -281,10 +268,7 @@ namespace Project2
             // Clears the screen with the Color.CornflowerBlue
             GraphicsDevice.Clear(new Color(0.5f));
 
-            for (int i = 0; i < gameObjects.Count; i++)
-            {
-                gameObjects[i].Draw(gameTime);
-            }
+
             level.Draw(gameTime);
             // Handle base.Draw
             base.Draw(gameTime);
