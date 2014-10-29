@@ -20,51 +20,34 @@ namespace Project2.GameObjects
     public class Monkey : ModelPhysicsObject
     {
         private Effect effect;
-        public Monkey(Project2Game game, Model model, Vector3 position, Boolean isStatic)
-            : base(game, model, position, GeneratePhysicsDescription(position, model, isStatic))
+        public Monkey(Project2Game game, Model model, Vector3 position)
+            : base(game, model, position)
         {
+            // Load custom rainbox monkey effect
             effect = game.Content.Load<Effect>("Shaders\\Rainbow");
         }
 
-        private static PhysicsDescription GeneratePhysicsDescription(Vector3 position, Model model, Boolean isStatic)
+        protected override RigidBody GeneratePhysicsDescription()
         {
-            var bounds = model.CalculateBounds();
-            var collisionShape = new SphereShape(bounds.Radius*3);
+            BoundingSphere bounds = model.CalculateBounds();
+            Shape collisionShape = new SphereShape(bounds.Radius * 3);
             var rigidBody = new RigidBody(collisionShape)
             {
-                Position = PhysicsSystem.toJVector(position),
-                IsStatic = isStatic,
+                Position = PhysicsSystem.toJVector(Position),
+                IsStatic = false,
                 EnableDebugDraw = true,
                 Mass = 20f,
                 Tag = "player"
             };
-
-            var description = new PhysicsDescription()
-            {
-                IsStatic = isStatic,
-                CollisionShape = collisionShape,
-                Debug = true,
-                RigidBody = rigidBody,
-                Position = position
-            };
-
-            return description;
+                        
+            return rigidBody;
+;
         }
-
-
 
         public override void Update(GameTime gametime)
         {
-            //var pos = PhysicsSystem.toVector3(this.physicsBody.Position);
-            //var orientation = PhysicsSystem.toMatrix(this.physicsBody.Orientation);
-            ////System.Diagnostics.Debug.WriteLine(pos);
-            ////System.Diagnostics.Debug.WriteLine(orientation);
-
-            //// each call to SetX recalculates the world matrix. This is inefficient and should be fixed.
-            //this.SetPosition(pos);
-            //this.SetOrientation(orientation);
-            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
-            this.PhysicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.SecondaryDirection() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
+            this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(game.inputManager.Acceleration() * 10f), PhysicsSystem.toJVector(Vector3.Zero));
 
             base.Update(gametime);
         }

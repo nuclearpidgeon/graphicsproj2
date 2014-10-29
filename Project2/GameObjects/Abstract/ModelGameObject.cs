@@ -14,7 +14,8 @@ namespace Project2.GameObjects.Abstract
         protected BoundingSphere boundingSphere;
         protected Model model;
 
-        public ModelGameObject(Project2Game game, Model model, Vector3 position, Vector3 orientation, Vector3 scale) : base(game, position, orientation, scale)
+        public ModelGameObject(Project2Game game, Model model, Vector3 position, Vector3 orientation, Vector3 scale)
+            : base(game, position, orientation, scale)
         {
             this.model = model;
             if (model != null)

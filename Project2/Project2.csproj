@@ -157,7 +157,6 @@
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="GameObjects\Cube.cs" />
     <Compile Include="GameObjects\Ball.cs" />
-    <Compile Include="GameObjects\TestObject.cs" />
     <Compile Include="GameSystems\DebugDrawer.cs" />
     <Compile Include="GameObjects\Abstract\GameObject.cs" />
     <Compile Include="GameSystems\GameState.cs" />
