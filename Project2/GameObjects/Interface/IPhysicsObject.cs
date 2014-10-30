@@ -7,8 +7,7 @@ namespace Project2.GameObjects.Interface
     public interface IPhysicsObject
     {
         RigidBody PhysicsDescription { get; set; }
-        Boolean ToDestroy { get; set; }
-        void Destroy();
+        void Destroy(Boolean Async = false);
         void Draw(GameTime gametime);
         void Update(GameTime gametime);
     }

@@ -56,25 +56,22 @@ namespace Project2.GameObjects.Boids
 
         public void Update(GameTime gameTime)
         {
-            foreach (var o in Children)
+            foreach (var o in Children.ToList())
             {
+                
                 o.Update(gameTime);
             }
         }
 
         public void Draw(GameTime gameTime)
         {
-            foreach (var o in Children)
+            foreach (var o in Children.ToList())
             {
                 o.Draw(gameTime);
             }
         }
 
-        public INode Parent
-        {
-            get;
-            set;
-        }
+        public INode Parent { get; set; }
 
         public List<INode> Children { get; set; }
 
@@ -87,7 +84,7 @@ namespace Project2.GameObjects.Boids
 
         public void RemoveChild(INode childNode)
         {
-            childNode.RemoveChild(childNode);
+            Children.Remove(childNode);
         }
 
         #region interface crap
