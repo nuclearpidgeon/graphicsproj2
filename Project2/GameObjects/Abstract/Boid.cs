@@ -55,7 +55,7 @@ namespace Project2.GameObjects.Boids
                 // be careful of what you modify in this handler as it may be called during an Update()
                 // attempting to modify any list (such as destroying game objects, etc) will cause an exception
                 this.Destroy(true); // remove self
-                
+
                 // add to score
                 //self.ApplyImpulse(new JVector(0,1,0) * 7f, JVector.Zero); // this doesn't
             }
@@ -92,9 +92,10 @@ namespace Project2.GameObjects.Boids
                 game.physics.RemoveBody(this.PhysicsDescription);
                 // remove from graph
                 this.Parent.RemoveChild(this);
-                this.game.Score += 10; // add to score on removal
+                //this.game.Score += 10; // add to score on removal
+                this.game.incScore(10);
             }
-        } 
+        }
 
     }
 

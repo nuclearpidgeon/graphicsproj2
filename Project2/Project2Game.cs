@@ -40,13 +40,14 @@ namespace Project2
     // Use this namespace here in case we need to use Direct3D11 namespace as well, as this
     // namespace will override the Direct3D11.
     using SharpDX.Toolkit.Graphics;
+    using Project2.GameObjects.Events;
 
     public class Project2Game : Game
     {
         
         private GraphicsDeviceManager graphicsDeviceManager;
         public Level level;
-        public Double Score;
+        private Double Score;
         public Dictionary<String, Model> models; 
 
         public ThirdPersonCamera camera { private set; get; }
@@ -65,6 +66,7 @@ namespace Project2
         private bool paused = false;
 
         public event EventHandler PauseRequest;
+        public event EventHandler ScoreUpdated;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
@@ -178,6 +180,12 @@ namespace Project2
         {
             // Pause on spacekey
             if (inputManager.PauseRequest()) togglePaused();
+        }
+
+        public void incScore(int x)
+        {
+            Score += x;
+            if (ScoreUpdated != null) ScoreUpdated(this, new ScoreUpdatedEvent(Score));    
         }
 
         protected override void Update(GameTime gameTime)
