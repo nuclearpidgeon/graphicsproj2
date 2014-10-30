@@ -380,7 +380,7 @@ namespace Project2
             {
                 return false;
             }
-            else if ((String)body.Tag == "player") 
+            else if (body.Tag == game.level.player.PhysicsDescription.Tag) 
             {
                 return false;
             }

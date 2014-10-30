@@ -50,6 +50,7 @@ namespace Project2.GameObjects.Abstract
                 Orientation = PhysicsSystem.toJMatrix(OrientationMatrix),
                 IsStatic = false,
                 EnableDebugDraw = true,
+                Tag = this,
             };
 
             return rigidBody;

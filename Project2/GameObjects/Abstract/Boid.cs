@@ -15,13 +15,22 @@ namespace Project2.GameObjects.Boids
 {
     public abstract class Boid : ModelPhysicsObject
     {
-        private Boolean ToDestroy;
+        public double health;
+        public double attack = 10;
+
+        public double maxHealth = 100;
+
+        protected Color sickColor = Color.Black;
+        protected Color healthyColor = Color.Blue;
+
+        protected Boolean ToDestroy;
         public Flock.BoidType boidType;
         public Flock flock;
 
         public Boid(Project2Game game, Flock flock, Model model, Vector3 position, Flock.BoidType boidType)
             : base(game, model, position)
         {
+            this.health = maxHealth;
             this.PhysicsDescription.Mass = 0.25f;
             this.boidType = boidType;
             this.flock = flock;
@@ -54,11 +63,27 @@ namespace Project2.GameObjects.Boids
             {
                 // be careful of what you modify in this handler as it may be called during an Update()
                 // attempting to modify any list (such as destroying game objects, etc) will cause an exception
-                this.Destroy(true); // remove self
 
-                // add to score
-                //self.ApplyImpulse(new JVector(0,1,0) * 7f, JVector.Zero); // this doesn't
-            }
+                if (!ToDestroy) // incremement score once before destroy
+                {
+                    this.game.incScore(10);
+                }
+                this.Destroy(true); // remove self
+            }    
+
+            Collision(other); // do other collision stuff
+        }
+
+        protected virtual void Collision(RigidBody other)
+        {
+
+        }
+
+        public override void Draw(GameTime gametime)
+        {
+            this.basicEffect.AmbientLightColor = Vector3.Lerp(sickColor.ToVector3(), healthyColor.ToVector3(),
+                (float)(health/maxHealth));
+            base.Draw(gametime);
         }
 
         public override void Update(GameTime gametime)
@@ -67,6 +92,12 @@ namespace Project2.GameObjects.Boids
             {
                 Destroy();
             }
+
+            if (health < 0) // destroy the boid when its health is too low
+            {
+                Destroy();
+            }
+
             base.Update(gametime);
         }
 
@@ -92,8 +123,6 @@ namespace Project2.GameObjects.Boids
                 game.physics.RemoveBody(this.PhysicsDescription);
                 // remove from graph
                 this.Parent.RemoveChild(this);
-                //this.game.Score += 10; // add to score on removal
-                this.game.incScore(10);
             }
         }
 
