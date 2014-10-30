@@ -32,7 +32,8 @@ namespace Project2.GameObjects.Abstract
         {
             this.xScale = xScale;
             this.zScale = zScale;
-            // These will probably have to happen in the subclasses because of needing access to subclass constructor arguments/fields
+            basicEffect.VertexColorEnabled = true;
+            // These will have to happen in the subclasses because of needing access to subclass constructor arguments/fields
             //this.TerrainData = GenerateTerrainData();
             //this.PhysicsDescription = GeneratePhysicsDescription();
             //this.Position = PhysicsSystem.toVector3(PhysicsDescription.Position);
@@ -149,15 +150,52 @@ namespace Project2.GameObjects.Abstract
             
             // Apply BasicEffect stuff in superclass
             base.Draw(gametime);
-
+            
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 game.GraphicsDevice.DrawIndexed(PrimitiveType.TriangleList, IndexBuffer.ElementCount);
 
             }
-            
         }
+
+        /// <summary>
+        /// Decides on a colour for terrain based on height and some noise
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="minHeight"></param>
+        /// <param name="maxHeight"></param>
+        /// <returns></returns>
+        //private Color getTerrainColour(float height, float minHeight, float maxHeight)
+        //{
+        //    var heightRange = maxHeight - minHeight;
+        //    height += 0.05f * rng.NextFloat(-heightRange, heightRange); // add 1% noise to height
+
+        //    // Look up table of colours to interpolate between
+        //    var LUT = new SortedList<float, Color>();
+        //    LUT.Add(0.03f, Color.DarkSlateGray * 0.1f);
+        //    LUT.Add(0.06f, Color.DarkBlue);
+        //    LUT.Add(0.07f, Color.DeepSkyBlue);
+        //    LUT.Add(0.2f, Color.SandyBrown);
+        //    LUT.Add(0.3f, Color.SaddleBrown);
+        //    LUT.Add(0.4f, Color.ForestGreen);
+        //    LUT.Add(0.5f, Color.LightSlateGray);
+        //    LUT.Add(1.0f, Color.Snow);
+
+        //    Color output = LUT.First().Value; // initialise the output colour to first value in table
+        //    try  // gross hack
+        //    {
+        //        output = LUT.First(x => heightRange * x.Key >= height).Value;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        output = LUT.First().Value;
+        //    }
+
+
+        //    return output;
+        //}
 
         public void Destroy()
         {

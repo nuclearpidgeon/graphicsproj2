@@ -121,6 +121,7 @@
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\DiamondSquareTerrain.cs" />
     <Compile Include="GameObjects\Events\ScoreUpdatedEvent.cs" />
     <Compile Include="GameObjects\FlatTerrain.cs" />
     <Compile Include="GameObjects\HeightMapTerrain.cs" />
