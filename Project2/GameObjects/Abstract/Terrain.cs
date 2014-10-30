@@ -60,7 +60,7 @@ namespace Project2.GameObjects.Abstract
                     // vertex list is a 1D representation of the 2D terrain
                     Vertices[x + z * terrainWidth].Position = this.Position + new Vector3(z*xScale, TerrainData[z, x], x*zScale);
                     //vertex_list[x + z * terrainWidth].Color = getTerrainColour(TerrainData[x, z], (float)minHeight, (float)maxHeight);
-                    Vertices[x + z * terrainWidth].Color = Color.Green;
+                    Vertices[x + z * terrainWidth].Color = colorFromHeight(TerrainData[z, x]);
                     Vertices[x + z * terrainWidth].Normal = Vector3.Zero;
 
                     // add vertex indices to index buffer, creating two triangles for each quad, forming a terrain mesh grid
@@ -160,42 +160,76 @@ namespace Project2.GameObjects.Abstract
         }
 
         /// <summary>
-        /// Decides on a colour for terrain based on height and some noise
+        /// Converts a height value between 0 and 1 into a color, based on a terrain height color scheme
         /// </summary>
-        /// <param name="height"></param>
-        /// <param name="minHeight"></param>
-        /// <param name="maxHeight"></param>
+        /// <param name="heightval">The height value between 0.0f and 1.0f to convert into a color</param>
+        /// <returns>SharpDX.Color struct with the appropriate color data for the given height value</returns>
+        protected virtual Color colorFromHeight(float heightval)
+        {
+            Color color;
+            Random rand = new Random(System.DateTime.Now.Millisecond);
+            float waterlevel = 0.3f;
+            //heightval += rand.NextFloat(-0.05f,0.05f);
+
+            // setup colors
+            Vector3 brown = new Vector3(150f, 120f, 90f) / 255f;
+            Vector3 green = Color.ForestGreen.ToVector3();
+            Vector3 white = Color.White.ToVector3();
+            Vector3 stone = new Vector3(71f / 255, 79f / 255, 100f / 255);
+            Vector3 black = Color.Black.ToVector3();
+
+            // shift scaling float to between 0.0f and 1.0f
+
+            if (heightval < waterlevel)
+            {
+                // decay from brown to black
+                color = interpolateColors(black, brown, heightval / waterlevel);
+            }
+            else
+            {
+                // adjust to 0->1 scale 
+                float newScale = (heightval - waterlevel) / (1 - waterlevel);
+                if (newScale < 0.25f)
+                {
+                    color = interpolateColors(brown, green, newScale / 0.25f);
+                }
+                else if (newScale < 0.50f)
+                {
+                    color = interpolateColors(green, stone, (newScale - 0.25f) / 0.25f);
+                }
+                else
+                {
+                    color = interpolateColors(stone, white, (newScale - 0.5f) / 0.5f);
+                }
+                //color = interpolateColors(brown, white, newScale);
+            }
+
+            return color;
+        }
+
+        /// <summary>
+        /// Returns a color at a certain amount between two given colors in the RGB space
+        /// </summary>
+        /// <param name="colorA">Color to start at (returned if 0.0f distance given)</param>
+        /// <param name="colorB">Color to end at (returned if 1.0f distance given)</param>
+        /// <param name="distance">Float value between 0 and 1</param>
         /// <returns></returns>
-        //private Color getTerrainColour(float height, float minHeight, float maxHeight)
-        //{
-        //    var heightRange = maxHeight - minHeight;
-        //    height += 0.05f * rng.NextFloat(-heightRange, heightRange); // add 1% noise to height
-
-        //    // Look up table of colours to interpolate between
-        //    var LUT = new SortedList<float, Color>();
-        //    LUT.Add(0.03f, Color.DarkSlateGray * 0.1f);
-        //    LUT.Add(0.06f, Color.DarkBlue);
-        //    LUT.Add(0.07f, Color.DeepSkyBlue);
-        //    LUT.Add(0.2f, Color.SandyBrown);
-        //    LUT.Add(0.3f, Color.SaddleBrown);
-        //    LUT.Add(0.4f, Color.ForestGreen);
-        //    LUT.Add(0.5f, Color.LightSlateGray);
-        //    LUT.Add(1.0f, Color.Snow);
-
-        //    Color output = LUT.First().Value; // initialise the output colour to first value in table
-        //    try  // gross hack
-        //    {
-        //        output = LUT.First(x => heightRange * x.Key >= height).Value;
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        output = LUT.First().Value;
-        //    }
-
-
-        //    return output;
-        //}
+        private Color interpolateColors(Vector3 colorA, Vector3 colorB, float distance)
+        {
+            if (distance < 0.0f)
+            {
+                //Console.WriteLine("Invalid color value " + distance + " supplied for interpolation, clipping to 0");
+                distance = 0.0f;
+            }
+            else if (distance > 1.0f)
+            {
+                //Console.WriteLine("Invalid color value " + distance + " supplied for interpolation, clipping to 1");
+                distance = 1.0f;
+            }
+            // calculate distance vector from A -> B
+            Vector3 diff = colorB - colorA;
+            return new Color(colorA + (distance * diff));
+        }
 
         public void Destroy()
         {
