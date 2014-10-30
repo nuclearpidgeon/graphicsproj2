@@ -19,7 +19,6 @@ namespace Project2.GameObjects
     {
         public override float[,] TerrainData { get; set; }
         public override RigidBody PhysicsDescription { get; set; }
-        private int xScale, yScale;
         private float frontHeight, backHeight;
         /// <summary>
         /// Constructs a flat terrain
@@ -28,11 +27,9 @@ namespace Project2.GameObjects
         /// <param name="position"></param>
         /// <param name="xScale"></param>
         /// <param name="yScale"></param>
-        public FlatTerrain(Project2Game game, Vector3 position, int xScale, int yScale, float frontHeight = 0.0f, float backHeight = 0.0f)
-            : base(game, position)
+        public FlatTerrain(Project2Game game, Vector3 position, float xScale, float zScale, float frontHeight = 0.0f, float backHeight = 0.0f)
+            : base(game, position, xScale, zScale)
         {
-            this.xScale = xScale;
-            this.yScale = yScale;
             this.frontHeight = frontHeight;
             this.backHeight = backHeight;
 
@@ -44,7 +41,7 @@ namespace Project2.GameObjects
         }
         protected override RigidBody GeneratePhysicsDescription()
         {
-            var collisionShape = new TerrainShape(TerrainData, (float)xScale, (float)yScale);
+            var collisionShape = new TerrainShape(TerrainData, (float)xScale, (float)zScale);
             var rigidBody = new RigidBody(collisionShape)
             {
                 Position = PhysicsSystem.toJVector(Position),

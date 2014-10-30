@@ -15,19 +15,23 @@ namespace Project2.GameObjects.Abstract
         public abstract float[,] TerrainData { get; set; }
         protected int terrainWidth;
         protected int terrainHeight;
+        protected float xScale;
+        protected float zScale;
         protected float maxHeight = 0;
         protected float minHeight = 0;
         // Graphics components
-        protected int[] indices_list;
-        protected VertexPositionNormalColor[] vertex_list;
+        protected int[] Indices;
+        protected VertexPositionNormalColor[] Vertices;
         protected Buffer VertexBuffer;
         protected Buffer<int> IndexBuffer;
 
         public abstract RigidBody PhysicsDescription { get; set; }
 
-        protected Terrain(Project2Game game, Vector3 position)
+        protected Terrain(Project2Game game, Vector3 position, float xScale, float zScale)
             : base(game,position)
         {
+            this.xScale = xScale;
+            this.zScale = zScale;
             // These will probably have to happen in the subclasses because of needing access to subclass constructor arguments/fields
             //this.TerrainData = GenerateTerrainData();
             //this.PhysicsDescription = GeneratePhysicsDescription();
@@ -42,8 +46,8 @@ namespace Project2.GameObjects.Abstract
         protected void GenerateGeometry()
         {
             int index = 0; // vertex index counter, used to create index buffer
-            indices_list = new int[(terrainWidth - 1) * (terrainHeight - 1) * (2 * 3)]; // each quad requires 2 tris, each tri requires 3 vertices
-            vertex_list = new VertexPositionNormalColor[terrainWidth * terrainHeight];
+            Indices = new int[(terrainWidth - 1) * (terrainHeight - 1) * (2 * 3)]; // each quad requires 2 tris, each tri requires 3 vertices
+            Vertices = new VertexPositionNormalColor[terrainWidth * terrainHeight];
 
             // create a vertex for each point on the terrain grid
             for (int z = 0; z < terrainWidth; z++)
@@ -53,10 +57,10 @@ namespace Project2.GameObjects.Abstract
 
                     // create a vertex for each point on the terrain square grid
                     // vertex list is a 1D representation of the 2D terrain
-                    vertex_list[x + z * terrainWidth].Position = new Vector3(z, TerrainData[x, z], x);
+                    Vertices[x + z * terrainWidth].Position = this.Position + new Vector3(z*xScale, TerrainData[z, x], x*zScale);
                     //vertex_list[x + z * terrainWidth].Color = getTerrainColour(TerrainData[x, z], (float)minHeight, (float)maxHeight);
-                    vertex_list[x + z * terrainWidth].Color = Color.Red;
-                    vertex_list[x + z * terrainWidth].Normal = Vector3.Zero;
+                    Vertices[x + z * terrainWidth].Color = Color.Red;
+                    Vertices[x + z * terrainWidth].Normal = Vector3.Zero;
 
                     // add vertex indices to index buffer, creating two triangles for each quad, forming a terrain mesh grid
                     // visit vertices in order that creates CW triangle and store that path in index list
@@ -68,58 +72,58 @@ namespace Project2.GameObjects.Abstract
                         int bottomRight = bottomLeft + 1;
 
                         // first triangle
-                        indices_list[index++] = upperLeft;
-                        indices_list[index++] = upperRight;
-                        indices_list[index++] = bottomLeft;
+                        Indices[index++] = upperLeft;
+                        Indices[index++] = bottomLeft;
+                        Indices[index++] = upperRight;
 
                         // second triangle
-                        indices_list[index++] = upperRight;
-                        indices_list[index++] = bottomRight;
-                        indices_list[index++] = bottomLeft;
+                        Indices[index++] = upperRight;
+                        Indices[index++] = bottomLeft;
+                        Indices[index++] = bottomRight;
 
                     }
                 }
             }
             // each group of 3 in the index buffer represents a triangle
-            for (int i = 0; i < indices_list.Length; i += 3)
+            for (int i = 0; i < Indices.Length; i += 3)
             {
                 // take 3 indices
-                var i1 = indices_list[i];
-                var i2 = indices_list[i + 1];
-                var i3 = indices_list[i + 2];
+                var i1 = Indices[i];
+                var i2 = Indices[i + 1];
+                var i3 = Indices[i + 2];
 
                 // look up their corresponding vertices such that you get the points of a triangle
-                var p1 = vertex_list[indices_list[i]];
-                var p2 = vertex_list[indices_list[i + 1]];
-                var p3 = vertex_list[indices_list[i + 2]];
+                var p1 = Vertices[Indices[i]];
+                var p2 = Vertices[Indices[i + 1]];
+                var p3 = Vertices[Indices[i + 2]];
 
                 // the normal vector to a plane is the cross product of two orthonormal vectors on the plane
                 var U = p1.Position - p2.Position;
                 var V = p1.Position - p3.Position;
-                var N = Vector3.Cross(U, V); //Vector3.Cross(side1, side2);
+                var N = Vector3.Cross(V, U); //Vector3.Cross(side1, side2);
 
                 // accumulate normals for each vertex for later averaging
-                vertex_list[i1].Normal += N;
-                vertex_list[i2].Normal += N;
-                vertex_list[i3].Normal += N;
+                Vertices[i1].Normal += N;
+                Vertices[i2].Normal += N;
+                Vertices[i3].Normal += N;
             }
 
             // normalise the summed normals to get the average normal
             // this produces a normal that is the average of the normals to the triangle faces surrounding the vertex and is smoother over the terrain
             // not super sure if this needs to be done, but I guess IEEE754 floats are more accurate around 0 after being manipulated by shaders, etc
-            for (int i = 0; i < vertex_list.Length; i++)
+            for (int i = 0; i < Vertices.Length; i++)
             {
-                vertex_list[i].Normal.Normalize();
+                Vertices[i].Normal.Normalize();
             }
 
             // Finally, create the buffers
             this.VertexBuffer = Buffer.Vertex.New(
                 game.GraphicsDevice,
-                vertex_list
+                Vertices
             );
             this.IndexBuffer = Buffer.Index.New(
                 game.GraphicsDevice,
-                indices_list
+                Indices
             );
             this.inputLayout = VertexInputLayout.FromBuffer<VertexPositionNormalColor>(0, (Buffer<VertexPositionNormalColor>)VertexBuffer);
         }
@@ -142,6 +146,9 @@ namespace Project2.GameObjects.Abstract
                     FillMode = SharpDX.Direct3D11.FillMode.Solid,
                 });
             game.GraphicsDevice.SetRasterizerState(rs);
+            
+            // Apply BasicEffect stuff in superclass
+            base.Draw(gametime);
 
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
@@ -149,7 +156,7 @@ namespace Project2.GameObjects.Abstract
                 game.GraphicsDevice.DrawIndexed(PrimitiveType.TriangleList, IndexBuffer.ElementCount);
 
             }
-            base.Draw(gametime);
+            
         }
 
         public void Destroy()
