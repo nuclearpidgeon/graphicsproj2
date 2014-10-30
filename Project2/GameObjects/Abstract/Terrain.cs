@@ -59,7 +59,7 @@ namespace Project2.GameObjects.Abstract
                     // vertex list is a 1D representation of the 2D terrain
                     Vertices[x + z * terrainWidth].Position = this.Position + new Vector3(z*xScale, TerrainData[z, x], x*zScale);
                     //vertex_list[x + z * terrainWidth].Color = getTerrainColour(TerrainData[x, z], (float)minHeight, (float)maxHeight);
-                    Vertices[x + z * terrainWidth].Color = Color.Red;
+                    Vertices[x + z * terrainWidth].Color = Color.Green;
                     Vertices[x + z * terrainWidth].Normal = Vector3.Zero;
 
                     // add vertex indices to index buffer, creating two triangles for each quad, forming a terrain mesh grid

@@ -131,6 +131,7 @@ namespace Project2.GameObjects.Abstract
                 LightingEnabled = true
             };
             basicEffect.EnableDefaultLighting();
+            basicEffect.SpecularPower = 5000f;
         }
 
         public virtual void LoadContent()
