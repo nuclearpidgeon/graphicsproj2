@@ -48,7 +48,7 @@ namespace Project2.GameObjects.LevelPieces
                 //this.physicsPuzzles.Add(new PhysicsPuzzles.SeeSaw(game, this, new Vector3(32, 0, 32)));
             }
             // add floor
-            var floor = new FlatTerrain(game, position, xSize, ySize, frontHeight, backHeight);
+            var floor = new FlatTerrain(game, position, (float)xSize, (float)ySize, frontHeight, backHeight);
             floor.PhysicsDescription.IsStatic = true;
             AddChild(floor);
 

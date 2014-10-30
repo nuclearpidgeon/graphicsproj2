@@ -15,6 +15,7 @@ using SharpDX.Toolkit;
 
 namespace Project2.Levels
 {
+    using SharpDX.Toolkit.Graphics;
     public class TestLevel : Level
     {
         public TestLevel(Project2Game game) : base(game)
@@ -98,6 +99,11 @@ namespace Project2.Levels
             var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * -1));
             AddChild(endZone); // add the piece
             this.endGoal = endZone.endGoal; // set the level's endGoal object for collision detection use
+
+            // Add a test terrain under the end zone for shits + gigs
+            var heightMap = game.Content.Load<Texture2D>("Terrain\\heightmap.jpg");
+            var subTerrain = new HeightMapTerrain(game, new Vector3(0, -100f, (float)PreferedTileHeight *(-1.5f)), heightMap, 1.0f, 1.0f);
+            AddChild(subTerrain);
 
             // Create boids
 

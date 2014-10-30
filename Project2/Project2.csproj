@@ -121,8 +121,10 @@
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\DiamondSquareTerrain.cs" />
     <Compile Include="GameObjects\Events\ScoreUpdatedEvent.cs" />
     <Compile Include="GameObjects\FlatTerrain.cs" />
+    <Compile Include="GameObjects\HeightMapTerrain.cs" />
     <Compile Include="GameObjects\Interface\INode.cs" />
     <Compile Include="GameObjects\Interface\IPhysicsObject.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
