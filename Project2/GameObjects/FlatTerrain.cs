@@ -35,6 +35,8 @@ namespace Project2.GameObjects
 
             this.TerrainData = GenerateTerrainData();
             GenerateGeometry();
+            SetColour();
+            CreateBuffers();
             this.PhysicsDescription = GeneratePhysicsDescription();
             this.Position = PhysicsSystem.toVector3(PhysicsDescription.Position);
             game.physics.AddBody(PhysicsDescription);
@@ -59,6 +61,14 @@ namespace Project2.GameObjects
                 {frontHeight, backHeight} ,
                 {frontHeight, backHeight}
             };
+        }
+
+        private void SetColour()
+        {
+            for (int i = 0; i < this.Vertices.Length;i++ )
+            {
+                this.Vertices[i].Color = Color.DarkOliveGreen;
+            }
         }
     }
 }

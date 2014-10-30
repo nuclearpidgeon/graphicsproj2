@@ -115,8 +115,11 @@ namespace Project2.GameObjects.Abstract
             for (int i = 0; i < Vertices.Length; i++)
             {
                 Vertices[i].Normal.Normalize();
-            }
+            }            
+        }
 
+        protected void CreateBuffers()
+        {
             // Finally, create the buffers
             this.VertexBuffer = Buffer.Vertex.New(
                 game.GraphicsDevice,

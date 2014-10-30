@@ -24,6 +24,7 @@ namespace Project2.GameObjects
             this.HeightMap = heightMap;
             this.TerrainData = GenerateTerrainData();
             this.GenerateGeometry();
+            this.CreateBuffers();
             this.PhysicsDescription = GeneratePhysicsDescription();
             game.physics.AddBody(PhysicsDescription);
         }
