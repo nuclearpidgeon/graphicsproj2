@@ -93,7 +93,7 @@ namespace Project2
                 try
                 {
                     var model = Content.Load<Model>("Models\\" + modelName);
-                    BasicEffect.EnableDefaultLighting(model, false);
+                    BasicEffect.EnableDefaultLighting(model, true);
                     models.Add(modelName, model);
                 }
                 catch (Exception e)

@@ -56,7 +56,7 @@ namespace Project2.GameObjects
 
         public void Update(GameTime gameTime)
         {
-            foreach (var o in Children)
+            foreach (var o in Children.ToList())
             {
                 o.Update(gameTime);
             }
@@ -64,7 +64,7 @@ namespace Project2.GameObjects
 
         public void Draw(GameTime gameTime)
         {
-            foreach (var o in Children)
+            foreach (var o in Children.ToList())
             {
                 o.Draw(gameTime);
             }
@@ -127,17 +127,9 @@ namespace Project2.GameObjects
         public event EventHandler<EventArgs> UpdateOrderChanged;
         #endregion
 
-        public INode Parent
-        {
-            get { return null; }
-            set { return; }
-        }
+        public INode Parent { get; set; }
 
-        public List<INode> Children
-        {
-            get; set;
-        }
-
+        public List<INode> Children { get; set; }
 
         public void AddChild(INode childNode)
         {
@@ -147,7 +139,7 @@ namespace Project2.GameObjects
 
         public void RemoveChild(INode childNode)
         {
-            childNode.RemoveChild(childNode);
+            Children.Remove(childNode);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Project2.GameObjects
             // Load custom rainbox monkey effect
             effect = game.Content.Load<Effect>("Shaders\\Rainbow");
             PhysicsDescription.Mass = 20f;
-            PhysicsDescription.Tag = "player";
+            //PhysicsDescription.Tag = "player";
         }
 
         public override void Update(GameTime gametime)

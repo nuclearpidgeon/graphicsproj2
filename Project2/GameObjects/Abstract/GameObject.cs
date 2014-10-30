@@ -23,6 +23,8 @@ namespace Project2.GameObjects.Abstract
         private Matrix scaleMatrix;
         private Matrix worldMatrix;
 
+        private Boolean ToDestroy;
+
         protected Matrix WorldMatrix
         {
             get { return worldMatrix; }
@@ -205,14 +207,9 @@ namespace Project2.GameObjects.Abstract
         public event EventHandler<EventArgs> UpdateOrderChanged;
         #endregion
 
-        public INode Parent
-        {
-            get;
-            set;
-        }
+        public INode Parent { get; set;}
 
         public List<INode> Children { get; set; }
-
 
         public void AddChild(INode childNode)
         {
@@ -222,7 +219,7 @@ namespace Project2.GameObjects.Abstract
 
         public void RemoveChild(INode childNode)
         {
-            childNode.RemoveChild(childNode);
+            Children.Remove(childNode);
         }
     }
 }

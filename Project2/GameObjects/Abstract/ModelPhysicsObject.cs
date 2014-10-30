@@ -14,7 +14,7 @@ namespace Project2.GameObjects.Abstract
     public abstract class ModelPhysicsObject : ModelGameObject, IPhysicsObject
     {
         public RigidBody PhysicsDescription { get; set; }
-        public Boolean ToDestroy { get; set; }
+        private Boolean ToDestroy;
 
         #region extra constructors
         /// <summary>
@@ -50,14 +50,34 @@ namespace Project2.GameObjects.Abstract
                 Orientation = PhysicsSystem.toJMatrix(OrientationMatrix),
                 IsStatic = false,
                 EnableDebugDraw = true,
+                Tag = this,
             };
 
             return rigidBody;
         }
 
-        public void Destroy() {
-            game.physics.RemoveBody(this.PhysicsDescription);
-            
+        /// <summary>
+        /// Implements object destroying in a manner that can be called asynchronously
+        /// The first call to this function doesn't actually destroy the object, but sets a flag
+        /// to destroy it. Calling this function again will remove the object.
+        /// A suggested use case it to call this function if ToDestroy is inside Update()
+        /// </summary>
+        virtual public void Destroy(Boolean Async = false) {
+
+            // the first call to this function
+            if (ToDestroy == false)
+            {
+                ToDestroy = true;
+                return;
+            }
+
+            if (ToDestroy && !Async)
+            {
+                // remove from physics system
+                game.physics.RemoveBody(this.PhysicsDescription);
+                // remove from graph
+                this.Parent.RemoveChild(this);
+            }
         }     
 
         public override void Update(GameTime gametime)
@@ -79,9 +99,7 @@ namespace Project2.GameObjects.Abstract
             if (PhysicsDescription.EnableDebugDraw && PhysicsDescription != null)
             {
                 PhysicsDescription.DebugDraw(game.debugDrawer);
-            }
-
-            
+            }           
             base.Draw(gametime);
         }
 

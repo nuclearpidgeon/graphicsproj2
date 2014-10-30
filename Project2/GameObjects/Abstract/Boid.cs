@@ -15,12 +15,22 @@ namespace Project2.GameObjects.Boids
 {
     public abstract class Boid : ModelPhysicsObject
     {
+        public double health;
+        public double attack = 10;
+
+        public double maxHealth = 100;
+
+        protected Color sickColor = Color.Black;
+        protected Color healthyColor = Color.Blue;
+
+        protected Boolean ToDestroy;
         public Flock.BoidType boidType;
         public Flock flock;
 
         public Boid(Project2Game game, Flock flock, Model model, Vector3 position, Flock.BoidType boidType)
             : base(game, model, position)
         {
+            this.health = maxHealth;
             this.PhysicsDescription.Mass = 0.25f;
             this.boidType = boidType;
             this.flock = flock;
@@ -53,11 +63,66 @@ namespace Project2.GameObjects.Boids
             {
                 // be careful of what you modify in this handler as it may be called during an Update()
                 // attempting to modify any list (such as destroying game objects, etc) will cause an exception
-                //this.Destroy(); // remove self (this causes an exception)
 
-                // add to score
-                this.game.incScore(10); // this doesn't
-                self.ApplyImpulse(new JVector(0,1,0) * 7f, JVector.Zero); // this doesn't
+                if (!ToDestroy) // incremement score once before destroy
+                {
+                    this.game.incScore(10);
+                }
+                this.Destroy(true); // remove self
+            }    
+
+            Collision(other); // do other collision stuff
+        }
+
+        protected virtual void Collision(RigidBody other)
+        {
+
+        }
+
+        public override void Draw(GameTime gametime)
+        {
+            this.basicEffect.AmbientLightColor = Vector3.Lerp(sickColor.ToVector3(), healthyColor.ToVector3(),
+                (float)(health/maxHealth));
+            base.Draw(gametime);
+        }
+
+        public override void Update(GameTime gametime)
+        {
+            if (ToDestroy)
+            {
+                Destroy();
+            }
+
+            if (health < 0) // destroy the boid when its health is too low
+            {
+                Destroy();
+            }
+
+            base.Update(gametime);
+        }
+
+        /// <summary>
+        /// Implements object destroying in a manner that can be called asynchronously
+        /// The first call to this function doesn't actually destroy the object, but sets a flag
+        /// to destroy it. Calling this function again will remove the object.
+        /// A suggested use case it to call this function if ToDestroy is inside Update()
+        /// </summary>
+        override public void Destroy(Boolean Async = false)
+        {
+
+            // the first call to this function
+            if (ToDestroy == false)
+            {
+                ToDestroy = true;
+                return;
+            }
+
+            if (ToDestroy && !Async)
+            {
+                // remove from physics system
+                game.physics.RemoveBody(this.PhysicsDescription);
+                // remove from graph
+                this.Parent.RemoveChild(this);
             }
         }
 

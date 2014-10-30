@@ -239,10 +239,11 @@ namespace Project2.GameObjects.Abstract
             this.Parent.RemoveChild(this);
         }
 
-        public bool ToDestroy
+
+
+        public void Destroy(bool Async = false)
         {
-            get { return ToDestroy; }
-            set { ToDestroy = value; }
+            throw new NotImplementedException();
         }
     }
 }
