@@ -36,7 +36,7 @@ namespace Project2
                 Projection = game.camera.projection,
                 World = Matrix.Identity
             };
-            basicEffect.VertexColorEnabled = false;
+            basicEffect.VertexColorEnabled = true;
         }
 
         public void DrawLine(JVector p0, JVector p1, Color color)

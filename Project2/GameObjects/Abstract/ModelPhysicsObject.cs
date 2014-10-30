@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
 using Project2.GameObjects.Interface;
+using Project2.GameSystems;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -96,7 +97,7 @@ namespace Project2.GameObjects.Abstract
 
         public override void Draw(SharpDX.Toolkit.GameTime gametime)
         {
-            if (PhysicsDescription.EnableDebugDraw && PhysicsDescription != null)
+            if (PhysicsDescription.EnableDebugDraw && PersistentStateManager.debugRender &&PhysicsDescription != null)
             {
                 PhysicsDescription.DebugDraw(game.debugDrawer);
             }           

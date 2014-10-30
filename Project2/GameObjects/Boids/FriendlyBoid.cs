@@ -43,7 +43,7 @@ namespace Project2.GameObjects.Boids
                     this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(distance) * -0.01f);
 
                 }
-                boid_centroid += distance;
+                boid_centroid += Vector3.Normalize(distance) * (1 / distance.LengthSquared());
 
             }
             this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(Vector3.Normalize(boid_centroid)) * 0.05f);

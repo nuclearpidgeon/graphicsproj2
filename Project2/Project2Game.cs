@@ -143,8 +143,8 @@ namespace Project2
             inputManager.Enabled = true;
             physics.Enabled = true;
 
-            debugDrawer.Enabled = true;
-            debugDrawer.Visible = true;
+            debugDrawer.Enabled = false;
+            debugDrawer.Visible = false;
 
             this.GameSystems.Add(debugDrawer);
             this.GameSystems.Add(physics);
@@ -190,6 +190,7 @@ namespace Project2
 
         protected override void Update(GameTime gameTime)
         {
+
             TestPause();
             if (paused) {
                 inputManager.Update(gameTime);

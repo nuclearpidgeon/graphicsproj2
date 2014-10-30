@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Project2.GameObjects.Abstract;
-
+using Project2.GameSystems;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -68,7 +68,7 @@ namespace Project2.GameObjects
                     this.model.Draw(game.GraphicsDevice, WorldMatrix, game.camera.view, game.camera.projection, effect);
                 }
             }
-            if (PhysicsDescription.EnableDebugDraw && PhysicsDescription != null)
+            if (PhysicsDescription.EnableDebugDraw && PersistentStateManager.debugRender && PhysicsDescription != null)
             {
                 PhysicsDescription.DebugDraw(game.debugDrawer);
             }
