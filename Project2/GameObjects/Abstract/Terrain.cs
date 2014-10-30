@@ -20,8 +20,8 @@ namespace Project2.GameObjects.Abstract
         // Graphics components
         protected int[] indices_list;
         protected VertexPositionNormalColor[] vertex_list;
-        protected Buffer vertices;
-        protected Buffer<int> indices;
+        protected Buffer VertexBuffer;
+        protected Buffer<int> IndexBuffer;
 
         public abstract RigidBody PhysicsDescription { get; set; }
 
@@ -111,6 +111,17 @@ namespace Project2.GameObjects.Abstract
             {
                 vertex_list[i].Normal.Normalize();
             }
+
+            // Finally, create the buffers
+            this.VertexBuffer = Buffer.Vertex.New(
+                game.GraphicsDevice,
+                vertex_list
+            );
+            this.IndexBuffer = Buffer.Index.New(
+                game.GraphicsDevice,
+                indices_list
+            );
+            this.inputLayout = VertexInputLayout.FromBuffer<VertexPositionNormalColor>(0, (Buffer<VertexPositionNormalColor>)VertexBuffer);
         }
 
         public override void Draw(SharpDX.Toolkit.GameTime gametime)
@@ -119,15 +130,23 @@ namespace Project2.GameObjects.Abstract
             {
                 PhysicsDescription.DebugDraw(game.debugDrawer);
             }
-            game.GraphicsDevice.SetVertexBuffer((Buffer<VertexPositionNormalColor>)vertices);
-            game.GraphicsDevice.SetIndexBuffer(indices, true);
+            game.GraphicsDevice.SetVertexBuffer((Buffer<VertexPositionNormalColor>)VertexBuffer);
+            game.GraphicsDevice.SetIndexBuffer(IndexBuffer, true);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
+
+            // Not sure if this makes a difference?
+            RasterizerState rs = SharpDX.Toolkit.Graphics.RasterizerState.New(game.GraphicsDevice,
+                new SharpDX.Direct3D11.RasterizerStateDescription()
+                {
+                    CullMode = SharpDX.Direct3D11.CullMode.Back,
+                    FillMode = SharpDX.Direct3D11.FillMode.Solid,
+                });
+            game.GraphicsDevice.SetRasterizerState(rs);
 
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-
-                game.GraphicsDevice.DrawIndexed(PrimitiveType.TriangleList, indices.ElementCount);
+                game.GraphicsDevice.DrawIndexed(PrimitiveType.TriangleList, IndexBuffer.ElementCount);
 
             }
             base.Draw(gametime);

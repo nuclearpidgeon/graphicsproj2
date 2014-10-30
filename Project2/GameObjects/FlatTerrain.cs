@@ -35,16 +35,9 @@ namespace Project2.GameObjects
             this.yScale = yScale;
             this.frontHeight = frontHeight;
             this.backHeight = backHeight;
+
             this.TerrainData = GenerateTerrainData();
             GenerateGeometry();
-            vertices = Buffer.Vertex.New(
-                game.GraphicsDevice,
-                vertex_list
-            );
-            indices = Buffer.Index.New(
-                game.GraphicsDevice,
-                indices_list
-            );
             this.PhysicsDescription = GeneratePhysicsDescription();
             this.Position = PhysicsSystem.toVector3(PhysicsDescription.Position);
             game.physics.AddBody(PhysicsDescription);
