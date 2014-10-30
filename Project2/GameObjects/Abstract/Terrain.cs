@@ -17,7 +17,7 @@ namespace Project2.GameObjects.Abstract
         protected int terrainHeight;
         protected float xScale;
         protected float zScale;
-        protected float maxHeight = 0;
+        protected float maxHeight = 1;
         protected float minHeight = 0;
         // Graphics components
         protected int[] Indices;
@@ -171,7 +171,7 @@ namespace Project2.GameObjects.Abstract
         {
             Color color;
             Random rand = new Random(System.DateTime.Now.Millisecond);
-            float waterlevel = 0.3f;
+            float waterlevel = 0.1f;
             //heightval += rand.NextFloat(-0.05f,0.05f);
 
             // setup colors
@@ -179,9 +179,11 @@ namespace Project2.GameObjects.Abstract
             Vector3 green = Color.ForestGreen.ToVector3();
             Vector3 white = Color.White.ToVector3();
             Vector3 stone = new Vector3(71f / 255, 79f / 255, 100f / 255);
-            Vector3 black = Color.Black.ToVector3();
+            Vector3 black = Color.DarkBlue.ToVector3();
 
             // shift scaling float to between 0.0f and 1.0f
+            heightval -= minHeight;
+            heightval /= maxHeight;
 
             if (heightval < waterlevel)
             {

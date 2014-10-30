@@ -68,6 +68,14 @@ namespace Project2.GameObjects
                     // take the green value (0-255) as height data. heightmap should be black and white image, so it doesn't really matter.
                     // scale height down by a factor because 255 height is really high
                     terrainData[x, y] = colourmap[y * terrainHeight + x].G / 7.0f;
+                    if (terrainData[x, y] > maxHeight)
+                    {
+                        maxHeight = terrainData[x, y];
+                    }
+                    if (terrainData[x, y] < minHeight)
+                    {
+                        minHeight = terrainData[x, y];
+                    }
                 }
             }
             return terrainData;
