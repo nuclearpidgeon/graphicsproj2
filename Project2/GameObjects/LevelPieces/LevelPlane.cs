@@ -36,15 +36,21 @@ namespace Project2.GameObjects.LevelPieces
             var heightDisplacement = Math.Abs((backHeight - frontHeight)/2.0f) + wallHeight / 2.0f;
             // instantiate a wall for either side of the plane
             
-            AddChild(new Box(game, game.models["box"], position + new Vector3(0f, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0), true));
-            AddChild(new Box(game, game.models["box"], position + new Vector3(separation, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0), true));
+            var box1 = new Box(game, game.models["box"], position + new Vector3(0f, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0));
+            var box2 = new Box(game, game.models["box"], position + new Vector3(separation, heightDisplacement, ySize / 2.0f), new Vector3(wallWidth, wallHeight, ySize), new Vector3(0, -angle, 0));
+            box1.PhysicsDescription.IsStatic = true;
+            box2.PhysicsDescription.IsStatic = true;
+            AddChild(box1);
+            AddChild(box2);
 
             if (slopeType == SlopeType.Flat)
             {
                 //this.physicsPuzzles.Add(new PhysicsPuzzles.SeeSaw(game, this, new Vector3(32, 0, 32)));
             }
             // add floor
-            AddChild(new Terrain(game, position, xSize, ySize, frontHeight, backHeight));
+            var floor = new FlatTerrain(game, position, xSize, ySize, frontHeight, backHeight);
+            floor.PhysicsDescription.IsStatic = true;
+            AddChild(floor);
 
         }
     }

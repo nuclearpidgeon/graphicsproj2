@@ -12,7 +12,7 @@ using Project2.GameObjects.Abstract;
 
 namespace Project2.GameObjects
 {
-    class Terrain : PhysicsObject
+    class Terrain : ModelPhysicsObject
     {
         public float[,] TerrainData;
         private int terrainWidth;
@@ -69,6 +69,7 @@ namespace Project2.GameObjects
         private Terrain(Project2Game game, PhysicsDescription physicsDescription) 
             : base(game, physicsDescription)
         {       
+            // This is the old super constructor call. Needs to be updated
         }
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace Project2.GameObjects
             {
                 IsStatic = isStatic,
                 CollisionShape = collisionShape,
-                Debug = true,
+                IsDebugDrawable = true,
                 RigidBody = rigidBody,
                 Position = position
             };
@@ -125,7 +126,7 @@ namespace Project2.GameObjects
             {
                 IsStatic = isStatic,
                 CollisionShape = collisionShape,
-                Debug = true,
+                IsDebugDrawable = true,
                 RigidBody = rigidBody,
                 Position = position
             };
@@ -150,7 +151,7 @@ namespace Project2.GameObjects
             {
                 IsStatic = isStatic,
                 CollisionShape = collisionShape,
-                Debug = true,
+                IsDebugDrawable = true,
                 RigidBody = rigidBody,
                 Position = position
             };

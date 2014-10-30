@@ -22,21 +22,20 @@ namespace Project2.GameObjects.PhysicsPuzzles
                     game,
                     game.models["box"],
                     this.originPosition + new Vector3(0f, 0.5f * baseHeight, 0f),
-                    new Vector3(30f, 3f, 1.5f),
-                    true
+                    new Vector3(30f, 3f, 1.5f)
                 );
-
+            seeSawbase.PhysicsDescription.IsStatic = true;
             Box seeSawPlatform= new Box(
                     game,
                     game.models["box"],
                     this.originPosition + new Vector3(0f, 2f * baseHeight, 0f),
-                    new Vector3(50f, 1f, 40f),
-                    false
+                    new Vector3(50f, 1f, 40f)
                 );
-            seeSawPlatform.physicsDescription.RigidBody.Mass = 50f;
+            seeSawPlatform.PhysicsDescription.IsStatic = false;
+            seeSawPlatform.PhysicsDescription.Mass = 50f;
             //var constraint = new Jitter.Dynamics.Joints.HingeJoint(game.physics.World, seeSawbase.physicsDescription.RigidBody, seeSawPlatform.physicsDescription.RigidBody, PhysicsSystem.toJVector(this.originPosition + new Vector3(0f, baseHeight, 0f)), Jitter.LinearMath.JVector.Right);
             //constraint.PointOnPointConstraint1.Softness = 0.001f;
-            var constraint = new Jitter.Dynamics.Constraints.PointOnPoint(seeSawbase.physicsDescription.RigidBody, seeSawPlatform.physicsDescription.RigidBody, PhysicsSystem.toJVector(originPosition + new Vector3(0, 0.5f * baseHeight, 0)));
+            var constraint = new Jitter.Dynamics.Constraints.PointOnPoint(seeSawbase.PhysicsDescription, seeSawPlatform.PhysicsDescription, PhysicsSystem.toJVector(originPosition + new Vector3(0, 0.5f * baseHeight, 0)));
             constraint.BiasFactor = 100f;
             //constraint.Softness = 0.001f;
             //game.physics.World.AddConstraint(constraint);

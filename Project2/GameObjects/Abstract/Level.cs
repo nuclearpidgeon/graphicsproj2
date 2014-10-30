@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Jitter;
 using Project2.GameObjects.Boids;
+using Project2.GameObjects.Interface;
 using Project2.GameObjects.LevelPieces;
 using SharpDX;
 using SharpDX.Toolkit;
@@ -16,14 +18,12 @@ using Project2.GameObjects.Abstract;
 namespace Project2.GameObjects
 {
     using SharpDX.Toolkit.Graphics;
-    abstract public class Level : IUpdateable, IDrawable
+    abstract public class Level : IUpdateable, IDrawable, INode
     {
         public Project2Game game;
-        public PhysicsObject player;
+        public ModelPhysicsObject player;
+        public ModelPhysicsObject endGoal;
         //private Matrix worldMatrix;
-
-        public List<LevelPiece> LevelPieces;
-        public List<GameObject> ChildObjects; 
 
         public Flock flock;
         
@@ -35,88 +35,39 @@ namespace Project2.GameObjects
         public Level(Project2Game game)
         {
             this.game = game;
-            LevelPieces = new List<LevelPiece>();
-            ChildObjects = new List<GameObject>();
-            flock = new Flock(this.game);
-            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition(), false);
-            ChildObjects.Add(player);
+            Children = new List<INode>();
+
+            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition());
+            AddChild(player);
+
+            flock = new Flock(this.game, this);
+            AddChild(flock);
         }
 
         public abstract void BuildLevel();
 
         public void ResetPlayer()
         {
-            ChildObjects.Remove(player);
             player.Destroy();
-            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition(), false);
-            ChildObjects.Add(player);
+            player = new Monkey(this.game, game.models["bigmonkey"], getStartPosition());
+            AddChild(player);
             game.camera.SetFollowObject(player);
         }
 
         public void Update(GameTime gameTime)
         {
-            // This feels janky, maybe it should be a class attribute? Will get updated a lot though?
-            List<GameObject> garbageList = new List<GameObject>();
-
-            flock.Update(gameTime);
-            
-            foreach (var childObject in ChildObjects)
+            foreach (var o in Children.ToList())
             {
-                childObject.Update(gameTime);
-                if (childObject.Position.Y < -75)
-                {
-                    // Kill Kill Kill
-                    if (childObject is PhysicsObject)
-                    {
-                        PhysicsObject physicsObject = (PhysicsObject)childObject;
-                        physicsObject.Destroy();
-                    }
-                    // Can't remove object inside foreach. Need to delete outside the loop
-                    garbageList.Add(childObject);
-                }
-            }
-            // Cleanup
-            foreach (GameObject obj in garbageList)
-            {
-                ChildObjects.Remove(obj);
-                if (player == obj)
-                {
-                    ResetPlayer();
-                }
-            }
-            foreach (var lp in LevelPieces)
-            {
-                lp.Update(gameTime);
-            }
-            // Check for player death
-            if (player.Position.Y < -75)
-            {
-                ResetPlayer();
+                o.Update(gameTime);
             }
         }
 
         public void Draw(GameTime gameTime)
         {
-            flock.Draw(gameTime);
-            foreach (var childObject in ChildObjects)
+            foreach (var o in Children.ToList())
             {
-                childObject.Draw(gameTime);
+                o.Draw(gameTime);
             }
-            foreach (var lp in LevelPieces)
-            {
-                lp.Draw(gameTime);
-            }
-
-            // saving this for later if we use a single effect for all level things??
-            //basicEffect.CurrentTechnique.Passes[0].Apply();
-            //basicEffect.World = this.worldMatrix;
-            //basicEffect.View = game.camera.view;
-            //basicEffect.Projection = game.camera.projection;
-
-            //foreach (var pass in this.basicEffect.CurrentTechnique.Passes)
-            //{
-            //    pass.Apply();
-            //}
         }
 
         public virtual Vector3 getStartPosition()
@@ -175,5 +126,20 @@ namespace Project2.GameObjects
 
         public event EventHandler<EventArgs> UpdateOrderChanged;
         #endregion
+
+        public INode Parent { get; set; }
+
+        public List<INode> Children { get; set; }
+
+        public void AddChild(INode childNode)
+        {
+            childNode.Parent = this;
+            Children.Add(childNode);
+        }
+
+        public void RemoveChild(INode childNode)
+        {
+            Children.Remove(childNode);
+        }
     }
 }

@@ -26,20 +26,18 @@ namespace Project2.GameObjects.Boids
             if (dist_to_player.Length() < playerAvoidRadius)
             {
                 var dir_to_player =Vector3.Normalize(dist_to_player); // avoid player
-                this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * -0.3f);
+                this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * -0.3f);
             }
 
             // attack friendly boids
-            foreach (var boid in flock.boidList.Where(b => b.boidType == Flock.BoidType.Friendly && b != this))
+            foreach (var boid in flock.Children.Where(b => ((Boid)b).boidType == Flock.BoidType.Friendly && b != this))
             {
-                var distance = boid.Position - this.Position;
+                var distance = ((Boid)boid).Position - this.Position;
                 if (distance.Length() < attackRadius)
                 {
-                    this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(distance) * 0.001f);
+                    this.PhysicsDescription.ApplyImpulse(PhysicsSystem.toJVector(distance) * 0.001f);
                 }
             }
-
-
             base.Update(gametime);
         }
         public override void Draw(GameTime gametime)

@@ -113,13 +113,21 @@
     </Compile>
     <ToolkitModel Include="Content\Models\Dice.fbx" />
     <Compile Include="GameObjects\Abstract\LevelPiece.cs" />
+    <Compile Include="GameObjects\Abstract\ModelGameObject.cs" />
     <Compile Include="GameObjects\Abstract\PhysicsPuzzle.cs" />
+    <Compile Include="GameObjects\Abstract\Terrain.cs" />
     <Compile Include="GameObjects\Boids\EnemyBoid.cs" />
     <Compile Include="GameObjects\Boids\Flock.cs" />
     <Compile Include="GameObjects\Boids\FriendlyBoid.cs" />
     <Compile Include="GameObjects\Boids\NeutralBoid.cs" />
     <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\Events\ScoreUpdatedEvent.cs" />
+    <Compile Include="GameObjects\FlatTerrain.cs" />
+    <Compile Include="GameObjects\Interface\INode.cs" />
+    <Compile Include="GameObjects\Interface\IPhysicsObject.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
+    <Compile Include="GameObjects\LevelPieces\EndZone.cs" />
+    <Compile Include="GameObjects\PhysicsPuzzles\EndGoal.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\SeeSaw.cs" />
     <Compile Include="GameSystems\PersistentStateManager.cs" />
     <Compile Include="GameObjects\LevelPieces\LevelPlane.cs" />
@@ -153,7 +161,6 @@
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="GameObjects\Cube.cs" />
     <Compile Include="GameObjects\Ball.cs" />
-    <Compile Include="GameObjects\TestObject.cs" />
     <Compile Include="GameSystems\DebugDrawer.cs" />
     <Compile Include="GameObjects\Abstract\GameObject.cs" />
     <Compile Include="GameSystems\GameState.cs" />
@@ -165,11 +172,10 @@
     <Compile Include="Pages\OptionsPage.xaml.cs">
       <DependentUpon>OptionsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameObjects\Abstract\PhysicsObject.cs" />
+    <Compile Include="GameObjects\Abstract\ModelPhysicsObject.cs" />
     <Compile Include="GameSystems\PhysicsSystem.cs" />
     <Compile Include="Project2Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameObjects\Terrain.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
     <ToolkitModel Include="Content\Models\monkey.fbx" />
     <ToolkitModel Include="Content\Models\bigmonkey.fbx" />
@@ -182,12 +188,6 @@
     </ToolkitModel>
     <None Include="Content\Models\sphere.obj" />
     <None Include="Content\Models\torus.fbx" />
-    <None Include="Content\Shaders\BlurCray.dgsl" />
-    <None Include="Content\Shaders\EdgeFucker.dgsl" />
-    <None Include="Content\Shaders\GreyScale.dgsl" />
-    <None Include="Content\Shaders\Invertbw.dgsl" />
-    <None Include="Content\Shaders\Phong.dgsl" />
-    <None Include="Content\Shaders\Shader1.dgsl" />
     <None Include="Project2_StoreKey.pfx" />
     <None Include="Project2_TemporaryKey.pfx" />
     <None Include="SigningKey.snk" />
@@ -221,17 +221,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitTexture>
     <Content Include="Content\Models\upBodyC.dds" />
-    <Content Include="Content\Shaders\BlurCray.hlsl" />
     <ToolkitFxc Include="Content\Shaders\Cel.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitFxc>
-    <Content Include="Content\Shaders\EdgeFucker.hlsl" />
-    <Content Include="Content\Shaders\GreyScale.hlsl" />
-    <Content Include="Content\Shaders\Invertbw.hlsl" />
     <ToolkitFxc Include="Content\Shaders\Rainbow.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitFxc>
-    <Content Include="Content\Shaders\Phong.hlsl" />
     <Content Include="Content\Terrain\heightmap.jpg" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">

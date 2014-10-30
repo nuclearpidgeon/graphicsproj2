@@ -1,4 +1,5 @@
 ﻿using Project2.Common;
+using Project2.GameObjects.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,6 +36,7 @@ namespace Project2.Pages
 
             game = new Project2Game();
             game.PauseRequest += game_PauseRequest;
+            game.ScoreUpdated += updateScore;
             if(!game.IsRunning) game.Run(this);
         }
 
@@ -81,13 +83,12 @@ namespace Project2.Pages
                 unpauseBtn.Label = "Pause";
                 unpauseBtn.Icon = new SymbolIcon(Symbol.Pause);
             }
-            updateScore();
 
         }
 
-        private void updateScore()
+        private void updateScore(object sender, EventArgs e)
         {
-            scoreTxt.Text = "lo";
+            scoreTxt.Text = "Score =" + ((ScoreUpdatedEvent)e).getScore();
         }
 
 

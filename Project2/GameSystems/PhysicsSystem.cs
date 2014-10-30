@@ -79,9 +79,9 @@ namespace Project2
             this.World.AddBody(rigidBody);
         }
 
-        internal void RemoveBody(GameObjects.Abstract.PhysicsDescription physicsDescription)
+        internal void RemoveBody(RigidBody rigidBody)
         {
-            World.RemoveBody(physicsDescription.RigidBody);
+            World.RemoveBody(rigidBody);
         }
 
         /// <summary>

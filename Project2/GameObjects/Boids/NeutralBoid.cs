@@ -19,14 +19,6 @@ namespace Project2.GameObjects.Boids
 
         public override void Update(GameTime gametime)
         {
-            //var dist_to_player = game.level.player.Position - this.Position;
-            //var dir_to_player = Vector3.Zero;
-            //if (dist_to_player.Length() < 20f)
-            //{
-            //    dir_to_player = Vector3.Normalize(dist_to_player);
-            //}
-
-            //this.physicsDescription.RigidBody.ApplyImpulse(PhysicsSystem.toJVector(dir_to_player) * 0.1f);
 
             base.Update(gametime);
         }
