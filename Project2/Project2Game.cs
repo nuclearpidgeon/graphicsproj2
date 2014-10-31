@@ -42,10 +42,17 @@ namespace Project2
     using SharpDX.Toolkit.Graphics;
     using Project2.GameObjects.Events;
 
+    public enum LevelSelection
+    {
+        Level1,
+        Level2
+    }
+
     public class Project2Game : Game
     {
         
         private GraphicsDeviceManager graphicsDeviceManager;
+        private LevelSelection levelSelection;
         public Level level;
         private Double Score;
         public Dictionary<String, Model> models; 
@@ -71,7 +78,7 @@ namespace Project2
         /// <summary>
         /// Initializes a new instance of the <see cref="Project2Game" /> class.
         /// </summary>
-        public Project2Game()
+        public Project2Game(LevelSelection levelSelection)
         {
             // Creates a graphics manager. This is mandatory.
             graphicsDeviceManager = new GraphicsDeviceManager(this);
@@ -80,6 +87,7 @@ namespace Project2
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
 
+            this.levelSelection = levelSelection;
             models = new Dictionary<string, Model>();
             Score = 0;
             this.IsFixedTimeStep = !PersistentStateManager.dynamicTimestep; // note the NOT
@@ -104,8 +112,18 @@ namespace Project2
             }
             //var heightmap = Content.Load<Texture2D>("Terrain\\heightmap.jpg");
 
-            level = new TestLevel(this);
-
+            switch (levelSelection)
+            {
+                case LevelSelection.Level1:
+                    level = new TestLevel(this);
+                    break;
+                case LevelSelection.Level2:
+                    level = new TerrainLevel(this);
+                    break;
+                default:
+                    level = new TestLevel(this);
+                    break;
+            }
 
             // Load font for console
             consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));

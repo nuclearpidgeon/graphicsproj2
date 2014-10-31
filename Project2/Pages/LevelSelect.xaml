@@ -48,7 +48,7 @@
         <Button HorizontalAlignment="Left" Margin="300,50,0,0" Grid.Row="1" VerticalAlignment="Top" Width="300" Height="300" Click="Level1_Click">
             <Image Height="300" Width="300" Source="ms-appx:///Content/l1.png"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="700,50,0,0" Grid.Row="1" VerticalAlignment="Top" Width="300" Height="300">
+        <Button HorizontalAlignment="Left" Margin="700,50,0,0" Grid.Row="1" VerticalAlignment="Top" Width="300" Height="300" Click="Level2_Click">
             <Image Height="300" Width="300" Source="ms-appx:///Content/l2.png"/>
         </Button>
         <TextBlock HorizontalAlignment="Left" Margin="400,379,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Level 1" VerticalAlignment="Top" FontSize="30"/>

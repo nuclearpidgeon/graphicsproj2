@@ -107,5 +107,10 @@ namespace Project2.Pages
         {
             App.MoveToScreen(typeof(GamePage));
         }
+
+        private void Level2_Click(object sender, RoutedEventArgs e)
+        {
+            App.MoveToScreen(typeof(GamePageLevel2));
+        }
     }
 }

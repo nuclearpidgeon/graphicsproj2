@@ -22,19 +22,19 @@ namespace Project2.Pages
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class GamePage
+    public sealed partial class GamePageLevel2
     {
 
         private Project2Game game;
 
-        public GamePage()
+        public GamePageLevel2()
         {
             this.InitializeComponent();
 
             Window.Current.Content = this;
             Window.Current.Activate();
 
-            game = new Project2Game(Project2.LevelSelection.Level1);
+            game = new Project2Game(Project2.LevelSelection.Level2);
             game.PauseRequest += game_PauseRequest;
             game.ScoreUpdated += updateScore;
             if(!game.IsRunning) game.Run(this);

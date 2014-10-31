@@ -136,9 +136,13 @@
     <Compile Include="GameObjects\LevelPieces\LevelPlane.cs" />
     <Compile Include="GameObjects\Box.cs" />
     <Compile Include="GameObjects\Abstract\Level.cs" />
+    <Compile Include="Levels\TerrainLevel.cs" />
     <Compile Include="Levels\TestLevel.cs" />
     <Compile Include="Pages\CreditsPage.xaml.cs">
       <DependentUpon>CreditsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GamePageLevel2.xaml.cs">
+      <DependentUpon>GamePageLevel2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
@@ -250,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\CreditsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\GamePageLevel2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
