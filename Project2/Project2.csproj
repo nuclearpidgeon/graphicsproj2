@@ -127,6 +127,7 @@
     <Compile Include="GameObjects\HeightMapTerrain.cs" />
     <Compile Include="GameObjects\Interface\INode.cs" />
     <Compile Include="GameObjects\Interface\IPhysicsObject.cs" />
+    <Compile Include="GameObjects\Obelisk.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\BrickWall.cs" />
     <Compile Include="GameObjects\LevelPieces\EndZone.cs" />
     <Compile Include="GameObjects\PhysicsPuzzles\EndGoal.cs" />

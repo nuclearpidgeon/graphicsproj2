@@ -7,6 +7,7 @@ using Jitter.Collision.Shapes;
 using Jitter.Dynamics;
 using Jitter.LinearMath;
 using Project2.GameObjects.Abstract;
+using Project2.GameSystems;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -15,6 +16,7 @@ namespace Project2.GameObjects.Boids
 {
     public abstract class Boid : ModelPhysicsObject
     {
+        private Effect effect;
         public double health;
         public double attack = 10;
 
@@ -35,6 +37,7 @@ namespace Project2.GameObjects.Boids
             this.boidType = boidType;
             this.flock = flock;
             this.game.physics.World.CollisionSystem.CollisionDetected += HandleCollision;
+            effect = game.Content.Load<Effect>("Shaders\\Cel");
         }
 
 
@@ -81,9 +84,39 @@ namespace Project2.GameObjects.Boids
 
         public override void Draw(GameTime gametime)
         {
-            this.basicEffect.AmbientLightColor = Vector3.Lerp(sickColor.ToVector3(), healthyColor.ToVector3(),
-                (float)(health/maxHealth));
-            base.Draw(gametime);
+            
+            var healthColour = Color4.Lerp(sickColor, healthyColor, (float)(health/maxHealth));
+            
+        {
+
+            effect.Parameters["World"].SetValue(this.WorldMatrix);
+            effect.Parameters["Projection"].SetValue(game.camera.projection);
+            effect.Parameters["View"].SetValue(game.camera.view);
+            effect.Parameters["cameraPos"].SetValue(game.camera.position);
+            effect.Parameters["worldInvTrp"].SetValue(Matrix.Transpose(Matrix.Invert(this.WorldMatrix)));
+            // For Rainbow (required)
+            //effect.Parameters["Time"].SetValue((float)gametime.TotalGameTime.TotalSeconds);
+
+            // For Cel (both optional)
+            effect.Parameters["lightAmbCol"].SetValue<Color4>(healthColour);
+            effect.Parameters["objectCol"].SetValue<Color4>(new Color4(1f, 1f, 1f, 1.0f));
+            effect.Parameters["quant"].SetValue<float>(2.6f);
+
+            //this.model.Draw(game.GraphicsDevice, this.worldMatrix, game.camera.view, game.camera.projection, effect);
+
+            foreach (var pass in this.effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                if (this.model != null)
+                {
+                    this.model.Draw(game.GraphicsDevice, WorldMatrix, game.camera.view, game.camera.projection, effect);
+                }
+            }
+            if (PhysicsDescription.EnableDebugDraw && PersistentStateManager.debugRender && PhysicsDescription != null)
+            {
+                PhysicsDescription.DebugDraw(game.debugDrawer);
+            }
+        }
         }
 
         public override void Update(GameTime gametime)
