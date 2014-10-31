@@ -14,10 +14,10 @@ namespace Project2.GameObjects.Abstract
     abstract class Terrain : GameObject, IPhysicsObject
     {
         public abstract float[,] TerrainData { get; set; }
-        protected int terrainWidth;
-        protected int terrainHeight;
-        protected float xScale;
-        protected float zScale;
+        public int terrainWidth;
+        public int terrainHeight;
+        public float xScale;
+        public float zScale;
         protected float maxHeight = 1;
         protected float minHeight = 0;
         // Graphics components

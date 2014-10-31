@@ -18,7 +18,7 @@ namespace Project2.GameObjects
         private System.Random rng;
 
         private int Density;
-        private float Amplitude;
+        public float Amplitude;
         /// <summary>
         /// Construct a static physics mesh terrain procedurally using diamond-square. Density is n, a square with width 2^n-1 will be generated.
         /// </summary>

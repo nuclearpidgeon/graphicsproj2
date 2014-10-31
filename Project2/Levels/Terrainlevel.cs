@@ -25,18 +25,17 @@ namespace Project2.Levels
 
         public override void BuildLevel()
         {
-            
+            // Add a test terrain under the end zone for shits + gigs
+            DiamondSquareTerrain terrain = new DiamondSquareTerrain(game, new Vector3(0f, 0f, 0f), 7, 4.0f, 4.0f, 30);
+            AddChild(terrain);
+
             // Add the mandatory end-zone piece containing an end goal object
             // place tile behind start tile for testing
-            var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * -1));
+            var endZone = new TerrainEndZone(game, this, new Vector3(terrain.xScale * terrain.terrainWidth /2 , 
+                                                                    terrain.TerrainData[terrain.terrainWidth/2,terrain.terrainHeight/2] * terrain.Amplitude, 
+                                                                    terrain.zScale * terrain.terrainHeight / 2));
             AddChild(endZone); // add the piece
             this.endGoal = endZone.endGoal; // set the level's endGoal object for collision detection use
-
-            // Add a test terrain under the end zone for shits + gigs
-            
-            //var subTerrain = new HeightMapTerrain(game, new Vector3(0, 0f, (float)PreferedTileHeight *(-1.5f)), heightMap, 2.0f, 2.0f);
-            var subTerrain = new DiamondSquareTerrain(game, new Vector3(0f, 0f, 0f), 7, 2.0f, 2.0f, 30);
-            AddChild(subTerrain);
 
             // Create boids
 
