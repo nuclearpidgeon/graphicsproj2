@@ -49,16 +49,19 @@
 
 
         <FlipView HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" >
-            <FlipViewItem Height="519">
-                <Grid Margin="0,0,0,0" >
+            <FlipViewItem Height="519" VerticalAlignment="Top" d:IsHidden="True">
+                <Grid Margin="0,0,0,0" VerticalAlignment="Top" >
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
-                        <Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="You play as a lone ball. (with some edgy backstory or something, idk..)"/>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0" SelectionChanged="TextBlock_SelectionChanged_1">
+                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="You play as a"/>
+                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text=" the lonely monkey head Suzanne, of whom which stories of yore tell of a mythical connection to some"/>
+                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text=" artefact."/>
+                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text=" "/>
                     </TextBlock>
-                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Assets/Logo.png"/>
+                    <Image HorizontalAlignment="Right" Source="ms-appx:///Content/Instructions_1.png" Margin="0,72,0,0" Grid.RowSpan="2" Width="573"/>
                 </Grid>
             </FlipViewItem>
 
@@ -69,9 +72,9 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
-                        <Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Collect &lt;insert boid name here&gt;s by rolling close to them to have them join your party."/>
+                        <Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Collect boids from across the land by rolling close to them to have them join your party."/>
                     </TextBlock>
-                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Content/Terrain/heightmap.jpg"/>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Content/Instructions_2.png"/>
                 </Grid>
             </FlipViewItem>
 
@@ -82,9 +85,9 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
-                        <Run FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Guide your flock to the endzone in a safe and timely manner to achieve the highest score."/>
+                        <Run FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Guide your flock into the flashing artefact in a safe and timely manner to achieve the highest score."/>
                     </TextBlock>
-                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Assets/Logo.png"/>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Content/Instructions_3.png"/>
                 </Grid>
             </FlipViewItem>
 
@@ -97,7 +100,7 @@
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0">
                         <Run FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="Use the mouse or touch-screen to fling enemies away to protect your flock. Activate physics elements of the environment by interacting with them in a similar manner."/>
                     </TextBlock>
-                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Assets/Logo.png"/>
+                    <Image HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Top" Source="ms-appx:///Content/Instructions_4.png"/>
                 </Grid>
             </FlipViewItem>
             <FlipViewItem Height="519">

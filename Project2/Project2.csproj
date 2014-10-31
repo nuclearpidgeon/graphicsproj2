@@ -230,6 +230,10 @@
     <ToolkitFxc Include="Content\Shaders\Rainbow.fx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ToolkitFxc>
+    <Content Include="Content\Instructions_1.png" />
+    <Content Include="Content\Instructions_2.png" />
+    <Content Include="Content\Instructions_3.png" />
+    <Content Include="Content\Instructions_4.png" />
     <Content Include="Content\Terrain\heightmap.jpg" />
     <None Include="Package.StoreAssociation.xml" />
     <ToolkitFont Include="Content\CourierNew10.xml">

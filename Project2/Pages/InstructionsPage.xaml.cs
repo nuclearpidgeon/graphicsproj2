@@ -107,5 +107,10 @@ namespace Project2.Pages
         {
 
         }
+
+        private void TextBlock_SelectionChanged_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
