@@ -32,6 +32,12 @@ namespace Project2.GameObjects
         {
             this.Density = density;
             this.Amplitude = amplitude;
+
+            this.TerrainData = GenerateTerrainData();
+            this.GenerateGeometry();
+            this.CreateBuffers();
+            this.PhysicsDescription = GeneratePhysicsDescription();
+            game.physics.AddBody(PhysicsDescription);
         }
         public override float[,] TerrainData { get; set; }
 
@@ -51,9 +57,9 @@ namespace Project2.GameObjects
         {
             var rng = new System.Random();
 
-            var terrainWidth = (1 << Density) + 1; // must be 2^n + 1
+            this.terrainWidth = (1 << Density) + 1; // must be 2^n + 1
             //Console.WriteLine("Generating terrain with width {0}", terrainWidth);
-            var terrainHeight = terrainWidth;
+            this.terrainHeight = terrainWidth;
             var terrainData = new float[terrainWidth, terrainHeight];
 
 

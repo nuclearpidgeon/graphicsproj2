@@ -126,10 +126,10 @@ namespace Project2
             }
 
             // Load font for console
-            consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
+            //consoleFont = ToDisposeContent(Content.Load<SpriteFont>("CourierNew10"));
 
             // Setup spritebatch for console
-            spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
+            //spriteBatch = ToDisposeContent(new SpriteBatch(GraphicsDevice));
 
             camera.position = level.getCameraStartPosition();
             camera.offset = level.getCameraOffset();
@@ -302,17 +302,17 @@ namespace Project2
             // SpriteBatch must be the last thing drawn, not super sure why yet.
             if (PersistentStateManager.debugRender && consoleFont != null)
             {
-            spriteBatch.Begin();
-                spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
-                spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
-                spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-                //spriteBatch.DrawString(consoleFont, "Player game x location: " + this.level.player.Position.X, new Vector2(0f, 0f), Color.AliceBlue);
-                //spriteBatch.DrawString(consoleFont, "Player game y location: " + this.level.player.Position.Y, new Vector2(0f, 12f), Color.AliceBlue);
-                //spriteBatch.DrawString(consoleFont, "Player game z location: " + this.level.player.Position.Z, new Vector2(0f, 24f), Color.AliceBlue);
-                //spriteBatch.DrawString(consoleFont, "Player phys x location: " + this.level.player.PhysicsDescription.Position.X, new Vector2(0f, 36f), Color.AliceBlue);
-                //spriteBatch.DrawString(consoleFont, "Player phys y location: " + this.level.player.PhysicsDescription.Position.Y, new Vector2(0f, 48f), Color.AliceBlue);
-                //spriteBatch.DrawString(consoleFont, "Player phys z location: " + this.level.player.PhysicsDescription.Position.Z, new Vector2(0f, 60f), Color.AliceBlue);
-            spriteBatch.End();
+            //spriteBatch.Begin();
+            //    spriteBatch.DrawString(consoleFont, "Camera x location: " + camera.position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            //    spriteBatch.DrawString(consoleFont, "Camera y location: " + camera.position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            //    spriteBatch.DrawString(consoleFont, "Camera z location: " + camera.position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            //    //spriteBatch.DrawString(consoleFont, "Player game x location: " + this.level.player.Position.X, new Vector2(0f, 0f), Color.AliceBlue);
+            //    //spriteBatch.DrawString(consoleFont, "Player game y location: " + this.level.player.Position.Y, new Vector2(0f, 12f), Color.AliceBlue);
+            //    //spriteBatch.DrawString(consoleFont, "Player game z location: " + this.level.player.Position.Z, new Vector2(0f, 24f), Color.AliceBlue);
+            //    //spriteBatch.DrawString(consoleFont, "Player phys x location: " + this.level.player.PhysicsDescription.Position.X, new Vector2(0f, 36f), Color.AliceBlue);
+            //    //spriteBatch.DrawString(consoleFont, "Player phys y location: " + this.level.player.PhysicsDescription.Position.Y, new Vector2(0f, 48f), Color.AliceBlue);
+            //    //spriteBatch.DrawString(consoleFont, "Player phys z location: " + this.level.player.PhysicsDescription.Position.Z, new Vector2(0f, 60f), Color.AliceBlue);
+            //spriteBatch.End();
             }
 
 

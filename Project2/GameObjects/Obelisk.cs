@@ -7,6 +7,8 @@ using Project2.GameSystems;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
+using Jitter.Dynamics;
+using Jitter.Collision.Shapes;
 
 namespace Project2.GameObjects
 {
@@ -19,6 +21,22 @@ namespace Project2.GameObjects
         {
             
             effect = game.Content.Load<Effect>("Shaders\\Cel");
+        }
+
+        protected override RigidBody GeneratePhysicsDescription()
+        {
+            // there is almost certainly a better way to do this
+            BoundingSphere boundingSphere = model.CalculateBounds();
+            Shape collisionShape = new CylinderShape(Scale.Y*4f, boundingSphere.Radius*4f);
+            var rigidBody = new RigidBody(collisionShape)
+            {
+                Position = PhysicsSystem.toJVector(Position),
+                Orientation = PhysicsSystem.toJMatrix(OrientationMatrix),
+                IsStatic = true,
+                EnableDebugDraw = true,
+            };
+
+            return rigidBody;
         }
 
         public override void Draw(GameTime gametime)
@@ -52,5 +70,7 @@ namespace Project2.GameObjects
                 PhysicsDescription.DebugDraw(game.debugDrawer);
             }
         }
+
+
     }
 }

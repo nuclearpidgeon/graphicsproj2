@@ -33,8 +33,9 @@ namespace Project2.Levels
             this.endGoal = endZone.endGoal; // set the level's endGoal object for collision detection use
 
             // Add a test terrain under the end zone for shits + gigs
-            var heightMap = game.Content.Load<Texture2D>("Terrain\\heightmap.jpg");
-            var subTerrain = new HeightMapTerrain(game, new Vector3(0, 0f, (float)PreferedTileHeight *(-1.5f)), heightMap, 2.0f, 2.0f);
+            
+            //var subTerrain = new HeightMapTerrain(game, new Vector3(0, 0f, (float)PreferedTileHeight *(-1.5f)), heightMap, 2.0f, 2.0f);
+            var subTerrain = new DiamondSquareTerrain(game, new Vector3(0f, 0f, 0f), 7, 2.0f, 2.0f, 30);
             AddChild(subTerrain);
 
             // Create boids
@@ -61,13 +62,13 @@ namespace Project2.Levels
         }
 
         public override Vector3 getCameraStartPosition() {
-            return new Vector3(0f, 20f, 0f);
+            return new Vector3(0f, 40f, 0f);
         }
 
         // uncomment for better overview
         public override Vector3 getCameraOffset()
         {
-            return new Vector3(0f, 1f, 1f) * 55;
+            return new Vector3(0f, 1f, 2f) * 55;
         }
     }
 }
