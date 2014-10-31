@@ -29,7 +29,21 @@ namespace Project2.GameObjects
         public Brick(Project2Game game, Model model, Vector3 position, Vector3 size, Boolean isStatic)
             : base(game, model, position, Vector3.Zero, size)
         {
-            this.PhysicsDescription.Mass = 600f;
+            this.PhysicsDescription.Mass = 20f;
+        }
+
+        protected override RigidBody GeneratePhysicsDescription()
+        {
+            Shape collisionShape = new BoxShape(Scale.X, Scale.Y, Scale.Z);
+            var rigidBody = new RigidBody(collisionShape)
+            {
+                Position = PhysicsSystem.toJVector(Position),
+                Orientation = PhysicsSystem.toJMatrix(OrientationMatrix),
+                IsStatic = false,
+                EnableDebugDraw = true,
+            };
+
+            return rigidBody;
         }
     }
 }

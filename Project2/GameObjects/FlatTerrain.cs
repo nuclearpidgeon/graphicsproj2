@@ -40,6 +40,9 @@ namespace Project2.GameObjects
             this.PhysicsDescription = GeneratePhysicsDescription();
             this.Position = PhysicsSystem.toVector3(PhysicsDescription.Position);
             game.physics.AddBody(PhysicsDescription);
+
+            //this.basicEffect.DirectionalLight0.Direction = new Vector3(0f, -2f, -1f);
+            this.basicEffect.SpecularPower = 5000f;
         }
         protected override RigidBody GeneratePhysicsDescription()
         {

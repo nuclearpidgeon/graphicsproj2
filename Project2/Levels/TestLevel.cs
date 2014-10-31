@@ -28,7 +28,7 @@ namespace Project2.Levels
             // Create all the level planes
 
             int slopeHeight = 24;
-            int levelLength = 7;
+            int levelLength = 8;
 
             for (int i = 0; i < levelLength; i++)
             {
@@ -86,8 +86,8 @@ namespace Project2.Levels
                         this.game,
                         newPlane, //can probably refactor this reference out through a proper 'add physics puzzle method
                         brickwallOffset,
-                        4,
-                        4,
+                        6,
+                        6,
                         interleave);
                     newPlane.AddChild(newBrickWall);
                 }
@@ -96,7 +96,7 @@ namespace Project2.Levels
 
             // Add the mandatory end-zone piece containing an end goal object
             // place tile behind start tile for testing
-            var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * -1));
+            var endZone = new EndZone(game, this, new Vector3(0, 0, (float)PreferedTileHeight * levelLength));
             AddChild(endZone); // add the piece
             this.endGoal = endZone.endGoal; // set the level's endGoal object for collision detection use
 
