@@ -56,8 +56,8 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Grid.Row="0" SelectionChanged="TextBlock_SelectionChanged_1">
-                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="You play as a"/>
-                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text=" the lonely monkey head Suzanne, of whom which stories of yore tell of a mythical connection to some"/>
+                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="You play as"/>
+                    	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text="the lonely monkey head Suzanne, of whom which stories of yore tell of a mythical connection to some"/>
                     	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text=" artefact."/>
                     	<Run FontSize="24" FontFamily="Segoe UI, Tahoma, Arial, Arial Unicode MS, Microsoft Sans Serif, Lucida Sans Unicode" Text=" "/>
                     </TextBlock>
